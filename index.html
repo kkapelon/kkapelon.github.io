@@ -1,8 +1,51 @@
-<!DOCTYPE html>
-<html>
-<body>
-<h1>Hello World</h1>
-<p>Testing Github pages</p>
-</body>
-</html>
+---
+layout: default
+title: Home
+---
+
+<div class="posts">
+ 
+  <div class="post">
+    <h1 class="post-title">
+     Contents at a glance
+    </h1>
+    <p>I never understood why so many technical blogs organize their posts by date. Newer content isn't 
+     always better. </p><p>Searching posts by date is cumbersome when a blog has too many posts.
+    I believe that a category-based overview is much better.</p>
+    <h2>Spock posts</h2>
+
+   <ul>
+  {% for post in site.categories.spock %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
+
+   <!--
+    <h2>Gradle posts</h2>
+
+   <ul>
+    {% for post in site.categories.gradle %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+    </li>
+    {% endfor %}
+    </ul>
+
+     <h2>Maven posts</h2>
+
+   <ul>
+    {% for post in site.categories.maven %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+    </li>
+    {% endfor %}
+    </ul> -->
+
+  </div>
+ 
+
+  
+</div>
 

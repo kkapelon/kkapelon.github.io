@@ -1,0 +1,24 @@
+# Dependencies
+markdown:         redcarpet
+highlighter: rouge
+
+# Permalinks
+permalink:        none
+
+# Setup
+title:            Codepipes Blog
+tagline:          'Build systems, code quality and unit testing for Java'
+description:      'A technical blog by <a href="http://codepipes.com/contact.html">Kostis Kapelonis</a>.'
+url:              http://blog.codepipes.com
+
+author:
+  name:           'Kostis Kapelonis'
+  url:            https://twitter.com/codepipes
+
+paginate:         2
+
+# Custom vars
+version:          2.0.0
+
+github:
+  repo:           https://github.com/poole/hyde
