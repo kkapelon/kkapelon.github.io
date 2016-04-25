@@ -22,10 +22,10 @@ If you look at any good JUnit test you will see a pattern in its structure. The 
 {% highlight java %}
 @Test
 public void chargeCreditCard() {
-	CreditCardBilling billing = new CreditCardBilling();
-	Client client = new Client();
-	billing.charge(client,150);
-	assertEquals("Revenue should be recorded",150,billing.getCurrentRevenue());
+    CreditCardBilling billing = new CreditCardBilling();
+    Client client = new Client();
+    billing.charge(client,150);
+    assertEquals("Revenue should be recorded",150,billing.getCurrentRevenue());
 }
 {% endhighlight %}
 
@@ -44,12 +44,12 @@ The example above is very simple so all three phases are instantly visible. One 
 {% highlight java %}
 @Test
 public void chargeCreditCard() {
-	CreditCardBilling billing = new CreditCardBilling();
-	Client client = new Client();
+    CreditCardBilling billing = new CreditCardBilling();
+    Client client = new Client();
 
-	billing.charge(client,150);
+    billing.charge(client,150);
 
-	assertEquals("Revenue should be recorded",150,billing.getCurrentRevenue());
+    assertEquals("Revenue should be recorded",150,billing.getCurrentRevenue());
 }
 {% endhighlight %}
 
@@ -59,14 +59,14 @@ will still demarkate the phase with comments in order to improve readability:
 {% highlight java %}
 @Test
 public void veryComplexLoanApprovalScenario() {
-	//Prepare loan request and client details
-	[...lots of statements here...]
+    //Prepare loan request and client details
+    [...lots of statements here...]
 
-	//Customer asks for a loan
-	[...lots of statements here...]
+    //Customer asks for a loan
+    [...lots of statements here...]
 
-	//Check that loan was approved
-	[...lots of assert statements here...]
+    //Check that loan was approved
+    [...lots of assert statements here...]
 }
 {% endhighlight %}
 
@@ -81,15 +81,15 @@ Let's rewrite the first unit test with Spock:
 {% highlight groovy %}
 public void "charging a credit card - happy path"() {
 
-	given: "a billing service and a customer with a valid credit card"
-	CreditCardBilling billing = new CreditCardBilling();
-	Client client = new Client();
+    given: "a billing service and a customer with a valid credit card"
+    CreditCardBilling billing = new CreditCardBilling();
+    Client client = new Client();
 
-	when: "client buys something with 150 dollars"
-	billing.charge(client,150);
+    when: "client buys something with 150 dollars"
+    billing.charge(client,150);
 
-	then: "we expect the transaction to be recorded"
-	billing.getCurrentRevenue() == 150
+    then: "we expect the transaction to be recorded"
+    billing.getCurrentRevenue() == 150
 }
 {% endhighlight %}
 
@@ -115,10 +115,10 @@ Let's assume that a naughty Java developer modifies the JUnit test as below:
 {% highlight java %}
 @Test
 public void chargeCreditCard() {
-	CreditCardBilling billing = new CreditCardBilling();
-	Client client = new Client();
+    CreditCardBilling billing = new CreditCardBilling();
+    Client client = new Client();
 
-	billing.charge(client,150);
+    billing.charge(client,150);
 	    
     assertEquals("Revenue should be recorded",150,billing.getCurrentRevenue());
 	    
@@ -142,24 +142,24 @@ would be the following:
 
 {% highlight groovy %}
 public void "charging a credit card - two transactions"() {
-	given: "a billing service ready to accept payments"
-	CreditCardBilling billing = new CreditCardBilling();
+    given: "a billing service ready to accept payments"
+    CreditCardBilling billing = new CreditCardBilling();
 		
-	and: "two customers with valid credit cards"
-	Client client1 = new Client();
-	Client client2 = new Client();
+    and: "two customers with valid credit cards"
+    Client client1 = new Client();
+    Client client2 = new Client();
 
-	when: "first client buys something with 150 dollars"
-	billing.charge(client1,150);
+    when: "first client buys something with 150 dollars"
+    billing.charge(client1,150);
 
-	then: "we expect the transaction to be recorded"
-	billing.getCurrentRevenue() == 150
+    then: "we expect the transaction to be recorded"
+    billing.getCurrentRevenue() == 150
 		
-	when: "second client buys something with 100 dollars"
-	billing.charge(client2,100);
+    when: "second client buys something with 100 dollars"
+    billing.charge(client2,100);
 
-	then: "we expect the transaction to be recorded"
-	billing.getCurrentRevenue() == 250
+    then: "we expect the transaction to be recorded"
+    billing.getCurrentRevenue() == 250
 }
 {% endhighlight %}
 
@@ -186,17 +186,17 @@ gets a good idea of what the test does.
 {% highlight java %}
 @Test
 public void similarBooks() {
-	Book book = new Book("The Murder on the Links");
-	List<String> similar = book.findSimilarTitles();
+    Book book = new Book("The Murder on the Links");
+    List<String> similar = book.findSimilarTitles();
 
-	assertEquals("Murder on the Orient Express",similar.get(0));
+    assertEquals("Murder on the Orient Express",similar.get(0));
 }
 {% endhighlight %}
 
 Let's say that the latest build of your project fails. You checkout the code locally, run all tests
 and get the following: 
 
-![JUnit failed test](../../assets/junit-fail.png)
+![JUnit failed test](../../assets/spock-vs-junit/junit-fail.png)
 
 Just looking at this failure is not very helpful. You know which test has failed, but it is hard to understand
 *how* to fix the failure. In this example you need to run the test in a debugger to understand why you get
@@ -208,20 +208,20 @@ Let's say that you rewrite the same test with Spock:
 
 {% highlight groovy %}
 public void "find books with similar titles"() {
-	given: "A book that contains the word murder"
-	Book book = new Book("The Murder on the Links")
+    given: "A book that contains the word murder"
+    Book book = new Book("The Murder on the Links")
 		
-	when: "we search similar books"
-	List<String> similar = book.findSimilarTitles()
+    when: "we search similar books"
+    List<String> similar = book.findSimilarTitles()
 
-	then: "similar books should have murder in the title"
-	similar.get(0) == "Murder on the Orient Express"
+    then: "similar books should have murder in the title"
+    similar.get(0) == "Murder on the Orient Express"
 }
 {% endhighlight %}
 
 The test fails of course, but this time you get the following:
 
-![Spock failed test](../../assets/spock-fail.png)
+![Spock failed test](../../assets/spock-vs-junit/spock-fail.png)
 
 
 Unlike JUnit, Spock knows the context of the failure. In this case Spock shows you the contents of the whole list of similar books.
@@ -240,9 +240,11 @@ showing any respect on how reports from tests are generated.
 >
 >-- Phil Karlton
 
+#### Methods names in JUnit are constrained by Java conventions.
+
 The classic mistake here is unit tests that really say nothing in their title. Here is a particularly bad example:
 
-![Bad JUnit test titles](../../assets/badtest.png)
+![Bad JUnit test titles](../../assets/spock-vs-junit/badtest.png)
 
 The problem with this naming "scheme" is that it is not helpful for people who do not have the code in front of them. If the test named "scenario2" fails
 for some reason, nobody but the developer can understand its impact.
@@ -250,20 +252,23 @@ for some reason, nobody but the developer can understand its impact.
 Seasoned Java developers attempt to name their unit tests with their true purpose. This is obviously better but still not perfect
 as they are constrained to the camel case (or underscore) format of the Java language:
 
-![Better JUnit test titles](../../assets/better-junit-naming.png)
+![Better JUnit test titles](../../assets/spock-vs-junit/better-junit-naming.png)
+
+
+#### Spock supports plain English sentences
 
 The beauty of Spock tests, is the ability to enter full English descriptions in the method names (already
 showcased in the code examples in the previous sections)
 
 Maven (and any other JUnit related tools) will format them with no extra configuration:
 
-![Spock test titles](../../assets/spock-surefire-report.png)
+![Spock test titles](../../assets/spock-vs-junit/spock-surefire-report.png)
 
 However Spock can take this report a step further. Spock has its own [reports module](https://github.com/renatoathaydes/spock-reports) 
 that shows in the reports all text contained in the Spock blocks (i.e given, when, then).
 The result if the following:
 
-![Spock reports](../../assets/spock-reports.png)
+![Spock reports](../../assets/spock-vs-junit/spock-reports.png)
 
 This is massive improvement in the readability of Spock tests. Non-technical can see this report and take proper decisions
 without actually knowing Java code.
@@ -276,11 +281,58 @@ if a failed test has high or low impact.
 
 ### 4. Spock has a custom DSL for parameterized tests ###
 
-To be written
+A very common anti-pattern in JUnit tests, is a series of tests that are 99.9% same and only some variables really
+change. Here is an example:
+
+{% highlight java %}
+@Test
+public void acceptJpg() {
+    ImageNameValidator validator = new ImageNameValidator();
+    String pictureFile = "scenery.jpg";
+		
+    assertTrue(validator.isValidImageExtension(pictureFile));
+}
+
+@Test	
+public void acceptJpeg() {
+    ImageNameValidator validator = new ImageNameValidator();
+    String pictureFile = "house.jpeg";
+		
+    assertTrue(validator.isValidImageExtension(pictureFile));
+}
+
+@Test	
+public void doNotAcceptTiff() {
+    ImageNameValidator validator = new ImageNameValidator();
+    String pictureFile = "sky.tiff";
+		
+    assertFalse(validator.isValidImageExtension(pictureFile));
+}
+
+{% endhighlight %}
+
+Those JUnit tests are clearly not [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) as they share a lot of common code. Actually all of them share the same test logic
+(pass an image to the ImageValidator class) and the only thing that changes is the filename and the expected result.
+
+This is a better illustration of the similarity of these tests:
+
+![parameterized code sharing](../../assets/spock-vs-junit/parameterized.png)
+
+
+
+
 
 ### 5. Spock has built-in mocking and stubbing ###
 
 To be written
+
+
+### Conclusion
+
+This was just a small selection of cases where Spock makes your tests better. Even if you are a diehard JUnit fan, you should acknowledge the advantages of Spock
+and what it means for your unit tests.
+
+You can also get the PDF slides of my [presentation for Spock versus JUnit](http://codepipes.com/presentations/spock-vs-junit.pdf).
 
  
 
