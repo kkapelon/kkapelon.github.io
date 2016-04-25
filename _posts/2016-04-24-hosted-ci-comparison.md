@@ -25,7 +25,7 @@ This page describes my comparison criteria. Feel free to go directly to a review
 
 
 
-#####Building code in the cloud - the last missing piece
+##### Building code in the cloud - the last missing piece
 
 After the explosion of Github (where code is located offsite) and the rise of cloud computing (such as Amazon Web Services), the next logical thing to move to the cloud was the build system itself.
 
@@ -37,7 +37,7 @@ That changed quickly with the introduction of build servers that used the cloud.
 
 In this post we will compare 14 hosted solutions that offer CI services. There are several comparison articles on the web but most of them only focus on 2 or 3 companies or are written in a biased way (often advertising a specific solution). I decided to write an impartial review (I am not affiliated with any of them) for your reading pleasure. Enjoy!
 
-#####Comparison Criteria
+##### Comparison Criteria
 
 Rather than writing a few sentences for each company or creating a big grid with features (these are loved by marketing folks but are not always useful to developers) I will instead provide my comparison criteria in a well structured manner. This way you can select that criteria that matter to YOU and decide on your own which is best according to your needs.
 
@@ -49,24 +49,24 @@ Because I am mainly a Java developer I have tested all of them with JVM projects
 
 For the rest of the companies I compare the following areas:
 
-######Connectivity
+###### Connectivity
 
 By connectivity I mean how easy it is to bring your code into the service. Even though Github is the most popular solution, not all projects use it. A product is getting high points on this area if it supports several ways of fetching the source code.
 
-######First-time setup
+###### First-time setup
 
 Setting a build server can be a time-consuming process if your project is complicated. Getting a prototype project to work might be easy, but you are not done until the real project actually works, and the build artifact(s) are the same as your local setup (e.g. Jenkins). A product gets high points in this area if it guides me well through my first steps with it. There were cases where getting a to a successful build was a matter of seconds, and cases where I spent hours in order to understand what the service expected of me.
 
 
-######User Interface
+###### User Interface
 
 Getting a build running is only the beginning. If you have many projects on a CI system you also need a way to monitor and manage them. Here I looked at the “dashboard” of each solution, its organization of web pages, reports and navigation links and in general how user friendly the system is. I realize that a good UI can be subjective, so in most cases I emphasized bad points of User Experience (which are arguably easier to detect)
 
-######Build environment
+###### Build environment
 
 Perhaps the most important metric. This area includes the programming languages supported by the product (but as I said already I will focus on Java), the versions of compilers present, build systems and how easy it is to update or install new software. A product gets high points if it has extensive configuration properties and allows me to define the build environment in an intuitive way.
 
-######Feedback
+###### Feedback
 
 With the build in place, there are several things that can go wrong with it. Wrong environment setup, failed unit tests, unresponsive external services and so on. A product is getting high points in the this area if is allows real-time monitoring of the build, and excessive logging on things that went wrong. Some solutions even allowed for ssh connections to the build servers which is a really nice feature to have when the build does not do what you expected it.
 
