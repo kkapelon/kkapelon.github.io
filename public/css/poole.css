@@ -203,13 +203,13 @@ blockquote p:last-child {
 img {
   display: block;
   margin: 0 0 1rem;
-  border-radius: 5px;
+  max-width: 100%;
+  height: auto;
 }
 
 img.center {
   display: block;
   margin: 0 auto;
-  border-radius: 5px;
 }
 
 /* Tables */
