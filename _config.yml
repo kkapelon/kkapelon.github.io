@@ -15,10 +15,3 @@ author:
   name:           'Kostis Kapelonis'
   url:            https://twitter.com/codepipes
 
-paginate:         2
-
-# Custom vars
-version:          2.0.0
-
-github:
-  repo:           https://github.com/poole/hyde
