@@ -318,11 +318,57 @@ This is a better illustration of the similarity of these tests:
 
 ![parameterized code sharing](../../assets/spock-vs-junit/parameterized.png)
 
+This type of tests are called _parameterized_ tests because they share they same test logic and all scenarios depend
+on different parameters passed to that test logic.
+
+Parameterized test with JUnit are possible, but the resulting syntax is certainly ugly. I challenge you 
+to read the [official documentation of JUnit](https://github.com/junit-team/junit4/wiki/parameterized-tests). I will wait
+for you to come back.
+
+If you have never seen the approach of JUnit for parameterized tests, do not worry. It should be clear that:
+
+1. it requires a custom runner (`@RunWith(Parameterized.class)`)
+1. the test class must be polluted with fields that represent inputs
+1. the test class must be polluted with fields that represent outputs
+1. a special constructor is needed for all inputs and outputs
+1. test data comes into a two dimensional object array (which is converted to a list)
+1. test data and test descriptions are in different placed
+1. you cannot easily use two tests in the same class.
+
+Essentially the "solution" offered by JUnit is more trouble than its worth and this is why so many Java developers
+are not aware of JUnit parameterized tests.
+
+I know that there are external libraries that augment the way JUnit handles parameterized tests, but their existence
+further enforces my argument that Spock is batteries-included unlike JUnit.
+
+Spock can instead offer data tables that present the unit test in a much more understandable manner. Powered
+by its Groovy DSL it allows you to keep together data and its description in a tabular format:
+
+{% highlight groovy %}
+public void "Valid images are PNG and JPEG files"() {
+        given: "an image extension checker"
+        ImageNameValidator validator = new ImageNameValidator()
+
+        expect: "that only valid filenames are accepted"
+        validator.isValidImageExtension(pictureFile) == validPicture
+
+        where: "sample image names are"
+        pictureFile        || validPicture
+        "scenery.jpg"      || true
+        "house.jpeg"       || true
+        "car.png"          || true
+        "sky.tiff"         || false
+        "dance_bunny.gif"  || false
+}
+
+{% endhighlight %}
+
+A single test method is shown, but if you run it you will get multiple executions (one for each l)
 
 
 
 
-### 5. Spock has built-in mocking and stubbing ###
+### 5. Spock has built-in mocking and stubbing capabilities ###
 
 To be written
 
