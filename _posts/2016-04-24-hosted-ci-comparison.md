@@ -4,7 +4,7 @@ title: Hosted CI comparison survey 2016
 category: hosted-ci-2016
 ---
 
-###Comparison of hosted Continuous Integration services
+### Comparison of hosted Continuous Integration services
 
 This page describes my comparison criteria. Feel free to go directly to a review below:
 
