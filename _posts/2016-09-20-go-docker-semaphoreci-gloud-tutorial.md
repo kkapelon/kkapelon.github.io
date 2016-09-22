@@ -107,7 +107,7 @@ you can visit the localhost port directly. For Windows we need the VM ip that sh
 
 Here is the application running.
 
-![Adding a project to CircleCI](../../assets/go-docker-gcloud/local-docker-url.png)
+![Local docker URL](../../assets/go-docker-gcloud/local-docker-url.png)
 
 Now we are ready to create a Docker image of our application.
 
@@ -163,4 +163,44 @@ Basic web server is starting on port 8080...
 
 The application should again be available on our browser as before.
 
+Even though we have successfully packaged our application into a Docker image, we need to automate the
+process instead of typing manually commands in the terminal. This will allow us to setup [Continuous Integration](https://semaphoreci.com/community/tutorials/continuous-integration) so that each code commit
+results in an automatic rebuild of the Docker image.
+
+
 ### Step 3 - Using Semaphore CI to automate the build process
+
+[Semaphore CI](https://semaphoreci.com/) is a cloud CI service that can not only automate our build and also comes with [Docker support](https://semaphoreci.com/product/docker) built-in.
+
+For public repositories it is completely free, so if we commit our code on a public Gihub (or Bitbucket) repository, we can easily setup
+a build process with only a free registration.
+
+I have chosen Github for this tutorial and have connected Semaphore with my Github account as well, so that it has direct access to
+all my repositories.
+
+Once we have connected Semaphore to Github we are ready to create a new build project:
+
+![Creating a SemaphoreCI project](../../assets/go-docker-gcloud/branch-select.png)
+
+
+Semaphore will briefly analyze the contents of the repository and will automatically suggest the Docker infrastructure after noticing our Docker file
+in the root directory of the project. Very cool indeed!
+
+![Semaphore Docker support](../../assets/go-docker-gcloud/docker-support.png)
+
+The first thing we need to declare is the GO version that will use for compilation. Naturally it should be as close as possible to
+our Docker image. Semaphore supports the latest version of GO directly from the dropdown menu making this step very easy.
+
+![Semaphore Go support](../../assets/go-docker-gcloud/go-version.png)
+
+Next we should enter the commands that Semaphore will run after each code commit.
+Here we enter two commands, one for compiling the GO source file and one for building the Docker image. (Semaphore has a different GOPATH
+	than the Docker image and thus we compile the file by directly defining the output file)
+
+![Semaphore compile commands](../../assets/go-docker-gcloud/semaphore-commands.png)
+
+Once the configuration is saved you can run your first successful build!
+
+![Semaphore first build](../../assets/go-docker-gcloud/first-build.png)
+
+#### Caching the Docker image in Semaphore CI
