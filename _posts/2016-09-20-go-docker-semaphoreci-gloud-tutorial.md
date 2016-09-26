@@ -203,4 +203,22 @@ Once the configuration is saved you can run your first successful build!
 
 ![Semaphore first build](../../assets/go-docker-gcloud/first-build.png)
 
-#### Caching the Docker image in Semaphore CI
+#### Speeding the build by caching the Docker image in Semaphore CI
+
+If you run the build more times you will notice that the golang image is downloaded again and again.
+Semaphore offers a [cache mechanism for Docker images](https://semaphoreci.com/docs/docker.html) so that each build can skip the download step and find the cache right away.
+To enabled the cache we add the special SemaphoreCI command `docker-cache restore` before our build and the `docker-cache snapshot` command after our build.
+
+![Semaphore Docker cache](../../assets/go-docker-gcloud/docker-image-cache.png)
+
+Now if you run your build multiple times you will notice that SemaphoreCI no longer pulls the GoLang image from docker hub but instead restores it from the build cache.
+
+### Step 4 - Pushing the Docker image to a repository
+
+One of the most important tenets of CI is the "build once" rule. The same binary that gets built by our CI server will be sent to the test/staging/production environments.
+This assures the correct functionality of the system. Docker makes this very easy as we can simply keep the Docker image built by SemaphoreCI into a Docker repository
+after each build.
+
+There are many options for a Docker repository. Since we work with Google cloud in this article it makes sense to use the Docker repository offered by Google
+called [Google Container Registry](https://cloud.google.com/container-registry/). Naturally SemaphoreCI has also [built-in support](https://semaphoreci.com/docs/docker/continuous-delivery-google-container-registry.html) for pushing and pulling images
+to GCR.
