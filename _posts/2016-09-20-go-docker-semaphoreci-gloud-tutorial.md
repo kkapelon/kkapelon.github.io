@@ -222,3 +222,26 @@ after each build.
 There are many options for a Docker repository. Since we work with Google cloud in this article it makes sense to use the Docker repository offered by Google
 called [Google Container Registry](https://cloud.google.com/container-registry/). Naturally SemaphoreCI has also [built-in support](https://semaphoreci.com/docs/docker/continuous-delivery-google-container-registry.html) for pushing and pulling images
 to GCR.
+
+To use the Google Container Engine you need a free Google Account. Specifically for Google Cloud you also need a credit card to enable a trial period. The credit is used
+as a verification method and is not charged during or after the trial finishes.
+
+If you don't enter a credit card most of the functionalities decribed in the following sections are disabled.
+
+Once you have billing enabled locate the credentials section in the Google Console.
+
+![Google cloud security](../../assets/go-docker-gcloud/gcloud-create-account.png)
+
+Select the "Create Service Account" button and fill-in the details.
+
+![Google cloud create service account](../../assets/go-docker-gcloud/gcloud-create-service-account.png)
+
+The brower will save a JSON file locally. Open it and copy all contents to clipboard.
+The go the SemaphoreCI UI and select "add-ons" from the top right corner.
+
+![Semaphore add-ons](../../assets/go-docker-gcloud/semaphore-addons.png)
+
+Select the docker registry option. Finally select the GCR entry and paste the contents of your JSON.
+Make sure that you also enter you Google account email.
+
+Now you are ready to modify the build commands to send the final Docker image to the GCR registry.
