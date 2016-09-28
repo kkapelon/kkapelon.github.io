@@ -32,7 +32,7 @@ You might see some slightly different screenshots on your system if you use Linu
 #### Source code for this article
 
 You can find the source code mentioned in this article on [Github](https://github.com/kkapelon/go-docker-semaphore-gcloud). You can follow
-along either by creating a repository on your own and typing the source files yourself, or by simple cloning this repository to have
+along either by creating a repository on your own and typing the source files yourself, or by simply cloning this repository to have
 everything ready.
 
 
@@ -72,7 +72,7 @@ We also create the folder `[WORKDIR]/bin` that will hold the compiled binary.
 
 We need to run our GO application at least once to verify that it is working correctly. Of course we could install
 the GO development tools locally and run the application directly on our workstation. But this would beat one of
-the main objectives of Docker - having the same environment during development and during deployment.
+the main objectives of Docker - having the same environment during development and during production deployment.
 
 Therefore we will instead run our application in a Docker container that will have the GO runtime installed.
 At the time of writing the current official Docker image for GO is [golang:1.7.1](https://hub.docker.com/_/golang/).
@@ -170,7 +170,7 @@ results in an automatic rebuild of the Docker image.
 
 ### Step 3 - Using Semaphore CI to automate the build process
 
-[Semaphore CI](https://semaphoreci.com/) is a cloud CI service that can not only automate our build and also comes with [Docker support](https://semaphoreci.com/product/docker) built-in.
+[Semaphore CI](https://semaphoreci.com/) is a cloud CI service that can not only automate our build but also comes with [Docker support](https://semaphoreci.com/product/docker) built-in.
 
 For public repositories it is completely free, so if we commit our code on a public Gihub (or Bitbucket) repository, we can easily setup
 a build process with only a free registration.
@@ -207,7 +207,7 @@ Once the configuration is saved you can run your first successful build!
 
 If you run the build more times you will notice that the golang image is downloaded again and again.
 Semaphore offers a [cache mechanism for Docker images](https://semaphoreci.com/docs/docker.html) so that each build can skip the download step and find the cache right away.
-To enabled the cache we add the special SemaphoreCI command `docker-cache restore` before our build and the `docker-cache snapshot` command after our build.
+To enable the cache we add the special SemaphoreCI command `docker-cache restore` before our build and the `docker-cache snapshot` command after our build.
 
 ![Semaphore Docker cache](../../assets/go-docker-gcloud/docker-image-cache.png)
 
@@ -228,11 +228,11 @@ as a verification method and is not charged during or after the trial finishes.
 
 If you don't enter a credit card most of the functionalities decribed in the following sections are disabled.
 
-Once you have billing enabled locate the credentials section in the Google Console.
+Once you have billing enabled, locate the credentials section in the Google Console.
 
 ![Google cloud security](../../assets/go-docker-gcloud/gcloud-create-account.png)
 
-Select the "Create Service Account" button and fill-in the details.
+Select the "Create Service Account" button and fill-in the details. Make sure that you select the "Owner" role so that the service account has read/write access (which translates to pull/push for a Docker repository).
 
 ![Google cloud create service account](../../assets/go-docker-gcloud/gcloud-create-service-account.png)
 
@@ -242,6 +242,17 @@ The go the SemaphoreCI UI and select "add-ons" from the top right corner.
 ![Semaphore add-ons](../../assets/go-docker-gcloud/semaphore-addons.png)
 
 Select the docker registry option. Finally select the GCR entry and paste the contents of your JSON.
-Make sure that you also enter you Google account email.
+Make sure that you also enter your Google account email.
 
 Now you are ready to modify the build commands to send the final Docker image to the GCR registry.
+
+![Docker push commands](../../assets/go-docker-gcloud/docker-push-command.png)
+
+Run the Semaphore build again and if everything goes well you should see the image pushed into the GRC repository.
+
+![GCR docker image](../../assets/go-docker-gcloud/gcr-image.png)
+
+
+### Step 5 - Deploying the Docker image to Google Cloud
+
+We now reach the final step. We have compiled our GO application, created a Docker image and uploaded it to the Docker Registry. We need to deploy it to Google cloud to actually use the application.
