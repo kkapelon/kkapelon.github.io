@@ -228,6 +228,8 @@ as a verification method and is not charged during or after the trial finishes.
 
 If you don't enter a credit card most of the functionalities decribed in the following sections are disabled.
 
+#### Creating an external auth key for Google Cloud
+
 Once you have billing enabled, locate the credentials section in the Google Console.
 
 ![Google cloud security](../../assets/go-docker-gcloud/gcloud-create-account.png)
@@ -236,8 +238,11 @@ Select the "Create Service Account" button and fill-in the details. Make sure th
 
 ![Google cloud create service account](../../assets/go-docker-gcloud/gcloud-create-service-account.png)
 
-The brower will save a JSON file locally. Open it and copy all contents to clipboard.
-The go the SemaphoreCI UI and select "add-ons" from the top right corner.
+The brower will save a JSON file locally.
+
+#### Authorizing SemaphoreCI to push images to Google Container Registry
+
+Now that the JSON auth file is saved locally, open it and copy all contents to clipboard. Go the SemaphoreCI UI and select "add-ons" from the top right corner.
 
 ![Semaphore add-ons](../../assets/go-docker-gcloud/semaphore-addons.png)
 
@@ -253,6 +258,103 @@ Run the Semaphore build again and if everything goes well you should see the ima
 ![GCR docker image](../../assets/go-docker-gcloud/gcr-image.png)
 
 
-### Step 5 - Deploying the Docker image to Google Cloud
+### Step 5 - Deploying the Docker image to Google Cloud (Manually)
 
-We now reach the final step. We have compiled our GO application, created a Docker image and uploaded it to the Docker Registry. We need to deploy it to Google cloud to actually use the application.
+We now reach the most important step. We have compiled our GO application, created a Docker image and uploaded it to the Docker Registry. We need to deploy it to Google cloud to actually use the application.
+
+There are multiple ways to deploy the application to the Google cloud. These include:
+
+1. Using a [normal VM with Docker support](https://cloud.google.com/compute/docs/containers/container_vms). This is a bare bones method regarding functionality and without any official support.
+1. Using a [Container Image](https://cloud.google.com/compute/docs/containers/vm-image/). This method is more advanced as it supports [cloud-init](https://cloudinit.readthedocs.io/en/latest/index.html) and other features.
+1. Using a full featured [Kubernetes cluster](https://cloud.google.com/container-engine/docs/clusters/) for easy scaling and orchestration. This is the recommended option for real world production deployments.
+
+ For brevity reasons we will use the first method. On a real system you should spend some time however to understand how [Kubernetes](http://kubernetes.io/) works and use that method instead.
+
+ Creating a VM and deploying a Docker image on Google cloud can be easily performed via the Google GUI console or via the integrated [gloud command line tool](https://cloud.google.com/sdk/gcloud/).
+ Since we want to automate our build process completely we will use the gcloud tool (first locally and then in SemaphoreCI)
+
+ #### Authorizing the gloud tool for external access
+
+ We could install locally the complete [Google SDK](https://cloud.google.com/sdk/) to get access to the gcloud tool, but that would beat the whole purpose of using Docker in the first place.
+ Thankfully there is already a [Docker image that contains the SDK itself](https://hub.docker.com/r/google/cloud-sdk/).
+
+ To authorize gcloud access we will reuse the JSON auth file we saved in Step 4.
+
+ First move the JSON file file to `[WORKDIR]` so that we can use it via docker. This is only temporary and will not actully commit the file anywhere.
+
+ {% highlight shell %}
+ $ docker run -v /[WORKDIR]:/work -it google/cloud-sdk
+ root@6a3a83386bd2:/# cd /work/
+ root@6a3a83386bd2:/# ls
+Dockerfile  LICENSE  README.md auth.json  bin  src
+root@6a3a83386bd2:/# gcloud auth activate-service-account  --key-file auth.json --project go-sample-144321
+root@6a3a83386bd2:/# gcloud compute images list --project go-sample-144321
+Activated service account credentials for: [automate-semaphore@go-sample-144321.iam.gserviceaccount.com]
+root@6a3a83386bd2:/# gcloud compute images list --project google-containers
+ {% endhighlight %}
+
+If everything goes well you should see a list of supported VM images by Google cloud. The ones we will use
+will be named `container-vm-v[date]` (`container-vm-v20160321-2` at the time of writing).
+
+ #### Deploying a Docker image on a Google Cloud VM externally
+
+Before we launch the Google VM we also need to tell it what Docker image it will launch. To set this up
+create the [metadata manifest](https://cloud.google.com/compute/docs/containers/container_vms#container_manifest) called
+`my-google-cloud-manifest.yml` with the following content:
+
+{% highlight yml %}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-sample-app-on-gcloud
+spec:
+  containers:
+    - name: my-sample-app-on-gcloud
+      image: gcr.io/go-sample-144321/go-trivial-sample
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 80
+          hostPort: 8080
+{% endhighlight %}
+
+We also commit this file on the root of the git repository as it will also be used later by SemaphoreCI.
+
+Finally we launch our image with the following command (from withign the)
+
+ {% highlight shell %}
+root@6a3a83386bd2:/#
+gcloud compute instances create trivial-go-test \
+    --image-family=container-vm --image-project=google-containers
+    --metadata-from-file google-container-manifest=my-google-cloud-manifest.yml \
+    --zone us-central1-a \
+    --machine-type f1-micro --tags "http-server"
+
+Created [https://www.googleapis.com/compute/v1/projects/go-sample-144321/zones/us-central1-a/instances/trivial-go-test].
+NAME             ZONE           MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP      STATUS
+trivial-go-test  us-central1-a  f1-micro                   10.128.0.2   104.198.204.103  RUNNING
+ {% endhighlight %}
+
+Once you run this command you should wait a bit until the VM is created for the first time.
+Once that is finished the docker image should be live on Gloud. You can see it on Google Console:
+
+![Google VM dashboard ](../../assets/go-docker-gcloud/vm-instance.png)
+
+ And also on your browser:
+
+![Live http Connection to Gcloud](../../assets/go-docker-gcloud/gloud-live.png)
+
+Now we have all the pieces ready to fully automate our build with semaphore.
+
+### Step 5 - Deploying the Docker image to Google Cloud automatically via SemaphoreCI
+
+
+
+
+
+
+
+
+
+
+
+docker run -v /c/Users/Kostis/workspace/go-docker-semaphore-gcloud/:/tmp/lala -it google/cloud-sdk
