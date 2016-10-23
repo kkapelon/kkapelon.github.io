@@ -414,7 +414,7 @@ I hope you found this simple tutorial useful. Some further pointers that you can
  * The Golang Docker image we use is very big. We could try to slim it down by finding a smaller compatible image. This would make the push step much faster.
  * Alternatively we could compile our GO binary as a static executable so that it doesn't need the GoLang Docker image at all.
  * A real application will have several other services apart from the webserver (for example a DB). This could be achieved with [Docker compose](https://docs.docker.com/compose/).
- * Instead of manually downloading the Google Cloud SDK on the SemaphoreCI build machine we could alos use the Google SDK Docker image we
+ * Instead of manually downloading the Google Cloud SDK on the SemaphoreCI build machine we could also use the Google SDK Docker image we
 used locally to make the build environment exactly the same as our local environment.
  *  As already mentioned you should not use single VM images in Google cloud for real applications. A [Kubernetes cluster](http://kubernetes.io/docs/getting-started-guides/gce/) should be used instead.
 
