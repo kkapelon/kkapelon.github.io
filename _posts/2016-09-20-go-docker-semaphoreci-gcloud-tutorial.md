@@ -418,6 +418,6 @@ I hope you found this simple tutorial useful. Some further pointers that you can
 used locally to make the build environment exactly the same as our local environment.
  *  As already mentioned you should not use single VM images in Google cloud for real applications. A [Kubernetes cluster](http://kubernetes.io/docs/getting-started-guides/gce/) should be used instead.
 
-The full source code can be found at the [Github repository] (https://github.com/kkapelon/go-docker-semaphore-gcloud).
+The full source code can be found at the [Github repository](https://github.com/kkapelon/go-docker-semaphore-gcloud).
 
 Enjoy!
