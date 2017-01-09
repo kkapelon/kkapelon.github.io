@@ -24,7 +24,7 @@ explain the big picture. For example, monitoring and debugging Docker containers
 that this is a trivial problem)
 
 It is also very hard to find language specific information for Docker. I can understand why Ruby and Python developers are excited about Docker, but in the Java world where good specs already exist, some of the Docker advantages are not that ground breaking.
-(As a fun exercise, even if you are a Java developer, try to find installation guides on how a Ruby on Rails application is deployed in production)
+(As a fun exercise, even if you are a Java developer, try to find installation guides on how a [Ruby on Rails](http://rubyonrails.org/) application is deployed in production)
 
 Finally, the Docker train is following/leading the [Microservices](http://www.martinfowler.com/articles/microservices.html) train. Several articles confuse the two together even
 though they are completely independent. You can use Docker with a monolith app, and you can have several micro-services
@@ -58,7 +58,7 @@ be highly skeptical when thinking about moving your Java apps to Docker images i
 ### The source of Docker confusion - the name itself
 
 Understanding what Docker does is becoming even more difficult because "Docker" today is actually an ecosystem. When people
-around you talk about Docker you should understand what part of Docker they are talking about. The company? The container? The format? The CLI?
+around you talk about Docker you should understand what part of Docker they are talking about. The company? The container? The format? The [CLI](https://en.wikipedia.org/wiki/Command-line_interface)?
 
 Just to help you get around all this confusion I have created a table that attempts to map all Docker concepts
 in the Java world. This table is not technically accurate as some technologies work differently under the hood. It is just here
@@ -68,11 +68,11 @@ to give you an fuzzy idea on how things match.
 | ------------- |:-------------| -----|
 | [Docker](https://www.docker.com/company)     | The company | Oracle (previously Sun) |
 | [Docker image](https://github.com/docker/docker/tree/master/image/spec)    | The image format      |  WAR file |
-| [Docker Engine](https://www.docker.com/products/docker-engine) | The runtime      |    Tomcat/Weblogic etc |
-| [Docker Container](https://runc.io/) | The container      |    The JVM |
+| [Docker Engine](https://www.docker.com/products/docker-engine) | The runtime      |    The JVM |
+| [Docker Container](https://docs.docker.com/engine/reference/run/) | The container      |   Tomcat/Weblogic etc  |
 | [Docker client](https://docs.docker.com/engine/reference/commandline/cli/) | The image creator      |    Maven/Gradle |
 | [Dockerfile](https://docs.docker.com/engine/reference/builder/) | The image definition      |    pom.xml/build.gradle|
-| [Docker client](https://docs.docker.com/engine/reference/commandline/cli/)| The image runner      |    Weblogic CLI/Tomcat scripts |
+| [Docker client](https://docs.docker.com/engine/reference/commandline/cli/)| The image runner      |    Weblogic CLI/Tomcat/Gradle scripts/ Maven plugins |
 | [Docker compose](https://docs.docker.com/compose/) | Grouping Docker images | EAR file |
 | [Docker hub](https://hub.docker.com/) | Image repository | Maven central, [JCenter ](https://bintray.com/bintray/jcenter) |
 | [Docker Machine](https://docs.docker.com/machine) | A VM with Docker installed| A VM with Tomcat installed |
@@ -84,10 +84,10 @@ You now have the power to understand what exactly people are talking about when 
 Knowing this information
 is important as you will see later on.
 
-It is interesting to note that Docker has several competitors. The biggest one as far as containers are concerned is [RKT](https://coreos.com/rkt/).
-And in the clustering arena at the time or writing, Docker Swarm lags behind [Google Kubernetes](http://kubernetes.io/).
+It is interesting to note that Docker has actual competitors. The biggest one as far as containers are concerned is [RKT](https://coreos.com/rkt/).
 
-Docker (the company) is moving to a standards based approach, creating specs for several critical parts of the whole ecosystem.
+
+Docker (the company) is moving to a standards based approach (see [runc](https://runc.io/) and [containerd](https://containerd.io/)), creating specs for several critical parts of the whole ecosystem.
 Whether that will lead to a world similar to JavaEE remains to be seen.
 
 ### Docker considerations for the Java developer
@@ -103,7 +103,11 @@ should be doing that already).
 In my experience, people outside the Java ecosystem are first impressed with Docker - the image format, and secondly with Docker - the container runtime. They almost always assume that Linux is used both in production and in development (something that is not always true in the Java world). The idea that the same Docker image is used both in production and in development 
 is something unique in their eyes (because they are unaware that this was already a reality in the Java world even before Docker).
 
-Despite what Docker zealots tell you, as a Java developer you really need to see Docker as a lightweight VM technology. 
+Despite what Docker zealots tell you, as a Java developer you really need to see Docker as a lightweight VM technology.
+They are correct in the sense that 
+Docker is **NOT** a lightweight VM technology. However, most of its advantages could be matched if we somehow magically could
+launch lightweight VMs in less than a second. Alas we cannot, and this is why Docker is gaining ground.
+
 If your existing VM infrastructure suffers from speed, then Docker indeed can help you. If however, VM speed
 is not essential to you (and your existing issues are completely different) then a possible Docker adoption needs a very carefully planned evaluation phase on your part.
 
@@ -129,7 +133,8 @@ So let's see what Docker brings into the mix.
 #### Advantage 1 - Running integration tests on developers' machines
 
 The first advantage and my recommendation for starting with Docker, is to attempt to Dockerize your application in your workstation *only*. This means that with [Docker Compose](https://docs.docker.com/compose/) you should be able to replicate the full running system in your own
-workstation/laptop.
+workstation/laptop. As a baby step you could also try to just dockerize your application without the DB (i.e. Oracle) and
+see how this goes.
 
 Normally, before you commit a piece of code you need to make sure that it passes all test suites (unit, integration, functional, acceptance). In practice however, developers just run unit tests locally and then assume that integration tests will be handled by the build server at a later stage.
 
@@ -141,43 +146,145 @@ the build server would perform after your commit.
  Image here
 
 Of course you also achieve the same effect by running a VM locally that contains all components of the system. But because
-Docker does not take as many resources as a VM you can extend this idea to run *any number of complete environments* at the same time.
+Docker does not take as many resources as a VM you can extend this idea to run *any number of complete environments* at the same time. Previously your workstation might be able to run 2 or 3 VMs at the same time, but with Docker you can run 10+ containers with similar complexity.
 
-As an extreme case you could launch at the same time using Docker containers
+As an extreme case you could launch _at the same time_ using Docker containers
 
 1. The feature you are working on now
-1. The branch of a colleague that needs some feedback
+1. The branch from your colleague Anita that is ready for code review
+1. The branch from your colleague Mike that presents some unexplained exception
 1. The production version of the system for load testing
-1. A hotfix version for some important bugs
+1. A hotfix version for locating some important bug
 
  Image here
 
 Having a large number of VMs running can quickly overwhelm a single workstation. With Docker containers however, this becomes
 a possibility.
 
+You can run integration tests for all that environments at the same time keeping everything neat and isolated.
+
 
 #### Advantage 2 - Debugging applications locally
 
+The previous section talks about using Docker locally _before_ a commit goes to the production system. The reverse
+ability is also very useful. You can use Docker to attempt to identify problems _after_ they have happened in production.
+
+Usually what happens in such cases is that you will try to reproduce the issue locally. If you are lucky
+the problem will be evident if only a part of the real system is actually live.
+
+In our example application le'ts say that an issue appear when invalid messages are sent to RabbitMQ by the main web application. You could potentially only startup the main application, its DB and the RabbitMQ cluster
+and do not use the metrics solution at all. Then you could retrace the events that happened in production
+and just examine manually what messages reach the queue.
+
+ Image here
+
+Unfortunately there is a very sneaky category of bugs that happen only under specific versions/configurations. The first thing that comes in mind is issues with things like line/path delimiters where the production system is running on Linux, while developers run Java application on their local Windows workstation. The second thing that comes in mind is 
+incompatibilities among Linux distributions. Your developer machine runs Ubuntu, the production server runs Redhat and
+and several OS libraries are different between them making the replication of the production environment very difficult.
+
+In that case it is best to replicate the whole system at the OS level locally. And yes, a VM could also achieve the same result, 
+but as explained in the previous section Docker containers are much more flexible and efficient.
+
+I have also seen companies where there is no such thing as one production system. Each customer has a similar (but different)
+version of the production code, so isolating everything with separate Docker containers is much easier.
+
+With the help of [Docker filesystem layers](https://docs.docker.com/engine/understanding-docker/#/how-does-a-docker-image-work) and Docker compose it is very easy to "enhance" the production system with extra debugging utilities and tools.
+
+In our example application, you would easily create a special Docker image that "extends" the integration test image described in the previous section and include an extra debugging application that connects to RabbitMQ and monitor/dumps/filters messages
+
+ Image here
+
+
 #### Advantage 3 - Creating test environments on demand
+
+Having mastered Docker locally the next logical step is to use it in the build server of your organization.
+
+
 
 #### Advantage 4 - Stateless to the extreme
 
+A unique advantage offered by Docker compared to VMs is the possibility to use it in places where VMs would fall short right away. Most people thing about Docker advantages in the context of deployment and testing but in reality Docker could
+also play part in your overall *system architecture*.
+
+This aspect of Docker is not examined yet in detail, so please please be very careful if you go down this route.
+In our application example we could discard our static architecture and go for a dynamic one where
+a Docker container is created **per request**. This is a something that a VM could never pull off.
+
+Image here
+
+So we start our system with just the two DBs (and possibly a proxy/balancer) and then we monitor requests and RabbitMQ
+messages and launch Docker systems in place for each individual message.
+
+Image here
+
+This is an extreme case of how fine-tuned scalability decisions we can take with Docker. Of course there
+are several auto-scalability mechanisms for VM based applications, but these work at a much broader context.
+
+At the time of writing Docker documentation on this matter is very limited, and most people are simply exploring Docker
+in the deployment level rather than the architecture level.
+
+Of course it should be obvious that by following such schemes, your application architecture  becomes tied with Docker so 
+be aware of the risks involved. It is best to start with Docker as an extra layer in your architecture before integrating
+it into the architecture itself.
+
 #### Advantage 5 - Working in a polyglot organization
+
+I left this advantage for the end because even though it is one of the most advertised features of Docker, it is not
+that visible in Java shops.
+
+If you work in an organization where Java is just one of the many languages used in production, then adopting Docker
+will indeed make communication much easier across all teams. People from operations will no longer need separate lengthy installation
+guides for Ruby, PHP, Java etc. Instead they will focus only on Docker.
+
+Docker will become the universal deployment method allowing operations to specialize on a single technology regardless
+of the underlying implementation. This is obviously a big argument in favor of Docker if several programming languages are
+used in your organization.
+
+If you are working in a pure Java shop however, this is a non-issue as your operations people should already be accustomed to 
+WAR/EAR files. Yes, Docker _might_ provide some extra features but a well-oiled operations team will have already
+streamlined the deployment process with custom scripts.
 
 
 ### Docker adoption stages
 
-##### Stage 1 - Only Developers use Docker
+We now reach the most important point of this article. You _can_ choose how deep you will integrate
+Docker in your organization. There is no straight route to Docker nirvana. There are many stepping stones
+and you are free to choose your own pace.
 
-##### Stage 2 - Docker enters the build server
+Here is the overview of Docker adoption. I have designed each step as an absolute prerequisite of the next one,
+because this is my own recommendation on how you should approach Docker. 
 
-##### Stage 3 - Docker is used for Testing/QA
+Image here
 
-##### Stage 4 - Docker is used in Production
+I have already hinted at these 
+adoption stages in the previous sections, so let's see them now in detail.
 
-##### Stage 5 - Docker is used for everything
+##### Adoption Stage 1 - Only Developers use Docker
+
+##### Adoption Stage 2 - Docker enters the build server
+
+##### Adoption Stage 3 - Docker is used for Testing/QA
+
+##### Adoption Stage 4 - Docker is used in Production
+
+##### Adoption Stage 5 - Docker is used for everything
 
 ### Conclusion
+
+I hope that with this article you have a better idea on what Docker means for you (a Java developer) and
+when it can help you. You should understand now why non-Java developers are so excited about Docker (because
+it solves problems the Java world simply does not have).
+
+I cannot stress enough the importance of getting things done. If you are happy with your existing VM
+operations, then switching to Docker is a decision that needs a lot of consideration, and at least
+for Java developers, the advantages of Docker are not that ground-breaking.
+
+In reality most people who run Docker in production, run it on VMs anyway, so by adopting a Docker strategy
+you are essentially _adding_ a complexity layer instead of _replacing_ VMs with Docker.
+
+Finally, the next time a Docker fanatic comes to you and suggests that you should convert your physical Jenkins server to a Docker image
+you should explain to him/her that you want to slow down, take a step back and re-evaluate the whole
+situation before starting a company-wide level 5 Docker integration. Don't let the hype consume you.
 
 
 
