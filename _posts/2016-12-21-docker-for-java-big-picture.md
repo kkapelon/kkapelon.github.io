@@ -84,7 +84,7 @@ You now have the power to understand what exactly people are talking about when 
 Knowing this information
 is important as you will see later on.
 
-It is interesting to note that Docker has actual competitors. The biggest one as far as containers are concerned is [RKT](https://coreos.com/rkt/).
+It is interesting to note that Docker has actual competitors in most of its product line. The biggest one as far as containers are concerned is [RKT](https://coreos.com/rkt/).
 
 
 Docker (the company) is moving to a standards based approach (see [runc](https://runc.io/) and [containerd](https://containerd.io/)), creating specs for several critical parts of the whole ecosystem.
@@ -162,6 +162,8 @@ Having a large number of VMs running can quickly overwhelm a single workstation.
 a possibility.
 
 You can run integration tests for all that environments at the same time keeping everything neat and isolated.
+Having multiple environments running in tandem is especially useful when you are comparing their behavior (you have
+found an unrelated bug in a branch and you also examine if it is present in the current production).
 
 
 #### Advantage 2 - Debugging applications locally
@@ -169,10 +171,14 @@ You can run integration tests for all that environments at the same time keeping
 The previous section talks about using Docker locally _before_ a commit goes to the production system. The reverse
 ability is also very useful. You can use Docker to attempt to identify problems _after_ they have happened in production.
 
-Usually what happens in such cases is that you will try to reproduce the issue locally. If you are lucky
-the problem will be evident if only a part of the real system is actually live.
+Usually what happens in such cases is that you will try to reproduce the issue locally in order to understand
+why and how it happens. 
 
-In our example application le'ts say that an issue appear when invalid messages are sent to RabbitMQ by the main web application. You could potentially only startup the main application, its DB and the RabbitMQ cluster
+If you are lucky,
+the problem will be evident even if only a part of the real system is actually live. This allows you to just launch
+a subset of the whole application locally instead of having to deal with the whole configuration.
+
+In our example application let's say that an issue appears when invalid messages are sent to RabbitMQ by the main web application. You could potentially only startup the main application, its DB and the RabbitMQ cluster
 and do not use the metrics solution at all. Then you could retrace the events that happened in production
 and just examine manually what messages reach the queue.
 
@@ -185,7 +191,7 @@ and several OS libraries are different between them making the replication of th
 In that case it is best to replicate the whole system at the OS level locally. And yes, a VM could also achieve the same result, 
 but as explained in the previous section Docker containers are much more flexible and efficient.
 
-I have also seen companies where there is no such thing as one production system. Each customer has a similar (but different)
+I have also seen companies where there is no such thing as one production system. Each customer has a similar (but slightly different)
 version of the production code, so isolating everything with separate Docker containers is much easier.
 
 With the help of [Docker filesystem layers](https://docs.docker.com/engine/understanding-docker/#/how-does-a-docker-image-work) and Docker compose it is very easy to "enhance" the production system with extra debugging utilities and tools.
@@ -198,6 +204,21 @@ In our example application, you would easily create a special Docker image that 
 #### Advantage 3 - Creating test environments on demand
 
 Having mastered Docker locally the next logical step is to use it in the build server of your organization.
+Just to be clear however, I am _not_ talking about powering the build server itself by Docker containers (more on this
+approach later in this article)
+
+If you have already dockerized your application locally, then the build server should be able to do this automatically for each feature branch. Ideally each pull request should get its own environment.
+
+This is one of the simplest ways to move your organisation from continuous integration (each feature branch is compiled after every commit) to continuous delivery (each feature branch is compiled and deployed after every commit)
+
+The important thing here is to abandon the practice of having multiple pre-defined VM environments (i.e. qa, staging, live) and instead have the build server create any number of deployment environments when needed. If at some point in time for example five people in your team create five pull requests, your build server will create five individual (and completely isolated among them) environments with *no* human intervention.
+
+ Image here
+
+ If your VMs already do this, then you are fine and Docker will not bring anything new to the table apart from speed. If however you have issues where build jobs compete for the same predefined environments, it means that Docker will help you with their isolation.
+
+ The classic symptom for lack of isolation between pre-existing test environments is having unstable integration tests, that fail or succeed depending on which other job uses the same deployment environment.
+
 
 
 
@@ -206,7 +227,7 @@ Having mastered Docker locally the next logical step is to use it in the build s
 A unique advantage offered by Docker compared to VMs is the possibility to use it in places where VMs would fall short right away. Most people thing about Docker advantages in the context of deployment and testing but in reality Docker could
 also play part in your overall *system architecture*.
 
-This aspect of Docker is not examined yet in detail, so please please be very careful if you go down this route.
+This aspect of Docker is not examined yet in detail, so please - please be very careful if you go down this route.
 In our application example we could discard our static architecture and go for a dynamic one where
 a Docker container is created **per request**. This is a something that a VM could never pull off.
 
@@ -223,7 +244,7 @@ are several auto-scalability mechanisms for VM based applications, but these wor
 At the time of writing Docker documentation on this matter is very limited, and most people are simply exploring Docker
 in the deployment level rather than the architecture level.
 
-Of course it should be obvious that by following such schemes, your application architecture  becomes tied with Docker so 
+Of course it should be obvious that by following such schemes, your application architecture becomes tied with Docker so 
 be aware of the risks involved. It is best to start with Docker as an extra layer in your architecture before integrating
 it into the architecture itself.
 
@@ -259,15 +280,77 @@ Image here
 I have already hinted at these 
 adoption stages in the previous sections, so let's see them now in detail.
 
+Before going up to the next adoption stage, you need to decide the trade-offs and implications. It is perfectly fine
+to stop at any adoption stage in between and never reach level 5. 
+
+My motivation behind this present article is to make clear that each adoption level can stand on its own. A lot of Docker articles jump straight to stage 5 and never explain the fact that your organization can function perfectly fine in stage 3 (or even stage 2 for that matter).
+
 ##### Adoption Stage 1 - Only Developers use Docker
+
+Stage 1 is essentially an evaluation of Docker that will show you how many changes you need in your application. If you are developing with certain frameworks (e.g Spring boot) you might find that it is easier to use Docker but not all organizations
+are that lucky (i.e. those that depend on many JavaEE specs).
+
+At this stage you (the developer) have the advantage can focus only on Dockering your application for your own local use. There are several Docker related topics that are simply irrelevant if you use only Docker locally. 
+
+The advantages from this stage are two fold
+1. You have an initial evaluation on how easy is to convert your application to a Docker images
+1. You have the ability to run multiple environments locally (without tampering with application server ports and other hacks)
+
+At this first stage you only need with Docker and possibly Docker compose. There is no need to concern yourself with [Kubernetes](https://kubernetes.io/) or Docker swarm (these bring their own idiosyncrasies) at this point in time. I am always amazed by the number of articles that imply Kubernetes is an essential component of any Docker based solution.
+
+If your organization has a good VM architecture that runs like a Swiss clock, then staying at this initial stage of Docker adoption is perfectly fine. 
+
+You should never move to the next adoption stage if there are still blurry areas on how your application can play well with Docker.
 
 ##### Adoption Stage 2 - Docker enters the build server
 
-##### Adoption Stage 3 - Docker is used for Testing/QA
+With the experience of running Docker locally you are now ready to let the build server take over (so that complete
+deployment environments can be created per feature branch).
+
+This is not a straight-forward process if running Docker locally required several shortcuts. While you may be comfortable
+to execute multiple statements in your command line, the build server process must be completely automated and streamlined.
+
+The most common problem here is configuration management. Creating isolated Docker environments means thats each one does no clash with the other in any way (i.e. writing to the same files or using the same DB).
+
+Depending on your situation it is sometimes acceptable to reuse some infrastructure among your environments (for example your email server).
+
+You need to make sure that all the following topics are addressed
+
+ * General configuration settings for each environment
+ * Confidential information, secrets, optional encryption/decryption keys, code signing
+ * Ports and network arrangements 
+ * State of your application (DB, files, sessions)
+
+The final outcome of this stage would be that any number of environments can be created in your build server and they should not clash with each other. 
+
+At this adoption stage *all* Docker environments created are short lived and stay on only for integration tests. The full process is the following:
+
+1. You commit something on a feature branch
+1. Build server notices the commit checks out the branch
+1. Build server compiles code and runs unit test
+1. Build server creates a Docker image 
+1. Build server deploys Docker image
+1. Build server runs integration tests against the Docker environment
+1. Build server tears down Docker image and creates a report.
+
+Image here
+
+Notice that it is perfectly fine to use Docker environments for pull requests and still have pre-defined VM based environments for testers. You can mix both strategies at the same time.
+
+It should be clear that even at adoption stage 2 Kubernetes is *not* a strict requirement.
+
+##### Adoption Stage 3 - Docker is used for Testing/QA 
+
+Having mastered short-lived Docker environments visible only to developers, it now time to present Docker to testers as well.
+The goal here is to remove all predefined VM based environments (qa, staging etc) and replace them with *long-lived* Docker containers.
+
+
 
 ##### Adoption Stage 4 - Docker is used in Production
 
-##### Adoption Stage 5 - Docker is used for everything
+##### Adoption Stage 5 - Docker is used for everything 
+
+This is the Docker nirvana stage.
 
 ### Conclusion
 
@@ -280,9 +363,11 @@ operations, then switching to Docker is a decision that needs a lot of considera
 for Java developers, the advantages of Docker are not that ground-breaking.
 
 In reality most people who run Docker in production, run it on VMs anyway, so by adopting a Docker strategy
-you are essentially _adding_ a complexity layer instead of _replacing_ VMs with Docker.
+you are essentially _adding_ a complexity layer instead of _replacing_ VMs with Docker (as many people falsely advertise).
 
-Finally, the next time a Docker fanatic comes to you and suggests that you should convert your physical Jenkins server to a Docker image
+Docker adoption is a multi-stage path with several intermediate phases. Feel frame to stay at any phase and get comfortable before moving on to the next.
+
+Finally, the next time a Docker fanatic comes to you and suggests that you should start your Docker journey by converting your physical Jenkins server to a Docker image
 you should explain to him/her that you want to slow down, take a step back and re-evaluate the whole
 situation before starting a company-wide level 5 Docker integration. Don't let the hype consume you.
 
