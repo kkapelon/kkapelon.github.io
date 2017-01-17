@@ -62,19 +62,20 @@ around you talk about Docker you should understand what part of Docker they are 
 
 Just to help you get around all this confusion I have created a table that attempts to map all Docker concepts
 in the Java world. This table is not technically accurate as some technologies work differently under the hood. It is just here
-to give you an fuzzy idea on how things match.
+to give you a fuzzy idea on how things match.
 
 | Docker Term        | Description           | Java world  |
 | ------------- |:-------------| -----|
 | [Docker](https://www.docker.com/company)     | The company | Oracle (previously Sun) |
-| [Docker image](https://github.com/docker/docker/tree/master/image/spec)    | The image format      |  WAR file |
+| [Docker image](https://github.com/docker/docker/tree/master/image/spec)    | The image format      |  [WAR file](https://en.wikipedia.org/wiki/WAR_(file_format)) |
 | [Docker Engine](https://www.docker.com/products/docker-engine) | The runtime      |    The JVM |
 | [Docker Container](https://docs.docker.com/engine/reference/run/) | The container      |   Tomcat/Weblogic etc  |
-| [Docker client](https://docs.docker.com/engine/reference/commandline/cli/) | The image creator      |    Maven/Gradle |
-| [Dockerfile](https://docs.docker.com/engine/reference/builder/) | The image definition      |    pom.xml/build.gradle|
+| [Docker client](https://docs.docker.com/engine/reference/commandline/cli/) | The image creator      |    [Maven](https://maven.apache.org/)/[Gradle](https://gradle.org/) |
+| [Dockerfile](https://docs.docker.com/engine/reference/builder/) | The image definition      |    [pom.xml](https://maven.apache.org/pom.html)/[build.gradle](https://docs.gradle.org/current/userguide/writing_build_scripts.html)|
 | [Docker client](https://docs.docker.com/engine/reference/commandline/cli/)| The image runner      |    Weblogic CLI/Tomcat/Gradle scripts/ Maven plugins |
-| [Docker compose](https://docs.docker.com/compose/) | Grouping Docker images | EAR file |
-| [Docker hub](https://hub.docker.com/) | Image repository | Maven central, [JCenter ](https://bintray.com/bintray/jcenter) |
+| [Docker compose](https://docs.docker.com/compose/) | Grouping Docker images | [EAR file](https://en.wikipedia.org/wiki/EAR_(file_format)) |
+| [Docker hub](https://hub.docker.com/) | Image repository | [Maven central](https://search.maven.org/), [JCenter ](https://bintray.com/bintray/jcenter) |
+| [Docker Registry](https://docs.docker.com/registry/)| Private image repository | [Artifactory](https://www.jfrog.com/artifactory/)/[Nexus](https://www.sonatype.com/products-sonatype)/[Archiva](https://archiva.apache.org)|
 | [Docker Machine](https://docs.docker.com/machine) | A VM with Docker installed| A VM with Tomcat installed |
 | [Docker Swarm](https://www.docker.com/products/docker-swarm) | A cluster solution | Many proprietary Java solutions |
 
@@ -290,15 +291,16 @@ My motivation behind this present article is to make clear that each adoption le
 Stage 1 is essentially an evaluation of Docker that will show you how many changes you need in your application. If you are developing with certain frameworks (e.g Spring boot) you might find that it is easier to use Docker but not all organizations
 are that lucky (i.e. those that depend on many JavaEE specs).
 
-At this stage you (the developer) have the advantage can focus only on Dockering your application for your own local use. There are several Docker related topics that are simply irrelevant if you use only Docker locally. 
+At this stage you (the developer) can focus only on Dockering your application for your own local use. There are several Docker related topics that are simply irrelevant if you only use Docker locally. Don't let neighboring technologies distract you.
 
-The advantages from this stage are two fold
-1. You have an initial evaluation on how easy is to convert your application to a Docker images
+The advantages from this stage are two fold:
+
+1. You have an initial evaluation on how easy is to convert your application to a Docker image
 1. You have the ability to run multiple environments locally (without tampering with application server ports and other hacks)
 
-At this first stage you only need with Docker and possibly Docker compose. There is no need to concern yourself with [Kubernetes](https://kubernetes.io/) or Docker swarm (these bring their own idiosyncrasies) at this point in time. I am always amazed by the number of articles that imply Kubernetes is an essential component of any Docker based solution.
+At this first stage you only need with Docker and possibly Docker compose. There is no need to concern yourself with [Kubernetes](https://kubernetes.io/) or Docker swarm (these bring their own idiosyncrasies) at this point in time. I am always amazed by the number of articles that imply Kubernetes is an _essential_ component of any Docker based solution.
 
-If your organization has a good VM architecture that runs like a Swiss clock, then staying at this initial stage of Docker adoption is perfectly fine. 
+If your organization has a good VM architecture that runs like a Swiss clock in both testing and production phases, then staying at this initial stage of Docker adoption is perfectly fine. 
 
 You should never move to the next adoption stage if there are still blurry areas on how your application can play well with Docker.
 
@@ -308,7 +310,7 @@ With the experience of running Docker locally you are now ready to let the build
 deployment environments can be created per feature branch).
 
 This is not a straight-forward process if running Docker locally required several shortcuts. While you may be comfortable
-to execute multiple statements in your command line, the build server process must be completely automated and streamlined.
+executing multiple statements in your command line, the build server process must be completely automated and streamlined.
 
 The most common problem here is configuration management. Creating isolated Docker environments means thats each one does no clash with the other in any way (i.e. writing to the same files or using the same DB).
 
@@ -321,9 +323,9 @@ You need to make sure that all the following topics are addressed
  * Ports and network arrangements 
  * State of your application (DB, files, sessions)
 
-The final outcome of this stage would be that any number of environments can be created in your build server and they should not clash with each other. 
+The final outcome of this stage would be that any number of completely independent environments can be created in your build server using the same Docker image.
 
-At this adoption stage *all* Docker environments created are short lived and stay on only for integration tests. The full process is the following:
+At this adoption stage *all* Docker environments created are short lived and lives on only for integration tests. The full process is the following:
 
 1. You commit something on a feature branch
 1. Build server notices the commit checks out the branch
@@ -344,13 +346,93 @@ It should be clear that even at adoption stage 2 Kubernetes is *not* a strict re
 Having mastered short-lived Docker environments visible only to developers, it now time to present Docker to testers as well.
 The goal here is to remove all predefined VM based environments (qa, staging etc) and replace them with *long-lived* Docker containers.
 
+Keeping Docker containers running is a huge topic on its own. While in theory you could use plain Docker and nothing else, it makes sense to start researching orchestration solutions (i.e. Kubernetes) now. Even if your testers are not that picky as your customers (and they can accept some downtime), knowing how to keep Docker containers alive is a prerequisite for the next adoption stage.
 
+At this stage you should also decide how deep Docker will be used in the application. 
+
+* Will you dockerize just the application code and leave the DB outside?
+* Will you dockerize the mail server? The queue? The cache.
+
+There is no right and wrong answer here. There is a tradeoff between the size/complexity of a Docker image and how self-contained it can become. A common Docker migration path I see is the following
+
+1. Developer learns about Docker and gets excited with the "put all dependencies in" concept
+1. Developer creates a single Docker image (kitchen sink approach) that results in a humongous file size
+1. The Docker image is very slow to create, very slow to copy and very slow to build
+1. Creating/Running the Docker image is non-deterministic and produces different results each time.
+1. Developer is questioning the Docker adoption and the JAR approach seems much more favorable now
+1. Developer finally starts reading about the Docker file layers, the idiosyncrasies of Docker files, caching strategies/ image repos and image cleaning tools.
+
+Of course the correct migration path is to start from the last step (understanding the implications and tradeoffs of Docker) and then actually start creating images.
+
+Another area that you need to research at this stage is how to get metrics from your Docker containers. Your logging strategy
+will almost be refactored as well. 
+
+Still because Docker images are used only internally by your organization you have a certain amount of slack to try and experiment without the fear of tampering with production systems.
 
 ##### Adoption Stage 4 - Docker is used in Production
 
+This is the point of no return. Assuming that Docker is already being used in your own testing systems and everybody is happy about the way things work, it is time to unleash the Docker potential to your customers.
+
+This adoption stage is special  because there is a great deal of preparation that is involved before mastering it. Things that were optional (e.g. orchestration) in the testing stage, are strict requirements in production.
+
+Here is a partial list of things that you need to sort out _before_ using Docker in production.
+
+* Gathering of performance metrics
+* Using Rolling updates 
+* Ability to revert deployments
+* Security isolation
+* Management of secrets
+* Handling environment configuration
+* Setup of networking/load balancing
+* Live monitoring of business indicators
+* Image/Binary management 
+* Continuous delivery and build workflow
+* Logging
+* Provisioning of resources
+* Resource limiting
+* State handling
+* Debugging/Hotfixing
+* Clustering/high availability
+* Auto-scaling
+* Keeping backwards compatibility
+* Managing backups
+
+These topics are even more concerning if you run applications on premises using your own data center. Admittedly if you
+use a cloud provider some of these issues might be taken care for you already. Even then, you should be aware on the tools/dashboards offered
+and how you can employ them effectively.
+
+If you have been paying attention you should see that the list above is not Docker specific. My point here is that using
+Docker in production requires essentially a rethinking across _all_ your existing practices.
+
 ##### Adoption Stage 5 - Docker is used for everything 
 
-This is the Docker nirvana stage.
+This is the Docker nirvana stage. If you have managed to use Docker in production for your own application (and things work smoothly), you could attempt to run _all_ your applications with Docker as well. This will allow you to have a single
+deployment architecture for everything.
+
+Image here
+
+You can start by Dockerizing the development infrastructure itself by using containers for:
+
+* The source code repository
+* The build server
+* The Binary repository
+* The image repository
+* The issue tracker
+* The wiki
+* The code review application
+
+
+Why stop there? You can keep going and use Docker for your CRM, your warehouse inventory, you email server, your invoice formatter etc.
+
+Of course, if you are a small company that uses several applications on public cloud, this may not be an option.
+If however, you actually have a physical datacenter, then there is no point in managing two infrastructures (one
+for your internal applications and one for your own source code). It should be much more cost efficient to unify
+them and use Docker containers for the whole datacenter.
+
+It goes without saying, that before attempting this strategy, you should consider yourself a Docker guru. Accepting downtime
+for your QA environment will be much different than accepting downtime for your CRM.
+
+
 
 ### Conclusion
 
@@ -370,6 +452,10 @@ Docker adoption is a multi-stage path with several intermediate phases. Feel fra
 Finally, the next time a Docker fanatic comes to you and suggests that you should start your Docker journey by converting your physical Jenkins server to a Docker image
 you should explain to him/her that you want to slow down, take a step back and re-evaluate the whole
 situation before starting a company-wide level 5 Docker integration. Don't let the hype consume you.
+
+Oh, and one more thing: [Capsule](http://www.capsule.io/).
+
+[![Java capsule](../../assets/docker-big-picture/capsule.png)](http://www.capsule.io/)
 
 
 
