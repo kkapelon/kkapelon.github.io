@@ -1,12 +1,12 @@
 ---
 layout: post
-title: Docker for Java Developers - The big picture
+title: Docker for Java Developers - The Big Picture
 category: containers
 ---
 
 ### Introduction
 
-The [Docker](https://www.docker.com/) train has already left the station and people are thinking if they should jump on or not.
+The [Docker](https://www.docker.com/) train has already left the station and people are thinking if they should jump on it or not.
 It is true that Docker adoption is unprecedented compared to other technologies that were hyped before it.
 
 Getting quality information on what Docker can do for you is surprisingly very difficult. At the time of writing, most Docker articles
@@ -127,7 +127,7 @@ So with that in mind let's see some tangible advantages. As an example applicati
 
  Here is the diagram 
 
- Image here
+![Example sample Java application](../../assets/docker-big-picture/sample-application.png)
 
 So let's see what Docker brings into the mix.
 
@@ -144,7 +144,7 @@ Ideally you want to have the shortest possible feedback cycle and instead of wai
 Docker gives you the ability to setup the complete environment locally and re-run the same integration tests 
 the build server would perform after your commit.
 
- Image here
+ ![Local Dev environment](../../assets/docker-big-picture/local-tests.png)
 
 Of course you also achieve the same effect by running a VM locally that contains all components of the system. But because
 Docker does not take as many resources as a VM you can extend this idea to run *any number of complete environments* at the same time. Previously your workstation might be able to run 2 or 3 VMs at the same time, but with Docker you can run 10+ containers with similar complexity.
@@ -157,7 +157,7 @@ As an extreme case you could launch _at the same time_ using Docker containers
 1. The production version of the system for load testing
 1. A hotfix version for locating some important bug
 
- Image here
+![Docker on your laptop](../../assets/docker-big-picture/local-envs.png)
 
 Having a large number of VMs running can quickly overwhelm a single workstation. With Docker containers however, this becomes
 a possibility.
@@ -179,11 +179,13 @@ If you are lucky,
 the problem will be evident even if only a part of the real system is actually live. This allows you to just launch
 a subset of the whole application locally instead of having to deal with the whole configuration.
 
-In our example application let's say that an issue appears when invalid messages are sent to RabbitMQ by the main web application. You could potentially only startup the main application, its DB and the RabbitMQ cluster
-and do not use the metrics solution at all. Then you could retrace the events that happened in production
-and just examine manually what messages reach the queue.
+In our example application let's say for the sake of argument that the metrics application is very complex to setup locally. It uses special configuration files that makes its local deployment really difficult. 
 
- Image here
+Let's say that an issue appears when invalid messages are sent to RabbitMQ by the main web application. You could potentially only startup the main application, its DB and the RabbitMQ cluster
+and do not use the metrics solution at all. Then you could retrace the events that happened in production
+and just examine manually what messages reach the queue. This would save you from launching the metrics application locally, which is a compromise since you don't have the full picture of what is happening in all parts of the system.
+
+![Local debugging without docker](../../assets/docker-big-picture/without-docker.png)
 
 Unfortunately there is a very sneaky category of bugs that happen only under specific versions/configurations. The first thing that comes in mind is issues with things like line/path delimiters where the production system is running on Linux, while developers run Java application on their local Windows workstation. The second thing that comes in mind is 
 incompatibilities among Linux distributions. Your developer machine runs Ubuntu, the production server runs Redhat and
@@ -197,9 +199,9 @@ version of the production code, so isolating everything with separate Docker con
 
 With the help of [Docker filesystem layers](https://docs.docker.com/engine/understanding-docker/#/how-does-a-docker-image-work) and Docker compose it is very easy to "enhance" the production system with extra debugging utilities and tools.
 
-In our example application, you would easily create a special Docker image that "extends" the integration test image described in the previous section and include an extra debugging application that connects to RabbitMQ and monitor/dumps/filters messages
+In our example application, you would easily create a special Docker deployment that "extends" the integration test environment described in the previous section and includes an extra debugging application that connects to RabbitMQ and monitor/dumps/filters messages
 
- Image here
+![Local debugging with docker](../../assets/docker-big-picture/with-docker.png)
 
 
 #### Advantage 3 - Creating test environments on demand
@@ -211,6 +213,8 @@ approach later in this article)
 If you have already dockerized your application locally, then the build server should be able to do this automatically for each feature branch. Ideally each pull request should get its own environment.
 
 This is one of the simplest ways to move your organisation from continuous integration (each feature branch is compiled after every commit) to continuous delivery (each feature branch is compiled and deployed after every commit)
+
+![Static VM environments](../../assets/docker-big-picture/static-environments.png)
 
 The important thing here is to abandon the practice of having multiple pre-defined VM environments (i.e. qa, staging, live) and instead have the build server create any number of deployment environments when needed. If at some point in time for example five people in your team create five pull requests, your build server will create five individual (and completely isolated among them) environments with *no* human intervention.
 
@@ -291,7 +295,7 @@ My motivation behind this present article is to make clear that each adoption le
 Stage 1 is essentially an evaluation of Docker that will show you how many changes you need in your application. If you are developing with certain frameworks (e.g Spring boot) you might find that it is easier to use Docker but not all organizations
 are that lucky (i.e. those that depend on many JavaEE specs).
 
-At this stage you (the developer) can focus only on Dockering your application for your own local use. There are several Docker related topics that are simply irrelevant if you only use Docker locally. Don't let neighboring technologies distract you.
+At this stage you (the developer) can focus only on Dockerizing your application for your own local use. There are several Docker related topics that are simply irrelevant if you only use Docker locally. Don't let neighboring technologies distract you.
 
 The advantages from this stage are two fold:
 
@@ -406,8 +410,12 @@ Docker in production requires essentially a rethinking across _all_ your existin
 
 ##### Adoption Stage 5 - Docker is used for everything 
 
-This is the Docker nirvana stage. If you have managed to use Docker in production for your own application (and things work smoothly), you could attempt to run _all_ your applications with Docker as well. This will allow you to have a single
-deployment architecture for everything.
+If you are a startup or a company that uses a public cloud for its operations, then Docker adoption stage 4 is as far as you can go. 
+
+If on the other hand you have a datacenter and/or a private cloud, it might make sense to go a bit further and Dockerize _everything_. This is the Docker nirvana stage. 
+
+If you have managed to use Docker in production for your own application (and things work smoothly), you could attempt to run _all_ your applications with Docker as well. This will allow you to have a single
+deployment architecture for all applications regardless of their source.
 
 Image here
 
@@ -437,23 +445,24 @@ for your QA environment will be much different than accepting downtime for your 
 ### Conclusion
 
 I hope that with this article you have a better idea on what Docker means for you (a Java developer) and
-when it can help you. You should understand now why non-Java developers are so excited about Docker (because
-it solves problems the Java world simply does not have).
+when it can help you. Here are the key points:
 
-I cannot stress enough the importance of getting things done. If you are happy with your existing VM
+
+* People outside the Java developer are dazzled with Docker because it embodies a deployment "spec" for them. You should understand now why they are so excited about Docker (because
+it solves problems the Java world simply does not have).
+* If you are happy with your existing VM
 operations, then switching to Docker is a decision that needs a lot of consideration, and at least
 for Java developers, the advantages of Docker are not that ground-breaking.
-
-In reality most people who run Docker in production, run it on VMs anyway, so by adopting a Docker strategy
+* Docker adoption is a multi-stage path with several intermediate phases. Feel free to stay at any phase and get comfortable before moving on to the next.
+* Using Docker in production is not something that you should lightly. Make sure that you have mastered Docker deployments in your testing environments first.
+* In reality most people who run Docker in production, run it on VMs anyway, so by adopting a Docker strategy
 you are essentially _adding_ a complexity layer instead of _replacing_ VMs with Docker (as many people falsely advertise).
-
-Docker adoption is a multi-stage path with several intermediate phases. Feel frame to stay at any phase and get comfortable before moving on to the next.
 
 Finally, the next time a Docker fanatic comes to you and suggests that you should start your Docker journey by converting your physical Jenkins server to a Docker image
 you should explain to him/her that you want to slow down, take a step back and re-evaluate the whole
 situation before starting a company-wide level 5 Docker integration. Don't let the hype consume you.
 
-Oh, and one more thing: [Capsule](http://www.capsule.io/).
+Oh, and one more thing: [Java Capsule](http://www.capsule.io/).
 
 [![Java capsule](../../assets/docker-big-picture/capsule.png)](http://www.capsule.io/)
 
