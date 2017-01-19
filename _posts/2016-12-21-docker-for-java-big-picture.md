@@ -216,16 +216,13 @@ This is one of the simplest ways to move your organisation from continuous integ
 
 ![Static VM environments](../../assets/docker-big-picture/static-environments.png)
 
-The important thing here is to abandon the practice of having multiple pre-defined VM environments (i.e. qa, staging, live) and instead have the build server create any number of deployment environments when needed. If at some point in time for example five people in your team create five pull requests, your build server will create five individual (and completely isolated among them) environments with *no* human intervention.
+The important thing here is to abandon the practice of having multiple pre-defined VM environments (i.e. qa, staging, live) and instead have the build server create any number of deployment environments when needed. If at some point in time for example six people in your team create six pull requests, your build server will create six individual (and completely isolated among them) Docker environments with *no* human intervention.
 
- Image here
+ ![Dynamic Docker environments](../../assets/docker-big-picture/dynamic-environments.png)
 
  If your VMs already do this, then you are fine and Docker will not bring anything new to the table apart from speed. If however you have issues where build jobs compete for the same predefined environments, it means that Docker will help you with their isolation.
 
  The classic symptom for lack of isolation between pre-existing test environments is having unstable integration tests, that fail or succeed depending on which other job uses the same deployment environment.
-
-
-
 
 #### Advantage 4 - Stateless to the extreme
 
@@ -233,15 +230,17 @@ A unique advantage offered by Docker compared to VMs is the possibility to use i
 also play part in your overall *system architecture*.
 
 This aspect of Docker is not examined yet in detail, so please - please be very careful if you go down this route.
-In our application example we could discard our static architecture and go for a dynamic one where
+In our application example we could discard our static architecture and go for a fully dynamic one where
 a Docker container is created **per request**. This is a something that a VM could never pull off.
 
 Image here
 
-So we start our system with just the two DBs (and possibly a proxy/balancer) and then we monitor requests and RabbitMQ
+So we start our system with just the two DBs (and possibly a proxy/balancer/dispatcher) and then we monitor requests and RabbitMQ
 messages and launch Docker systems in place for each individual message.
 
 Image here
+
+Once all processing is finished the whole application reverts back to the original state where no Docker containers are running at all.
 
 This is an extreme case of how fine-tuned scalability decisions we can take with Docker. Of course there
 are several auto-scalability mechanisms for VM based applications, but these work at a much broader context.
