@@ -121,7 +121,7 @@ So with that in mind let's see some tangible advantages. As an example applicati
 
  1. A Java application that implements a Web interface and accepts customer orders
  1. A Mysql DB that is used for main storage
- 1. A second Java application the creates reports and keeps metrics
+ 1. A second Java application the creates reports and records metrics
  1. A Mongodb for keeping metrics
  1. A RabbitMQ instance for communication among the two applications.
 
@@ -233,22 +233,27 @@ This aspect of Docker is not examined yet in detail, so please - please be very 
 In our application example we could discard our static architecture and go for a fully dynamic one where
 a Docker container is created **per request**. This is a something that a VM could never pull off.
 
-Image here
+![Initial state](../../assets/docker-big-picture/extreme-state0.png)
 
 So we start our system with just the two DBs (and possibly a proxy/balancer/dispatcher) and then we monitor requests and RabbitMQ
-messages and launch Docker systems in place for each individual message.
+messages and launch Docker systems in place for each individual message. Let's say that two requests come that request a web page.
 
-Image here
+![Two web requests](../../assets/docker-big-picture/extreme-state1.png)
+
+The docker containers that served the requests have finished and are teared down. Their processing result created 4 messages for the metric application.
+So we launch dynamically four respective containers to serve these messages.
+
+![Four metric requests](../../assets/docker-big-picture/extreme-state2.png)
 
 Once all processing is finished the whole application reverts back to the original state where no Docker containers are running at all.
 
 This is an extreme case of how fine-tuned scalability decisions we can take with Docker. Of course there
 are several auto-scalability mechanisms for VM based applications, but these work at a much broader context.
 
-At the time of writing Docker documentation on this matter is very limited, and most people are simply exploring Docker
+At the time of writing, Docker documentation on this matter is very limited, possibly because most people are simply exploring Docker
 in the deployment level rather than the architecture level.
 
-Of course it should be obvious that by following such schemes, your application architecture becomes tied with Docker so 
+Of course it should be obvious that by following such schemes, your application architecture becomes tied with Docker itself so 
 be aware of the risks involved. It is best to start with Docker as an extra layer in your architecture before integrating
 it into the architecture itself.
 
@@ -279,7 +284,7 @@ and you are free to choose your own pace.
 Here is the overview of Docker adoption. I have designed each step as an absolute prerequisite of the next one,
 because this is my own recommendation on how you should approach Docker. 
 
-Image here
+![Docker adoption levels](../../assets/docker-big-picture/docker-adoption-levels.png)
 
 I have already hinted at these 
 adoption stages in the previous sections, so let's see them now in detail.
@@ -328,17 +333,17 @@ You need to make sure that all the following topics are addressed
 
 The final outcome of this stage would be that any number of completely independent environments can be created in your build server using the same Docker image.
 
-At this adoption stage *all* Docker environments created are short lived and lives on only for integration tests. The full process is the following:
+At this adoption stage *all* Docker environments created are short lived and exist only for running integration tests against them. The full process is the following:
 
 1. You commit something on a feature branch
-1. Build server notices the commit checks out the branch
-1. Build server compiles code and runs unit test
+1. Build server notices the commit and checks out the branch
+1. Build server compiles code and runs unit tests
 1. Build server creates a Docker image 
 1. Build server deploys Docker image
 1. Build server runs integration tests against the Docker environment
 1. Build server tears down Docker image and creates a report.
 
-Image here
+![Docker pipeline](../../assets/docker-big-picture/docker-pipeline.png)
 
 Notice that it is perfectly fine to use Docker environments for pull requests and still have pre-defined VM based environments for testers. You can mix both strategies at the same time.
 
@@ -354,9 +359,9 @@ Keeping Docker containers running is a huge topic on its own. While in theory yo
 At this stage you should also decide how deep Docker will be used in the application. 
 
 * Will you dockerize just the application code and leave the DB outside?
-* Will you dockerize the mail server? The queue? The cache.
+* Will you dockerize the mail server? The queue? The cache?
 
-There is no right and wrong answer here. There is a tradeoff between the size/complexity of a Docker image and how self-contained it can become. A common Docker migration path I see is the following
+There is no right and wrong answer here. There is a tradeoff between the size/complexity of a Docker image and how self-contained it can become. A common Docker migration path I see is the following:
 
 1. Developer learns about Docker and gets excited with the "put all dependencies in" concept
 1. Developer creates a single Docker image (kitchen sink approach) that results in a humongous file size
@@ -370,7 +375,7 @@ Of course the correct migration path is to start from the last step (understandi
 Another area that you need to research at this stage is how to get metrics from your Docker containers. Your logging strategy
 will almost be refactored as well. 
 
-Still because Docker images are used only internally by your organization you have a certain amount of slack to try and experiment without the fear of tampering with production systems.
+Still, because Docker images are used only internally by your organization you have a certain amount of slack to try and experiment without the fear of tampering with production systems.
 
 ##### Adoption Stage 4 - Docker is used in Production
 
@@ -404,6 +409,8 @@ These topics are even more concerning if you run applications on premises using 
 use a cloud provider some of these issues might be taken care for you already. Even then, you should be aware on the tools/dashboards offered
 and how you can employ them effectively.
 
+![Docker iceberg](../../assets/docker-big-picture/docker-iceberg.png)
+
 If you have been paying attention you should see that the list above is not Docker specific. My point here is that using
 Docker in production requires essentially a rethinking across _all_ your existing practices.
 
@@ -415,8 +422,6 @@ If on the other hand you have a datacenter and/or a private cloud, it might make
 
 If you have managed to use Docker in production for your own application (and things work smoothly), you could attempt to run _all_ your applications with Docker as well. This will allow you to have a single
 deployment architecture for all applications regardless of their source.
-
-Image here
 
 You can start by Dockerizing the development infrastructure itself by using containers for:
 
@@ -452,8 +457,9 @@ it solves problems the Java world simply does not have).
 * If you are happy with your existing VM
 operations, then switching to Docker is a decision that needs a lot of consideration, and at least
 for Java developers, the advantages of Docker are not that ground-breaking.
+* If your Java application needs to be OS agnostic then most certainly Docker is _not_ a good idea
 * Docker adoption is a multi-stage path with several intermediate phases. Feel free to stay at any phase and get comfortable before moving on to the next.
-* Using Docker in production is not something that you should lightly. Make sure that you have mastered Docker deployments in your testing environments first.
+* Using Docker in production is not something that you should take lightly. Make sure that you have mastered Docker deployments in your testing environments first.
 * In reality most people who run Docker in production, run it on VMs anyway, so by adopting a Docker strategy
 you are essentially _adding_ a complexity layer instead of _replacing_ VMs with Docker (as many people falsely advertise).
 
