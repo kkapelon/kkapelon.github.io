@@ -13,7 +13,9 @@ If you wish to see more details about Spock, consult its [official documentation
 
 ### 1. Spock enforces a clear test structure ###
 
-The number one reason for using Spock is to make your tests more readable.
+The number one reason for using Spock is to make your tests more readable. This may not seem important to you
+if you are just working on small projects created over the weekend. For big enterprise projects however test readability
+is a crucial factor when it comes to working on existing code.
 
 #### JUnit tests lack formal semantics ####
 
@@ -103,7 +105,7 @@ to the *act* phase, and the *assert* phase is handled by the *then* block in Spo
 
 There are two big advantages of Spock labels against using plain comments (like the JUnit example)
 
-1. The Spock labels are full English text that also appear on test reports (more in a minute)
+1. The Spock labels are full English text that also appear on test reports (more on this later)
 2. The Spock labels have also semantic value
 
 The second point is best illustrated with a *bad* example.
@@ -169,6 +171,8 @@ gets a good idea of what the test does.
 
 
 ### 2. Spock is much more helpful when tests fail ###
+
+This is the killer feature of Spock that played a pivotal role on its adoption on my own projects.
 
 >Never trust a test you haven't seen fail
 > 
@@ -270,8 +274,8 @@ The result if the following:
 
 ![Spock reports](../../assets/spock-vs-junit/spock-reports.png)
 
-This is massive improvement in the readability of Spock tests. Non-technical can see this report and take proper decisions
-without actually knowing Java code.
+This is massive improvement in the readability of Spock tests. Non-technical people can see this report and take proper decisions
+without actually knowing how Java works.
 
 * _Testers_ can read Spock tests and compare them against their own test cases
 * _Business analysts_ can read Spock tests and verify that they reflect the specifications of the system
@@ -281,7 +285,7 @@ if a failed test has high or low impact.
 
 ### 4. Spock has a custom DSL for parameterized tests ###
 
-A very common anti-pattern in JUnit tests, is a series of tests that are 99.9% same and only some variables really
+A very common anti-pattern in JUnit tests, is a series of tests that are 99.9% same where only some variables really
 change. Here is an example:
 
 {% highlight java %}

@@ -48,6 +48,7 @@ In fact, a major Docker disadvantage that _nobody talks about_ is that Docker is
 are targeted at Linux, and only recently [Docker has appeared on Windows](https://www.docker.com/microsoft). But (unless you use a VM) an OS
 runs only its native images, Docker on Linux runs only Linux images and Docker on Windows runs only Windows Images. Sad but true.
 
+
 This is a step backwards from the Java world (compile once - run everywhere) where the exact same WAR file can run equally well on Windows, Linux and even MacOS.
 If you have a Java product that for some reason needs to be deployed on multiple OSs at the same time, then migrating to Docker
 is a questionable decision.
@@ -226,7 +227,7 @@ The important thing here is to abandon the practice of having multiple pre-defin
 
 #### Advantage 4 - Stateless to the extreme
 
-A unique advantage offered by Docker compared to VMs is the possibility to use it in places where VMs would fall short right away. Most people thing about Docker advantages in the context of deployment and testing but in reality Docker could
+A unique advantage offered by Docker compared to VMs is the possibility to use it in places where VMs would fall short right away. Most people think about Docker advantages in the context of deployment and testing but in reality Docker could
 also play part in your overall *system architecture*.
 
 This aspect of Docker is not examined yet in detail, so please - please be very careful if you go down this route.
@@ -452,7 +453,7 @@ I hope that with this article you have a better idea on what Docker means for yo
 when it can help you. Here are the key points:
 
 
-* People outside the Java developer are dazzled with Docker because it embodies a deployment "spec" for them. You should understand now why they are so excited about Docker (because
+* People outside the Java ecosystem are dazzled with Docker because it embodies a deployment "spec" for them. You should understand now why they are so excited about Docker (because
 it solves problems the Java world simply does not have).
 * If you are happy with your existing VM
 operations, then switching to Docker is a decision that needs a lot of consideration, and at least
@@ -467,9 +468,7 @@ Finally, the next time a Docker fanatic comes to you and suggests that you shoul
 you should explain to him/her that you want to slow down, take a step back and re-evaluate the whole
 situation before starting a company-wide level 5 Docker integration. Don't let the hype consume you.
 
-Oh, and one more thing: [Java Capsule](http://www.capsule.io/).
 
-[![Java capsule](../../assets/docker-big-picture/capsule.png)](http://www.capsule.io/)
 
 
 
