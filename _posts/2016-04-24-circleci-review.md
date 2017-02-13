@@ -1,7 +1,7 @@
 ---
 layout: post
 title: CircleCI review
-category: hosted-ci-2016
+category: hosted-ci-comparison
 ---
 
 CircleCI is an american company started in 2011. They have a very active web page (and twitter account) and a blog covering build related topics. Although they don’t advertise Java support that much, a lot of their blog posts are Clojure related. Detailed pricing can be found on their webpage. 
