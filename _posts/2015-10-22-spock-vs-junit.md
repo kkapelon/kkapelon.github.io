@@ -367,7 +367,56 @@ public void "Valid images are PNG and JPEG files"() {
 
 {% endhighlight %}
 
-A single test method is shown, but if you run it you will get multiple executions (one for each l)
+Here you can see that 3 JUnit tests were consolidated in a single Spock tests with obvious advantages:
+
+1. There is no code duplication. The test logic is written only once
+1. All input and output parameters are gathered in a single place (the where: block)
+1. The names the parameters are clearly denoted at the table header
+
+The flexibility of the Spock data table is even more powerful if you consider how this test grow over time.
+Adding a new test scenario is literately a single line addition. In the example above I have added two more scenarios
+for png and gif images with minimal effort.
+
+Adding a new input or output variable is also very easy as you just need to add one more column to the table.
+
+![Spock data table](../../assets/spock-vs-junit/spock-data-table.png)
+
+What is interesting also is the fact that if you run this single Spock test you will actually get multiple
+test runs (one for each test line) if you use the Spock [Unroll annotation](http://spockframework.org/spock/javadoc/1.0/spock/lang/Unroll.html). Even better you can name each test run
+with any custom string so that each test run describes exactly what it does
+
+{% highlight groovy %}
+@Unroll("Running image #pictureFile with result #validPicture")
+public void "Valid images are PNG and JPEG files"() {
+        given: "an image extension checker"
+        ImageNameValidator validator = new ImageNameValidator()
+
+        expect: "that only valid filenames are accepted"
+        validator.isValidImageExtension(pictureFile) == validPicture
+
+        where: "sample image names are"
+        pictureFile        || validPicture
+        "scenery.jpg"      || true
+        "house.jpeg"       || true
+        "car.png"          || true
+        "sky.tiff"         || false
+        "dance_bunny.gif"  || false
+}
+
+{% endhighlight %}
+
+And here is the output result:
+
+![Spock Unroll annotation](../../assets/spock-vs-junit/spock-table-run.png)
+
+This is especially helpful with a large number of tests. If one of them fails it is essential that you
+can see on the test report which scenario failed (instead of failing the whole unit test method).
+
+Spock data tables are the most basic form of parameterized tests. Spock also supports [data pipes and even custom
+iterators](http://spockframework.org/spock/docs/1.0/data_driven_testing.html) for more powerful ways of dealing with input/output parameters.
+
+
+
 
 
 
