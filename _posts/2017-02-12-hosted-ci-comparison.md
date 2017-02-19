@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Hosted CI comparison survey 2017
+title: Hosted CI comparison survey
 category: hosted-ci-comparison
 ---
 
@@ -8,15 +8,15 @@ category: hosted-ci-comparison
 
 This page describes my comparison criteria. Feel free to go directly to the review of a particular service below:
 
+* Buddy Works
 * [CircleCI review]({% post_url 2016-04-24-circleci-review %})
+* Codefresh review
 * Codeship review
 * DeployBot review
 * Distelli review
 * Drone.IO review
-* GreenhouseCI review
 * SemaphoreApp review
 * Shippable review
-* SnapCI review
 * SolanoLabs review
 * Travis review
 * Vexor review
@@ -30,9 +30,11 @@ Rather than writing a few sentences for each company or creating a big grid with
 
 Because I am mainly a Java developer I have tested all of them with JVM projects. Here are those that I left out:
 
-* [https://hosted-ci.com/](https://hosted-ci.com/) (Mac and IOS only)
-* [http://www.appveyor.com](http://www.appveyor.com) (Windows only)
-* [https://magnum-ci.com/](https://magnum-ci.com/) (Supports Ruby, Go, PHP,Python but not Java)
+* [GreenhouseCI](https://greenhouseci.com/) (Android and iOS only)
+* [Bitrise](https://www.bitrise.io/) (Android and iOS only)
+* [AppVeyor](http://www.appveyor.com) (Windows only)
+* [AppHarbor](https://appharbor.com/) (.NET only)
+* [MagnumCI](https://magnum-ci.com/) (Supports Ruby, Go, PHP,Python but not Java)
 
 For the rest of the companies I compare the following areas:
 
@@ -47,21 +49,29 @@ Setting a build server can be a time-consuming process if your project is compli
 
 ###### 3. User Interface
 
-Getting a build running is only the beginning. If you have many projects on a CI system you also need a way to monitor and manage them. Here I looked at the “dashboard” of each solution, its organization of web pages, reports and navigation links and in general how user friendly the system is. I realize that a good UI can be subjective, so in most cases I emphasized bad points of User Experience (which are arguably easier to detect)
+Getting a build running is only the beginning. If you have many projects on a CI system you also need a way to monitor and manage them. Here I looked at the “dashboard” of each solution, its organization of web pages, reports and navigation links and in general how user friendly the system is. I realize that a good UI can be subjective, so in most cases I emphasized bad points of User Experience (which are arguably easier to detect).
 
 ###### 4. Build environment
 
 Perhaps the most important metric. This area includes the programming languages supported by the product (but as I said already I will focus on Java), the versions of compilers present, build systems and how easy it is to update or install new software. A product gets high points if it has extensive configuration properties and allows me to define the build environment in an intuitive way.
 
-###### 5. Feedback
+###### 5. Docker support
+
+Even though most people think about Docker in conjuction with Kubernetes for a production deployment, in fact I think
+that Docker is much more useful in the development phase. Specifically it allows you to create your own build environment.
+Your favourite CI service does not have the latest GO compiler, but supports Docker? Just spin a Docker instance with your
+own Go compiler. You can do the same thing for Maven and JDK of course. Docker support might be less
+useful if your project has adopted [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html)
+
+###### 6. Feedback
 
 With the build in place, there are several things that can go wrong with it. Wrong environment setup, failed unit tests, unresponsive external services and so on. A product is getting high points in the this area if is allows real-time monitoring of the build, and excessive logging on things that went wrong. Some solutions even allowed for ssh connections to the build servers which is a really nice feature to have when the build does not do what you expected it.
 
-###### 6. Post-build steps/deployments
+###### 7. Post-build steps/deployments
 
 Assuming that the build is complete you need to do something with the results. Maybe deploy the artifact to a staging server, send an email, upload it to FTP, update a bug issue or anything that matches your process. A product is getting high points in this area if it offers several post-build hooks to allow you to take advantage of the build. 
 
-###### 7. Enterprise features
+###### 8. Enterprise features
 
 Getting a simple web project to build might be easy but not all projects are that simple (not all projects are web projects as well). Multi-module builds, pipelines, support for pull requests, and having a huge number of active projects with long build history are examined in this area. Products get high points if they cater to complex build processes. This is one of the area has has of lot of diversity as different companies have a different mindset on what exactly an “enterprise” wants.
 
@@ -91,14 +101,14 @@ For my tests I used 4 sample projects:
 
 #### Scoring method
 
-For each area mentioned in the previous section I assign 5 points (1=worst, 5 = best) with the following format
+For each area mentioned in the previous section I assign 5 points ( 1 = worst, 5 = best) with the following format:
 
 * 0 = Product has serious issues in this area that may be showstoppers for some users
 * 1 = Product has some issues but can still serve its purpose
 * 2 = Product does exactly what I expected it to do (this is the base case)
 * 3 = Product has some features in this area that are better than competitors
 * 4 = Product is exceptional in this area going above and beyond the competition
-* 5 = Product impressed me during the comparison for that particular area
+* 5 = Product impressed me during the comparison for that particular area. 
 The biggest mark (5 points) is reserved for very special cases where I was particularly happy with a product in that area.
 
 
@@ -115,14 +125,14 @@ Initially I had planned a complex build scenario with unit/integration tests, de
 1. Has at least a reference guide for documentation
 1. Is responsive via Twitter/Email or contact form
 
-A product that does all the following would get 2 points in all categories. Here are more details on my expectations
+A product that does all the following would get 2 points in all categories. Here are more details on my expectations:
 
-##### Base case for connectivity
+##### 1. Base case for connectivity
 
 A product gets 2 points if it supports Github. Additional points are awarded if Bitbucket or other providers (such as Gitlab) are also supported.
 
 
-##### 1. Base case for creating a new build
+##### 2. Base case for creating a new build
 
 A product gets 2 points if it allows me to get to a successful build in a matter of minutes. There were products where the signup-to-green-build time was about 30 seconds and others where I did not even reach the point of having a successful build.
 
@@ -130,7 +140,7 @@ Some products also had auto-detection capabilities and could understand the buil
 
 In general, I gave extra points to products that guided me in an understandable manner during the creation of a build job.
 
-##### 2. Base case for the UX design
+##### 3. Base case for the UX design
 
 I know that it is hard to define what makes a good interface. I believe however that everybody can instantly recognize a bad interface that prevents you from accomplishing your task. 
 
@@ -138,37 +148,44 @@ A product gets 2 points if it has a dashboard that gives me an overview of all m
 
 I award extra points when a product succeeds in making complex actions seem very simple, or when I see expertly designed UI screens.
 
-##### 3.Base case for configuration 
+##### 4. Base case for configuration 
 
-A lot of products use yml file for configuration. This is not always the optimal solution (more on this later) but at least it allows you to define any kind of pre-build and post-build steps. I award 2 points to products that have Maven and Gradle preinstalled. 
+A lot of products use yml file for configuration. This is not always the optimal solution but at least it allows you to define any kind of pre-build and post-build steps. I award 2 points to products that have Maven and Gradle preinstalled. 
 
 I award more points if they have specific support for Java  projects (for example if they automatically cache my dependencies and allow me to easily change the JDK versions).
 
-##### 4. Base case for build feedback
+##### 5. Base case for Docker support
+
+A product gets 2 points if it supports Docker. By that I mean it allows you to setup you own build environment
+and bypass its default versions of build systems, compilers and other supporting utilities. 
+
+Extra points are awarded for caching Docker images, providing a Docker repository and having the latest version of Docker.
+
+##### 6. Base case for build feedback
 
 Here I expect at least a log of the build. I award 2 points to products that offer a real-time build log.
 
 Additional points go to products that offer ssh session on the build server or explicit support for JUnit reports (as Jenkins does)
 
-##### 5. Base case for deployment steps
+##### 7. Base case for deployment steps
 
 At the very minimum I should be able to call custom shell commands at the end of the build (e.g. sftp) to do something with my artifact. 
 
 Extra points go for integrations with specific cloud providers (Amazon, Heroku etc)
 
-##### 6. Base case for extra Enterprise features
+##### 8. Base case for extra Enterprise features
 
 At the very minimum the dashboard should support a big number of projects. Historical data for previous builds should be available.
 
 Extra points go to products that offer an API, pipelines and other features that will be useful to big companies.
 
-##### 7. Base case for documentation
+##### 9. Base case for documentation
 
 I award 2 points to all products that have at least a reference guide that covers all features they support. Extra points go for tutorials, quick starts and FAQ pages.
 
-##### 8. Ease of contact
+##### 10. Ease of contact
 
-It is very hard to put points on “communication” in a subjective way. Before I started my research I contacted all companies, told them about the report and asked for any feeback they have regarding their product strengths. 
+It is very hard to put points on "communication" in a subjective way. Before I started my research I contacted all companies, told them about the report and asked for any feedback they have regarding their product strengths. 
 
 During my actual testing I also twitted at twitter.com/codepipes some highlights (both good and bad) of each product. For some products I also used the official support channels they provide.
 
@@ -176,42 +193,18 @@ I give 2 points to companies who have a clear way of contact on their webpages a
 
 I award extra points to companies that also answered promptly to my tweets about them (all my tweets mentioned the official account of each product)
 
-
-#### Common pain points across CI services
-
-With so many products to compare, I chose to focus on explicit Java support on the builds. Most of my issues had to do with the format of yml files and the lack of explicit support for Java (a lot of products assume that you are a Python or Ruby developer)
-
-##### The cancer of YML files
-
-Almost all products have a way to define your build in a yml file. I think that Travis was the first service that started this trend. Even though in theory the yml file is a good idea, in practice it gets complicated very fast for no special reason. It is a meta-build system that needs to be maintained along with the normal build files (e.g.)
-
-I see the need for a yml file if I need to do something special in the build or if I want to define some environment parameter (e.g. a mysql service for unit tests), but frankly I don’t understand why it is required the basic compile step.
-
-At least in the Java world there are not too many build systems. If my project contains a top level pom.xml file, there is a good chance that simply runningn mvn test will compile and test my code. So why do I need a yml files for this?
-
-The syntax between yml files differs from service to service and not all of them had good documentation on the exact contents.
-
-Going from the best solution to the worst the service can be roughly divided to the following categories
-
-1. The service autodetects your build system and runs the appropriate command
-1. The service allows to you to create a yml file with a gui wizard
-1. The service requires a yml file but you can override via gui options
-1. The service requires a yml file and fails the build if there is none
-
-For some service I had to do a lot of commits to my repositories until the yml file would be complete for the build. I find this a total waste of time (not to mention that it clutters the repo history)
-
 Companies are presented in alphabetical order.
 So let’s begin!
 
+* Buddy Works
 * [CircleCI review]({% post_url 2016-04-24-circleci-review %})
+* Codefresh review
 * Codeship review
 * DeployBot review
 * Distelli review
 * Drone.IO review
-* GreenhouseCI review
 * SemaphoreApp review
 * Shippable review
-* SnapCI review
 * SolanoLabs review
 * Travis review
 * Vexor review
