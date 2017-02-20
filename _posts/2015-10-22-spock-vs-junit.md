@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Spock testing framework versus JUnit 
-category: spock
+category: testing
 ---
 
 [Spock](http://spockframework.org) is the newcomer in the test arena. The king of the arena is of course JUnit.
