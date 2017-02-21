@@ -272,12 +272,12 @@ I have to say that despite the shortcomings of the product, their support was re
 knowledagable and really helpful. 
 
 Deploybot might be a good service for developers of interpreted languages where the source
-files go straight to the deployment server. But for Java devs where only binaries are
+files go straight to the deployment server. But for Java developers where only binaries are
 deployed, the experience is awful (the UI is awful for everybody of course). You can safely
-scratch it from your evaluation list and look at all the other options presented in this report.
+scratch it off from your evaluation list and look at all the other options presented in this report.
 
 
-If you work at Deploybot and are reading this know that your UI needs a lot of improvements. You need to hire a professional UX
+If you work at Deploybot and are reading this, know that your UI needs a lot of improvements. You need to hire a professional UX
 designer and recreate the whole interface from scratch. That being said, your support staff is
 excellent.
 
@@ -289,6 +289,55 @@ very confusing.
 ### Distelli
 
 ### SemaphoreApp
+
+*Disclaimer:* I have written [testing](https://semaphoreci.com/community/tutorials/testing-rest-endpoints-using-rest-assured) [tutorials](https://semaphoreci.com/community/tutorials/how-to-split-junit-tests-in-a-continuous-integration-environment) and a [blog post](http://blog.codepipes.com/containers/go-docker-semaphoreci-gcloud-tutorial.html) for SemaphoreCI, but I have no special
+affiliation with them.
+
+[SemaphoreCI](https://semaphoreci.com/) is the product of a company called [RenderedText](http://renderedtext.com/) which is located in Serbia. They have a very active site with [a large collection
+of tutorials](https://semaphoreci.com/community/tutorials) on various topics related to CI including [TDD](https://en.wikipedia.org/wiki/Test-driven_development) and Docker.
+
+I had a feeling that my experience with SemaphoreCI would be a positive one, right from the configuration step. They fully support autodetection of Java build systems, and I was really impressed when my Clojure project was handled correctly with zero-configuration on my part:
+
+![Semaphore autodetection](../../assets/ci-comparison/semaphore/lein-autodetect.png)
+
+They also closely follow Gradle as they had the latest version (3.3 at the time of writing) installed in the build slave.
+Unfortunately the caching support is only active for Maven and no support exists for Gradle by default.
+
+Overall the UI of SemaphoreCI is very stream-lined and well thought. They have a Jenkins-like dashboard that gathers
+all projects along with their latest build.
+
+![Semaphore dashboard](../../assets/ci-comparison/semaphore/dashboard.png)
+
+It is very easy to setup deployments for common providers (e.g. Heroku, AWS) or you can write your own scripts
+for anything custom:
+
+![Semaphore deployments](../../assets/ci-comparison/semaphore/pipeline.png)
+
+As with CircleCI, Semaphore allows you to SSH into your build slave for debugging purposes. The keys used for the SSH access are unrelated with the Github ones. You create them
+explicitly for debugging.
+
+![Semaphore deployments](../../assets/ci-comparison/semaphore/ssh.png)
+
+Finally, Docker is pre-installed in the build slaves (as an option) with the latest version. It doesn't
+get any easier than this to obtain docker support for your builds.
+
+In general SemaphoreCI is a good all around solution. It does everything right and works just like you would expect. 
+
+
+| Website    | [SemaphoreCI](https://semaphoreci.com/) |
+| Pricing    | [Details](https://semaphoreci.com/pricing) |
+| Documentation    | Good but but sometimes it feels geared towards Ruby and [lacks some Java topics](https://semaphoreci.com/docs/) |
+| User Interface | Very well thought interface. Could be improved by making use of the whole screen space in big screens.|
+| Build configuration | Impressive project autodetection. Very easy to add build steps.|
+| Docker support | Built-in|
+| Extra features    | [Insights](https://semaphoreci.com/blog/2015/11/20/semaphore-insights.html), Deployment pipelines, [test parallelism](https://semaphoreci.com/docs/running-tests-in-parallel.html)|
+| Disadvantages    | No Gradle cache. Maven cache [is ready](https://semaphoreci.com/docs/caching-between-builds.html)  |
+| Killer feature    | You can ssh to build servers. Docker is pre-installed. Excellent autodetection of build systems|
+| **Final Verdict**    | Highly recommended for Maven projects. Gradle projects work ok as well but may be slow until cache support is added. |
+
+
+
+
 
 ### Shippable
 
