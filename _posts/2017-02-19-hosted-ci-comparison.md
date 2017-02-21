@@ -132,7 +132,7 @@ add repositories right away.
 First time setup is a bit troublesome. First of all there is absolutely no form of autodetection for
 a build system. You are given all possible commands in the GUI and are expected to
 uncomment the one that fits you. I don’t understand why it is that difficult to check the
-existence of a MAven or Gradle file in the repo and act accordingly (at least as a starting point).
+existence of a Maven or Gradle file in the repo and act accordingly (at least as a starting point).
 
 
 ![Codeship no autodetection](../../assets/ci-comparison/codeship/codeship-no-autodetection.png)
@@ -144,12 +144,12 @@ You are expected to commit something and only then codeship will build your proj
 
 ![Codeship push first](../../assets/ci-comparison/codeship/you-must-push.png)
 
-I am at a loss of words why this is required? I don’t think there is a technical reason for this
+I am at a loss of words why this is required. I don’t think there is a technical reason 
 because several other companies can perform a build without a commit.
 My repository was already finished so I had to make a dummy commit in order to start the
 build. Duh!
 I forgive Codeship for the lack of autodetection of build system, but I find no excuses for the
-lack of a “build Now” button.
+lack of a "build Now" button.
 
 The user interface of Codeship has a clean layout and shows all needed information. It has
 however two minor quirks that spoil the experience.
@@ -160,8 +160,9 @@ select a single project and manage it.
 
 So if you have let’s say 8 projects there is no way to see a single page that gives you the
 pass/fail status of all projects. You need to visit them one by one to see their last build.
+
 The second problem is that in the feedback screen where you see the results of the build an
-“accordion” component is used. This means that it is impossible to expand all sections at
+"accordion" component is used. This means that it is impossible to expand all sections at
 once to see what is happening. Only one section can be open. Sad but true.
 
 My experiments show that Maven dependencies are cached but Gradle ones do not.
@@ -224,15 +225,66 @@ getting the attention it deserves from the company.
 | Website    | [Codeship](https://codeship.com/) |
 | Pricing    | [Details](https://codeship.com/pricing) |
 | Documentation    | Good but [nothing impressive here](https://documentation.codeship.com/) |
-| User Interface | Big problems with UX. The accordion component for the logs is especially problematic. Lack of a dashboard that shows all projects  |
+| User Interface | Big problems with UX. The accordion component for the logs is especially problematic. Lack of a dashboard that shows all projects.  |
 | Build configuration | No project autodetection. No support for Gradle |
 | Docker support | None in the basic version. Full Docker support (and more) in the pro version|
-| Extra features    | Rest API, Deployment pipelines, test parallelism, |
+| Extra features    | Rest API, Deployment pipelines, test parallelism, [Roles](https://documentation.codeship.com/general/account/organizations/)|
 | Disadvantages    | No Gradle cache, needs a push to start the first build (!!!)  |
 | Killer feature    | You can ssh to a clone of your environment. The Jet local build process  in Codeship Pro.|
 | **Final Verdict**    | Codeship might be ok (if you forgive the UI problems) for a small number of Maven projects. If you use Gradle then don't even bother. |
 
 ### Deploybot
+
+Deploybot is an American company located in Philadelphia. The parent company is [Wildbit](http://wildbit.com/).
+
+Oh! The memories! I spent about 2 days to get a build running. I thought about giving up
+several times (with other products I could get a build in seconds) but I was curious on how a
+Java build might work with Deploybot.
+
+Long story short, the product is aimed more at websites in PHP, Python and Ruby. Compiling code
+is something extra-ordinatory and can only by configured as a "custom deployment script".
+
+![Deploybot compilation](../../assets/ci-comparison/deploybot/build-deployment.png)
+
+Calling the UI of Deploybot confusing would be an understatement. It is a typical "design by
+committee" UI where each screen was probably designed by a different person.
+The navigation happens via 3 top level tabs, a lot of buttons and a lot of links that look like
+buttons. Sometimes the GUI contradicts itself using wrong instructions.
+
+![Deploybot missing button](../../assets/ci-comparison/deploybot/contradicting-marked.png)
+
+The 3 tab layout is very confusing on its own. I had to click around a lot to find what I
+wanted. I think this screenshot embodies the spirit of the bad UI (3 levels of settings):
+
+![Deploybot settings](../../assets/ci-comparison/deploybot/confusing-settings-marked.png)
+
+In summary the UI is a mess. 
+I did not really test the build environment in detail because most of my time was spent on getting that
+first built to run in the first place.
+I noticed that there is no built-in
+support for Maven/Gradle and moved on.
+
+Deploybot has integrations for popular cloud providers like Digital Ocean, Heroku, AWS etc.
+Of course it is still a mystery to me how you can use them after your build runs, (as the build
+server is another deployment option itself).
+
+I have to say that despite the shortcomings of the product, their support was responsive,
+knowledagable and really helpful. 
+
+Deploybot might be a good service for developers of interpreted languages where the source
+files go straight to the deployment server. But for Java devs where only binaries are
+deployed, the experience is awful (the UI is awful for everybody of course). You can safely
+scratch it from your evaluation list and look at all the other options presented in this report.
+
+
+If you work at Deploybot and are reading this know that your UI needs a lot of improvements. You need to hire a professional UX
+designer and recreate the whole interface from scratch. That being said, your support staff is
+excellent.
+
+**Final Verdict:** Avoid Deploybot. The product is clearly aimed at Python/Ruby devs and the UI is
+very confusing.
+
+
 
 ### Distelli
 
