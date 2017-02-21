@@ -326,7 +326,7 @@ In general SemaphoreCI is a good all around solution. It does everything right a
 
 | Website    | [SemaphoreCI](https://semaphoreci.com/) |
 | Pricing    | [Details](https://semaphoreci.com/pricing) |
-| Documentation    | Good but but sometimes it feels geared towards Ruby and [lacks some Java topics](https://semaphoreci.com/docs/) |
+| Documentation    | Good but sometimes it feels geared towards Ruby and [lacks some Java topics](https://semaphoreci.com/docs/) |
 | User Interface | Very well thought interface. Could be improved by making use of the whole screen space in big screens.|
 | Build configuration | Impressive project autodetection. Very easy to add build steps.|
 | Docker support | Built-in|
@@ -336,10 +336,64 @@ In general SemaphoreCI is a good all around solution. It does everything right a
 | **Final Verdict**    | Highly recommended for Maven projects. Gradle projects work ok as well but may be slow until cache support is added. |
 
 
-
-
-
 ### Shippable
+
+[Shippable](https://app.shippable.com/) is an American company based in Seattle. They also have a [content-rich blog](http://blog.shippable.com/) with topics such
+as microservices, Docker, Continuous delivery etc.
+
+Shippable does not support any kind of autodetection of your project. In fact it will just refuse to
+run if you don't have a custom configuration file in your project. I have already written [why
+I consider this a bad practice](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/). This file should be optional (CircleCI achieves this beautifully for example)
+
+![Shippable error](../../assets/ci-comparison/shippable/yml-needed.png)
+
+So in order to play along I had to make several commits into my repository until [my configuration](http://docs.shippable.com/ci/shippableyml/) was correct.
+This was a very time-consuming process because there is no way of knowing if Shippable will accept your yml file before
+hand. You need to commit each of your changes and make a build. Naturally, my repository was now full or trivial commits
+with minor adjustments. Sad but true.
+
+Shippable has a very nice UI, but unfortunately I could never enjoy it. It always became unresponsive as soon
+as I tried to click the log or check the build status.
+
+After a while it stopped being funny. At first I thought that maybe they did some kind of maintenance that day
+and tried another one. Same thing happening again and again.
+
+![Shippable error](../../assets/ci-comparison/shippable/unresponsive1.png)
+
+Coupled with the fact that I had to make multiple commits for the yml file, using Shippable became quickly a 
+painful process.
+
+![Shippable error](../../assets/ci-comparison/shippable/unresponsive2.png)
+
+It is really a shame because I noticed many interesting features. For example Shippable
+supports test results and even code coverage.
+
+![Shippable error](../../assets/ci-comparison/shippable/test-results.png)
+
+These are not supported out of the box. They need to be configured in the yml file.
+
+![Shippable error](../../assets/ci-comparison/shippable/test-coverage.png)
+
+I also saw that they have support for pipelines, but at the point in time I had already spent enough
+time reloading my pages, restarting my browser and in general trying to fight the unresponsiveness of the whole system.
+
+Neither Maven nor Gradle cache is supported. I tried to set it up on the yml file and it did not seem to work.
+Documentation was listing [this as a breaking change](http://blog.shippable.com/shippable-3.0-breaking-changes) so maybe
+some more research was needed (but other products at least support Maven right away).
+
+Like Codeship, Shippable is an imbalanced product. The UI is great, the features are there, but the performance is abysmal.
+
+
+| Website    | [Shippable](https://app.shippable.com/) |
+| Pricing    | [Details](https://app.shippable.com/pricing.html) |
+| Documentation    | Good but [needs some more Java love](http://docs.shippable.com/ci/shippableyml/) |
+| User Interface | Very well designed. But pages are unresponsive. |
+| Build configuration | No project autodetection. Does not work without a yml file|
+| Docker support | Yes, but did not try it|
+| Extra features    | Test coverage, Test reports, Build pipelines|
+| Disadvantages    | No cache for Maven or Gradle. UI is unusable. The yml file is very complex |
+| Killer feature    | Test coverage for your tests (Jacoco)|
+| **Final Verdict**    | I cannot recommend Shippable until the performance is fixed. The yml file should become optional like CircleCI. Cache should be enabled at least for Maven. |
 
 ### SolanoLabs
 
