@@ -365,6 +365,13 @@ painful process.
 
 ![Shippable error](../../assets/ci-comparison/shippable/unresponsive2.png)
 
+Apart from the freezing of UI, the builds themselves were very slow. With my example projects
+most other products could finish a build in less than a minute. With Shippable however it took a full 2 minutes
+just to start the build slave.
+
+![Shippable performance](../../assets/ci-comparison/shippable/bad-performance.png)
+
+
 It is really a shame because I noticed many interesting features. For example Shippable
 supports test results and even code coverage.
 
@@ -400,6 +407,70 @@ Like Codeship, Shippable is an imbalanced product. The UI is great, the features
 ### Travis
 
 ### Vexor
+
+[Vexor](https://vexor.io/) is a Russian company launched in 2011 and located in Moscow. The parent company is [Evrone](https://evrone.com/). Their website is very spartan and their blog contains exactly one post about the product itself.
+
+Vexor supports both GitHub and Bitbucket and it was very easy to build projects from both types or repositories.
+
+The first surprise came from the autodetection dialog. They can detect Scala and Clojure but not Java!!!
+
+![Vexor autodetect](../../assets/ci-comparison/vexor/auto-detect.png)
+
+My Clojure project was built right way, but my Java one needed special customization. Vexor supports
+a yml file with the same syntax as Travis. The good thing however is that it also offers a simple GUI that allows
+you to define your yml via the web interface so that you don't litter your repo with extra files (I am looking
+at you Shippable).
+
+I made the configuration change and was also able to add cache support for both Gradle and Maven. Awesome!
+Latest Maven version (3.x ) is pre-installed. For Gradle you can use the Gradle wrapper.
+The latest version of Docker is also available in the build slaves.
+
+Vexor was clearly created by a web development company that knows about UX. The UI feels very fluid,
+had very nice animations and is a joy to navigate. CircleCI might have the most functional GUI, but Vexor has
+the most beautiful one.
+
+![Vexor dashboard](../../assets/ci-comparison/vexor/dashboard.png)
+
+A minor problem with configuration is that even though you can get a build on master straight away, if you want
+to build another branch, you need to make a commit there so that Vexor can pick it up.
+
+Vexor also supports SSHing into the build slave, but there is a catch. Ssh access is only available while the slave
+is running. If your build finishes too fast you are out of luck. So the trick is to add some sleep statements
+in you build script.
+
+![Vexor ssh session](../../assets/ci-comparison/vexor/ssh-in.png)
+
+I did not know about this trick and their documentation is not helping me either:
+
+![Vexor documentation](../../assets/ci-comparison/vexor/documentation.png)
+
+On the bright side they have very good live support. The embedded chat window had always an actual person
+that was ready to answer my questions (with some English language errors but still on point).
+
+In general Vexor is a spartan solution that works very well for small projects. If you want extra features
+such as deployment pipelines, team permissions, test coverage etc. you have to look elsewhere. It would be
+the ideal solution for teaching or demonstrating basic CI concepts. 
+
+If you work on Vexor and read this, you need to restructure your documentation. You also need to add documentation/autodetection for Java (since you support Scala and Clojure already). 
+Other than that the product
+does exactly what it says on the box.
+
+| Website    | [Vexor](https://vexor.io/) |
+| Pricing    | [Details](https://vexor.io/#pricing) |
+| Documentation    | Not good. Still  [has missing sections](https://vexor.io/help/). Java is not even mentioned. |
+| User Interface | Minimalistic and clean. Very nice animations. |
+| Build configuration | Supports Travis syntax. Can work without a yml file straight from the Web UI. Configurable Cache.|
+| Docker support | Yes (built-in) |
+| Extra features    | Ssh into your build slave if it takes too long. Parallel tests.|
+| Disadvantages    | Documentation is lacking. |
+| Killer feature    | Simple and to the point.|
+| **Final Verdict**    | I can highly recommend Vexor for both Maven and Gradle projects. People who are new to CI/CD will especially find Vexor easy to understand and use. For some advanced usages (e.g. pipelines) you may need to look for another product. |
+
+
+
+
+
+
 
 ### Wercker
 
