@@ -345,7 +345,7 @@ Shippable does not support any kind of autodetection of your project. In fact it
 run if you don't have a custom configuration file in your project. I have already written [why
 I consider this a bad practice](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/). This file should be optional (CircleCI achieves this beautifully for example)
 
-![Shippable error](../../assets/ci-comparison/shippable/yml-needed.png)
+![Shippable error](../../assets/ci-comparison/shippable/yml-required.png)
 
 So in order to play along I had to make several commits into my repository until [my configuration](http://docs.shippable.com/ci/shippableyml/) was correct.
 This was a very time-consuming process because there is no way of knowing if Shippable will accept your yml file before
@@ -436,13 +436,16 @@ to build another branch, you need to make a commit there so that Vexor can pick 
 
 Vexor also supports SSHing into the build slave, but there is a catch. Ssh access is only available while the slave
 is running. If your build finishes too fast you are out of luck. So the trick is to add some sleep statements
-in you build script.
+in you build script. 
 
 ![Vexor ssh session](../../assets/ci-comparison/vexor/ssh-in.png)
 
 I did not know about this trick and their documentation is not helping me either:
 
 ![Vexor documentation](../../assets/ci-comparison/vexor/documentation.png)
+
+Unfortunately this also means that the time you spent debugging your build also counts against your billing. So
+make sure you are aware of this before connecting.
 
 On the bright side they have very good live support. The embedded chat window had always an actual person
 that was ready to answer my questions (with some English language errors but still on point).
