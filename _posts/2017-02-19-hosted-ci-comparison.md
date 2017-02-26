@@ -406,6 +406,65 @@ Like Codeship, Shippable is an imbalanced product. The UI is great, the features
 
 ### Travis
 
+[Travis](https://travis-ci.org/) is the service that has become synonymous with hosted CI. It is also the service
+that started [this annoying trend](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/) or requiring yml files for a build.
+
+Travis supports Github but not Bitbucket. Adding a new repository is very easy and painless. 
+
+There is no form of language auto-detection.
+What is puzzling to me is that even though Travis makes it clear that it requires a yml file, it will continue
+the build if it doesn't find one and assume that it is a Ruby one!
+
+![Travis likes ruby](../../assets/ci-comparison/travis/default-ruby.png)
+
+Oh well... On the plus side Travis allows you to validate your yml file either online or via a [Command line client](https://github.com/travis-ci/travis.rb#readme) (requires Ruby) so at least I didn't have to spend that many trivial commits to make it right.
+
+![Travis cli](../../assets/ci-comparison/travis/travis-cli.png)
+
+The command line application has also access to the Travis API and allows you to manage your builds via your terminal.
+A very handy feature indeed.
+
+Given the power of the Travis CLI, it is no surprise that the Travis web interface is very simple and to the point.
+Unfortunately the UX is not perfect. While in theory you get a list of your projects with the latest build status (which
+is what a proper dashboard should contain) the Travis dashboard seems out of sync.
+
+![Travis cli](../../assets/ci-comparison/travis/dashboard.png)
+
+Here for the first project Travis cannot really decide if the build has failed or not. For the second project
+even though the latest build is successful (not shown in the picture), Travis shows a failed build from 5 days ago.
+
+All configuration happens via the Travis YML file which is very powerful and has everything you would possible need
+for. [Caching](https://docs.travis-ci.com/user/caching/) has first class support in Travis and you can configure easily multiple directories (Maven and Gradle in my case).
+
+A nice UI touch is the fact that you can monitor your cache size in the UI:
+
+![Travis cache](../../assets/ci-comparison/travis/travis-cache.png)
+
+Both Gradle and Maven are pre-installed in build slaves so Java support is excellent. Gradle is still in the 2.x version
+but this is not problem if you use [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html).
+
+Docker support is not available by default, but you need to configure it (again in the yml file) so that the build slave
+is Docker enabled.
+
+In general my experience with Travis was a positive one. My only big complain would be the lack of explicit
+pipelines.
+Travis has obviously the first mover advantage in the hosted CI market. It is an adequate solution
+and works as you would expect. I feel however,  that the competition not only caught up with Travis
+but is now surpassing it. 
+
+
+| Website    | [Travis](https://travis-ci.org/) |
+| Pricing    | [Details](https://travis-ci.com/plans) |
+| Documentation    | Very good and [very extensive](https://docs.travis-ci.com/). Most languages have a dedicated guide. |
+| User Interface | Truly Spartan but functional. A bit confusing regarding the build status.  |
+| Build configuration | Everything happens via a yml file. Configurable Cache.|
+| Docker support | Yes but you need to [declare it first](https://docs.travis-ci.com/user/docker/).|
+| Extra features    | [Parallel tests](https://docs.travis-ci.com/user/speeding-up-the-build/). [Command line client](https://github.com/travis-ci/travis.rb#readme). [Deployments](https://docs.travis-ci.com/user/deployment/) for popular services. [Other UIs](https://docs.travis-ci.com/user/apps/)|
+| Disadvantages    | No language autodetection. Configuration file is required.  |
+| Killer feature    | Well known, Battle tested, very configurable.|
+| **Final Verdict**    | I can recommend Travis for both Maven and Gradle projects. It works ok, but if you want features like pipelines or a ssh session to the build, its competitors are already ahead. |
+
+
 ### Vexor
 
 [Vexor](https://vexor.io/) is a Russian company launched in 2011 and located in Moscow. The parent company is [Evrone](https://evrone.com/). Their website is very spartan and their blog contains exactly one post about the product itself.
