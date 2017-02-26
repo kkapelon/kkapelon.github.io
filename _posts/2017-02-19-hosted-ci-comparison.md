@@ -8,7 +8,7 @@ category: hosted-ci-comparison
 
 I was a happy user of [SnapCI](https://snap-ci.com/). I really liked the way pipelines worked and how easy was
 to add a new project. SnapCI also had other nice features for Java developers like automatic caching
-for both Maven and Gradle dependencies.
+for both Maven and Gradle dependencies without any extra configuration.
 
 ![SnapCI dashboard](../../assets/ci-comparison/snapci-pipeline.png)
 
@@ -35,7 +35,7 @@ If I miss anything [let me know](http://codepipes.com/contact.html).
 * [Vexor](#vexor) 
 * [Wercker](#wercker) 
 
-**TLDR** Skip straight to [conlusion](#conclusion)
+**TL;DR** Skip straight to [conclusion](#conclusion).
 
 
 ##### Comparison Criteria
@@ -47,7 +47,7 @@ Because I am mainly a Java developer I have tested all of them with JVM projects
 * [Bitrise](https://www.bitrise.io/) (Android and iOS only)
 * [AppVeyor](http://www.appveyor.com) (Windows only)
 * [AppHarbor](https://appharbor.com/) (.NET only)
-* [MagnumCI](https://magnum-ci.com/) (Supports Ruby, Go, PHP,Python but not Java)
+* [MagnumCI](https://magnum-ci.com/) (Supports Ruby, Go, PHP, Python but not Java)
 
 
 #### My sample projects
@@ -64,7 +64,7 @@ So let’s begin!
 
 ### BuddyWorks
 
-[BuddyWorks](https://buddy.works/) (not to be confused with [Buddy](https://buddy.com/)) is a brand new American company launched in 2015. Unlike other CI products
+[BuddyWorks](https://buddy.works/) (not to be confused with [Buddy](https://buddy.com/)) is a brand new American company launched in 2015 and based in Cheyenne. Unlike other CI products
 they based their whole architecture on Docker right from the beginning.
 
 BuddyWorks supports both GitHub and Bitbucket. It is also the only product that supports Gitlab as well as its
@@ -114,8 +114,8 @@ code viewing tool.
 In summary, BuddyWorks is a very well rounded solution. It has the easiest way of creating pipelines in a Lego-like manner
 and the UX is unparalleled.
 
-If you work at BuddyWorks and are reading this, your product is perfect. As a finishing touch you could add auto-detection
-of the build system (i.e. setup the Maven action automatically if a pom.xml file is found). Other than that
+If you work at BuddyWorks and are reading this, know that you have really nailed pipeline creation. As a finishing touch you could add auto-detection
+of the build system (i.e. setup a Maven action automatically if a pom.xml file is found). Other than that,
 I would recommend that you look at the name clash between BuddyWorks and [Buddy](https://buddy.com/).
 
 | Website    | [BuddyWorks](https://buddy.works/) |
