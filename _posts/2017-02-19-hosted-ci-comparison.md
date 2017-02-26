@@ -191,6 +191,80 @@ If you work at CircleCI and are reading this, your product is almost perfect. Yo
 
 ### Codefresh
 
+[Codefresh](http://codefresh.io) is an American company located  in Mountain View and launched in 2014.
+
+I spent a lot of time to decide if I need to include Codefresh in my review or not. On the surface they appear
+to be a hosted CI service ([advertising Java support](https://docs.codefresh.io/docs/java)) and even have a whole blog post about [migration from SnapCI](https://codefresh.io/blog/alternatives-to-snapci/).
+
+In reality however, Codefresh is a Docker Image Management platform. This is a very interesting idea and moves Codefresh
+on a league on its own. Whether that league is above or bellow the "normal" hosted CI services is questionable. I decided
+to include them for completeness but please make sure that you understand the paradigm behind Codefresh before
+rejecting/adopting it. 
+
+Codefresh not only has Docker support, it actually requires Docker as part of the build process. The service expects your Git repository to have
+a Dockerfile or it prompts to create one. There is no other way around it. It supports both GitHub and Bitbucket.
+
+Once you have a Dockerfile everything is very straightforward. You can monitor builds, create compositions (a.k.a. Docker 
+compose), manage your Docker images and even launch your Docker images in "environments" so that your colleagues can see your application.
+
+![Codefresh builds](../../assets/ci-comparison/codefresh/builds.png)
+
+There is no form of build system autodetection (there couldn't be actually as they cannot imagne what your Dockerfile should contain).
+I added Dockerfiles in both of my sample projects and attempted to use them in Codefresh. I failed miserably. I couldn't
+understand what I was doing wrong until I saw what Dockerfile format Codefresh suggested for Java applications.
+
+![Codefresh Java dockerfile](../../assets/ci-comparison/codefresh/dockerfile.png)
+
+Yes you guessed it! Codefresh assumes that you have a single Docker image both for compilation and running of your code.
+This is a major no-no for Java applications. There are several binaries that you need only during the build phase (e.g. Maven, JUnit, Spock) and several things that you only need during runtime (e.g. Tomcat). Creating a single Docker image is not only wasteful but also against the proper isolation guidelines.
+
+Things are even worse if you are a Go developer. A Go Docker compilation image requires the full Go dev enviroment. The runtime
+Docker image however requires nothing at all (assuming that you compile statically).
+
+I can see how Codefresh might be a good fit for interpreted languages (e.g. Ruby, Python) where there is no distinction between
+a compilation environment and a runtime environment.
+
+In fact I looked at the preconfigured examples offered by Codefresh and indeed all of them are for interpreted languages only (with a great love for Javascript).
+
+ ![Codefresh examples](../../assets/ci-comparison/codefresh/examples.png)
+
+ Coming back to the build environment I could not see any support for defining a cache directory for Maven and/or Gradle. 
+ Each build was downloading the full dependencies again and again. I finally found a workaround in [a blog post](https://codefresh.io/blog/caching-build-dependencies-codefresh-volumes/) (outside 
+ of their official documentation), but it is not a proper solution as instead of defining multiple cache directories it requires from
+ you to use a single reusable cache directory (and point Maven/Gradle to it)
+
+ As a final note, the ability to directly run Docker images is a very cool feature, but I could not get it to work, even
+ when using an example provided by Codefresh itself.
+
+  ![Codefresh environment](../../assets/ci-comparison/codefresh/environments.png)
+
+ To sum up, if you use a platform like node.js and Ruby and you have embraced the Docker paradigm for everything, Codefresh
+ might be a great idea. For compiled languages however and especially for cases where the build and runtime environments are different (extreme example Go) you should stay away from Codefresh. Trying to make it work is a huge anti-pattern as a whole (mixing testing, compilation and runtime dependencies all in one)
+
+ If you work at Codefresh and you are reading this, I congratulate you for this new approach on fully embracing Docker.
+ As far as I know you are the first company to create such a service. At the same time however, you should step out of your node.js cocoon and look at how Java, Go and C++ projects work. Alternatively
+ make it clear in your marketing material that you do not offer a generic solution but instead an opinionated Docker
+ build platform with specific languages in mind.
+
+ | Website    | [Codefresh](http://codefresh.io/) |
+| Pricing    | [Details](http://codefresh.io/pricing/) |
+| Documentation    | Very [basic](https://docs.codefresh.io/). Misses essential things like caching.  |
+| User Interface | Clean and well designed  |
+| Build configuration | Very opinionated. Assumes you use Docker for everything  |
+| Docker support | Using Docker is a requirement. Actually the whole platform revolves around it|
+| Extra features    | Support for Docker compose and running Docker images|
+| Disadvantages    | Requires Docker for everything. Only good for interpreted languages  |
+| Killer feature    | The first and only platform build around Docker|
+| **Final Verdict**    | I don't recommend Codefresh for Java projects. In fact I don't recommend Codefresh for any compiled runtime (e.g. C++, Go).  |
+
+
+
+
+
+
+
+
+
 ### Codeship
 
 [Codeship](https://codeship.com/) is another American company from Boston. They have a vibrant web page filled
