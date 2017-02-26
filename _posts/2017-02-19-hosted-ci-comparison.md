@@ -22,19 +22,20 @@ At the time of writing I am aware of the following companies that offer hosted C
 If I miss anything [let me know](http://codepipes.com/contact.html).
 
 
-* [Buddy Works](https://buddy.works/)
-* [CircleCI](https://circleci.com/) 
-* [Codefresh](http://codefresh.io/) 
-* [Codeship](https://codeship.com/) 
-* [DeployBot](https://deploybot.com/)
-* [Distelli](https://www.distelli.com/) 
-* [SemaphoreApp](https://semaphoreci.com/) 
-* [Shippable](https://app.shippable.com/) 
-* [SolanoLabs](https://www.solanolabs.com/) 
-* [Travis](https://travis-ci.org/) 
-* [Vexor](https://vexor.io/) 
-* [Wercker](http://www.wercker.com/) 
+* [Buddy Works](#buddyworks)
+* [CircleCI](#circleci) 
+* [Codefresh](#codefresh) 
+* [Codeship](#codeship) 
+* [DeployBot](#deploybot)
+* [Distelli](#distelli) 
+* [SemaphoreApp](#semaphoreapp) 
+* [Shippable](#shippable) 
+* [SolanoLabs](#solanolabs) 
+* [Travis](#travis) 
+* [Vexor](#vexor) 
+* [Wercker](#wercker) 
 
+**TLDR** Skip straight to [conlusion](#conclusion)
 
 
 ##### Comparison Criteria
@@ -63,9 +64,76 @@ So let’s begin!
 
 ### BuddyWorks
 
+[BuddyWorks](https://buddy.works/) (not to be confused with [Buddy](https://buddy.com/)) is a brand new American company launched in 2015. Unlike other CI products
+they based their whole architecture on Docker right from the beginning.
+
+BuddyWorks supports both GitHub and Bitbucket. It is also the only product that supports Gitlab as well as its
+own GIT platform. Buddy offers [one repository for free](https://buddy.works/guides/first-steps-with-git) which is perfect for demos and tutorials.
+
+Adding my Bitbucket and GitHub projects was a trivial process There isn't any form of build system autodetection but
+this is not a big issue as BuddyWorks provides a great UI experience for choosing your build steps and creating pipelines.
+
+ ![BuddyWork actions](../../assets/ci-comparison/buddyworks/setup-environment.png)
+
+ Each project can have many pipelines and each pipeline can have many actions. You choose the type of actions
+ against an ever growing list of predefined ones. Under the hood you essentially select which Docker container
+ will be attached to the filesystem of your checked-out repo during that build phase.
+
+ Gradle and Maven actions are already there. Cache for Maven is already preconfigured. Adding cache for the Gradle action
+ was as easy as adding a single line in the respective dialog.
+
+ ![BuddyWork cache](../../assets/ci-comparison/buddyworks/gradle-cache.png)
+
+ For each action you can also attach several services (perfect for running in-place integration tests).
+
+ ![BuddyWork services](../../assets/ci-comparison/buddyworks/pipeline-setup.png)
+
+ You can also choose your own docker image as your build environment so you are not really restricted by the actions
+ already provided by BuddyWorks.
+
+ The killer feature of BuddyWorks however is the way you can build pipelines. You pick pipeline actions from the GUI in a Lego-like function. You can drag-n-drop actions to change their order and also add extra on-failure actions.
+
+![BuddyWork pipelines](../../assets/ci-comparison/buddyworks/pipeline-settings.png)
+
+You can have multiple pipelines per project. If you prefer the configuration-as-code approach you can also
+use an yml file if you want. This is completely optional (I am looking at you Travis and Shippable) and is equivalent
+with the GUI actions.
+
+The pipelines are constructed in the [true manner of continuous delivery](https://martinfowler.com/books/continuousDelivery.html). The workspace is preserved after each pipeline step so that your binary files are only compiled once in the beginning (instead
+of being re-created each time).
+
+The dashboard is very clean showing all your projects along with their latest status. You can organize
+both projects and pipelines into folders/tags. This makes handling a big number of projects a very joyful experience.
+
+![BuddyWork dashboard](../../assets/ci-comparison/buddyworks/dashboard.png)
+
+BuddyWorks allows you to view your workspace and download it as a zip file (exactly like Jenkins). Code files
+are presented with syntax highlighting and you can even run git blame against them, making BuddyWorks a lightweight
+code viewing tool.
+
+In summary, BuddyWorks is a very well rounded solution. It has the easiest way of creating pipelines in a Lego-like manner
+and the UX is unparalleled.
+
+If you work at BuddyWorks and are reading this, your product is perfect. As a finishing touch you could add auto-detection
+of the build system (i.e. setup the Maven action automatically if a pom.xml file is found). Other than that
+I would recommend that you look at the name clash between BuddyWorks and [Buddy](https://buddy.com/).
+
+| Website    | [BuddyWorks](https://buddy.works/) |
+| Pricing    | [Details](https://buddy.works/#pricing) |
+| Documentation    | Documentation covers the [basics](https://buddy.works/knowledge/deployments). It could really use more advanced examples of pipelines|
+| User Interface| Nice animations and well thought UX. Could really use the full width of the screen  |
+| Build configuration | You can use either UI or yml files to create pipelines. Very flexible Docker based build configuration |
+| Docker support | Full support built-in. You can use Docker both as a build environment and as an artifact of your build|
+| Extra features    |  [Team controls](https://buddy.works/knowledge/collaboration). [Code commit parsing](https://buddy.works/knowledge/deployments/how-use-commit-commands). [On premise version](https://buddy.works/buddy-go) |
+| Disadvantages    | No auto-detection of build system|
+| Killer feature    | Very flexible build environment. Lego-like creation of pipelines|
+| **Final Verdict**    | I can highly recommended BuddyWorks for both Gradle and Maven projects. The pipeline support is the ideal tool for both experienced (yml) and novice users (GUI actions) alike. |
+
+
+
 ### CircleCI
 
-[CircleCI](https://circleci.com/) is an american company started in 2011. They have a very active web page (and [twitter account](https://twitter.com/circleci)) and a [blog](https://circleci.com/blog/) covering build related topics. Although they don’t advertise Java support that much, a lot of their blog posts are Clojure related. They support both Github and Bitbucket.
+[CircleCI](https://circleci.com/) is an American company started in 2011. They have a very active web page (and [twitter account](https://twitter.com/circleci)) and a [blog](https://circleci.com/blog/) covering build related topics. Although they don’t advertise Java support that much, a lot of their blog posts are Clojure related. They support both Github and Bitbucket.
 
 CircleCI has one of the ideal setup procedures. Of course it supports a [circle.yml](https://circleci.com/docs/configuration/) file but this is completely optional. Not only you can override this file, but you also get a nice GUI for this.
 
