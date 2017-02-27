@@ -70,7 +70,7 @@ they based their whole architecture on Docker right from the beginning.
 BuddyWorks supports both GitHub and Bitbucket. It is also the only product that supports Gitlab as well as its
 own GIT platform. Buddy offers [one repository for free](https://buddy.works/guides/first-steps-with-git) which is perfect for demos and tutorials.
 
-Adding my Bitbucket and GitHub projects was a trivial process There isn't any form of build system autodetection but
+Adding my Bitbucket and GitHub projects was a trivial process. There isn't any form of build system autodetection but
 this is not a big issue as BuddyWorks provides a great UI experience for choosing your build steps and creating pipelines.
 
  ![BuddyWork actions](../../assets/ci-comparison/buddyworks/setup-environment.png)
@@ -193,7 +193,7 @@ If you work at CircleCI and are reading this, your product is almost perfect. Yo
 
 [Codefresh](http://codefresh.io) is an American company located  in Mountain View and launched in 2014.
 
-I spent a lot of time to decide if I need to include Codefresh in my review or not. On the surface they appear
+I spent a lot of time trying to decide if I need to include Codefresh in my review or not. On the surface they appear
 to be a hosted CI service ([advertising Java support](https://docs.codefresh.io/docs/java)) and even have a whole blog post about [migration from SnapCI](https://codefresh.io/blog/alternatives-to-snapci/).
 
 In reality however, Codefresh is a Docker Image Management platform. This is a very interesting idea and moves Codefresh
@@ -202,14 +202,14 @@ to include them for completeness but please make sure that you understand the pa
 rejecting/adopting it. 
 
 Codefresh not only has Docker support, it actually requires Docker as part of the build process. The service expects your Git repository to have
-a Dockerfile or it prompts to create one. There is no other way around it. It supports both GitHub and Bitbucket.
+a Dockerfile, otherwise it will prompt you to create one. There is no other way around it. It supports both GitHub and Bitbucket.
 
-Once you have a Dockerfile everything is very straightforward. You can monitor builds, create compositions (a.k.a. Docker 
+Once you have a Dockerfile, everything is very straightforward. You can monitor builds, create compositions (a.k.a. Docker 
 compose), manage your Docker images and even launch your Docker images in "environments" so that your colleagues can see your application.
 
 ![Codefresh builds](../../assets/ci-comparison/codefresh/builds.png)
 
-There is no form of build system autodetection (there couldn't be actually as they cannot imagne what your Dockerfile should contain).
+There is no form of build system autodetection (there couldn't be actually as they cannot imagine what your Dockerfile should contain).
 I added Dockerfiles in both of my sample projects and attempted to use them in Codefresh. I failed miserably. I couldn't
 understand what I was doing wrong until I saw what Dockerfile format Codefresh suggested for Java applications.
 
@@ -224,14 +224,14 @@ Docker image however requires nothing at all (assuming that you compile statical
 I can see how Codefresh might be a good fit for interpreted languages (e.g. Ruby, Python) where there is no distinction between
 a compilation environment and a runtime environment.
 
-In fact I looked at the preconfigured examples offered by Codefresh and indeed all of them are for interpreted languages only (with a great love for Javascript).
+In fact I looked at the preconfigured examples offered by Codefresh and indeed all of them are for interpreted languages (with a great love for Javascript).
 
  ![Codefresh examples](../../assets/ci-comparison/codefresh/examples.png)
 
  Coming back to the build environment I could not see any support for defining a cache directory for Maven and/or Gradle. 
  Each build was downloading the full dependencies again and again. I finally found a workaround in [a blog post](https://codefresh.io/blog/caching-build-dependencies-codefresh-volumes/) (outside 
- of their official documentation), but it is not a proper solution as instead of defining multiple cache directories it requires from
- you to use a single reusable cache directory (and point Maven/Gradle to it)
+ of their official documentation), but it is not a proper solution as instead of defining multiple cache directories it requires 
+ you to use a single reusable cache directory (and point Maven/Gradle to it).
 
  As a final note, the ability to directly run Docker images is a very cool feature, but I could not get it to work, even
  when using an example provided by Codefresh itself.
@@ -239,10 +239,10 @@ In fact I looked at the preconfigured examples offered by Codefresh and indeed a
   ![Codefresh environment](../../assets/ci-comparison/codefresh/environments.png)
 
  To sum up, if you use a platform like node.js and Ruby and you have embraced the Docker paradigm for everything, Codefresh
- might be a great idea. For compiled languages however and especially for cases where the build and runtime environments are different (extreme example Go) you should stay away from Codefresh. Trying to make it work is a huge anti-pattern as a whole (mixing testing, compilation and runtime dependencies all in one)
+ might be a great idea. For compiled languages however and especially for cases where the build and runtime environments are different (extreme example is Go) you should stay away from Codefresh. Trying to make it work is a huge anti-pattern as a whole (mixing testing, compilation and runtime dependencies all in one).
 
  If you work at Codefresh and you are reading this, I congratulate you for this new approach on fully embracing Docker.
- As far as I know you are the first company to create such a service. At the same time however, you should step out of your node.js cocoon and look at how Java, Go and C++ projects work. Alternatively
+ As far as I know you are the first company to create such a service. At the same time however, you should step out of your node.js cocoon and look at how Java, Go and C++ projects work. Alternatively,
  make it clear in your marketing material that you do not offer a generic solution but instead an opinionated Docker
  build platform with specific languages in mind.
 
@@ -318,6 +318,8 @@ ssh.
 The keys used for the SSH access are unrelated with the Github ones. You create them
 explicitly for debugging.
 
+![Codeship push first](../../assets/ci-comparison/codeship/ssh.png)
+
 There is no support for test results or build artifacts.
 On the plus side Codeship:
 
@@ -362,7 +364,7 @@ getting the attention it deserves from the company.
 | User Interface | Big problems with UX. The accordion component for the logs is especially problematic. Lack of a dashboard that shows all projects.  |
 | Build configuration | No project autodetection. No support for Gradle |
 | Docker support | None in the basic version. Full Docker support (and more) in the pro version|
-| Extra features    | Rest API, Deployment pipelines, test parallelism, [Roles](https://documentation.codeship.com/general/account/organizations/)|
+| Extra features    | [Rest API](https://documentation.codeship.com/basic/getting-started/api/), Deployment pipelines, test parallelism, [Roles](https://documentation.codeship.com/general/account/organizations/)|
 | Disadvantages    | No Gradle cache, needs a push to start the first build (!!!)  |
 | Killer feature    | You can ssh to a clone of your environment. The Jet local build process  in Codeship Pro.|
 | **Final Verdict**    | Codeship might be ok (if you forgive the UI problems) for a small number of Maven projects. If you use Gradle then don't even bother. |
@@ -394,7 +396,7 @@ wanted. I think this screenshot embodies the spirit of the bad UI (3 levels of s
 
 In summary the UI is a mess. 
 I did not really test the build environment in detail because most of my time was spent on getting that
-first built to run in the first place.
+first build to run in the first place.
 I noticed that there is no built-in
 support for Maven/Gradle and moved on.
 
@@ -403,7 +405,7 @@ Of course it is still a mystery to me how you can use them after your build runs
 server is another deployment option itself).
 
 I have to say that despite the shortcomings of the product, their support was responsive,
-knowledagable and really helpful. 
+knowledgeable and really helpful. 
 
 Deploybot might be a good service for developers of interpreted languages where the source
 files go straight to the deployment server. But for Java developers where only binaries are
@@ -415,7 +417,7 @@ If you work at Deploybot and are reading this, know that your UI needs a lot of 
 designer and recreate the whole interface from scratch. That being said, your support staff is
 excellent.
 
-**Final Verdict:** Avoid Deploybot. The product is clearly aimed at Python/Ruby devs and the UI is
+**Final Verdict:** Avoid Deploybot. The product is clearly aimed at Python/Ruby developers and the UI is
 very confusing.
 
 
@@ -535,6 +537,7 @@ Finally, Docker is pre-installed in the build slaves (as an option) with the lat
 get any easier than this to obtain docker support for your builds.
 
 In general SemaphoreCI is a good all around solution. It does everything right and works just like you would expect. 
+If Gradle cache support was activated by default I would recommend it without any hesitation.
 
 
 | Website    | [SemaphoreCI](https://semaphoreci.com/) |
@@ -545,8 +548,8 @@ In general SemaphoreCI is a good all around solution. It does everything right a
 | Docker support | Built-in|
 | Extra features    | [Insights](https://semaphoreci.com/blog/2015/11/20/semaphore-insights.html), Deployment pipelines, [test parallelism](https://semaphoreci.com/docs/running-tests-in-parallel.html)|
 | Disadvantages    | No Gradle cache. Maven cache [is ready](https://semaphoreci.com/docs/caching-between-builds.html)  |
-| Killer feature    | You can ssh to build servers. Docker is pre-installed. Excellent autodetection of build systems|
-| **Final Verdict**    | Highly recommended for Maven projects. Gradle projects work ok as well but may be slow until cache support is added. |
+| Killer feature    | You can ssh to build servers. Excellent autodetection of build systems|
+| **Final Verdict**    | Highly recommended for Maven projects. Gradle projects need a workaround for cache support |
 
 
 ### Shippable
@@ -556,11 +559,11 @@ as microservices, Docker, Continuous delivery etc.
 
 Shippable does not support any kind of autodetection of your project. In fact it will just refuse to
 run if you don't have a custom configuration file in your project. I have already written [why
-I consider this a bad practice](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/). This file should be optional (CircleCI achieves this beautifully for example)
+I consider this a bad practice](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/). This file should be optional (see CircleCI and BuddyWorks for examples).
 
 ![Shippable error](../../assets/ci-comparison/shippable/yml-required.png)
 
-So in order to play along I had to make several commits into my repository until [my configuration](http://docs.shippable.com/ci/shippableyml/) was correct.
+In order to play along I had to make several commits into my repository until [my configuration](http://docs.shippable.com/ci/shippableyml/) was correct.
 This was a very time-consuming process because there is no way of knowing if Shippable will accept your yml file before
 hand. You need to commit each of your changes and make a build. Naturally, my repository was now full or trivial commits
 with minor adjustments. Sad but true.
@@ -578,7 +581,7 @@ painful process.
 
 ![Shippable error](../../assets/ci-comparison/shippable/unresponsive2.png)
 
-Apart from the freezing of UI, the builds themselves were very slow. With my example projects
+Apart from the freezing of UI, the builds themselves were very slow. With my example projects,
 most other products could finish a build in less than a minute. With Shippable however it took a full 2 minutes
 just to start the build slave.
 
@@ -612,8 +615,8 @@ Like Codeship, Shippable is an imbalanced product. The UI is great, the features
 | Docker support | Yes, but did not try it|
 | Extra features    | Test coverage, Test reports, Build pipelines|
 | Disadvantages    | No cache for Maven or Gradle. UI is unusable. The yml file is very complex |
-| Killer feature    | Test coverage for your tests (Jacoco)|
-| **Final Verdict**    | I cannot recommend Shippable until the performance is fixed. The yml file should become optional like CircleCI. Cache should be enabled at least for Maven. |
+| Killer feature    | Test coverage for your tests ([Jacoco](http://www.eclemma.org/jacoco/))|
+| **Final Verdict**    | I cannot recommend Shippable until the performance problems are fixed. The yml file should become optional like CircleCI/BuddyWorks. Cache should be enabled at least for Maven. |
 
 ### SolanoLabs
 
@@ -643,10 +646,10 @@ is what a proper dashboard should contain) the Travis dashboard seems out of syn
 
 ![Travis cli](../../assets/ci-comparison/travis/dashboard.png)
 
-Here for the first project Travis cannot really decide if the build has failed or not. For the second project
+In the picture above,  for the first project Travis cannot really decide if the build has failed or not. For the second project,
 even though the latest build is successful (not shown in the picture), Travis shows a failed build from 5 days ago.
 
-All configuration happens via the Travis YML file which is very powerful and has everything you would possible need
+All configuration happens via the Travis YML file which is very powerful and has everything you would possibly need
 for. [Caching](https://docs.travis-ci.com/user/caching/) has first class support in Travis and you can configure easily multiple directories (Maven and Gradle in my case).
 
 A nice UI touch is the fact that you can monitor your cache size in the UI:
@@ -691,13 +694,13 @@ The first surprise came from the autodetection dialog. They can detect Scala and
 My Clojure project was built right way, but my Java one needed special customization. Vexor supports
 a yml file with the same syntax as Travis. The good thing however is that it also offers a simple GUI that allows
 you to define your yml via the web interface so that you don't litter your repo with extra files (I am looking
-at you Shippable).
+at you Shippable and Wercker).
 
 I made the configuration change and was also able to add cache support for both Gradle and Maven. Awesome!
 Latest Maven version (3.x ) is pre-installed. For Gradle you can use the Gradle wrapper.
 The latest version of Docker is also available in the build slaves.
 
-Vexor was clearly created by a web development company that knows about UX. The UI feels very fluid,
+Vexor was clearly created by a web development company that knows a thing or two about UX. The UI feels very fluid,
 had very nice animations and is a joy to navigate. CircleCI might have the most functional GUI, but Vexor has
 the most beautiful one.
 
@@ -706,7 +709,7 @@ the most beautiful one.
 A minor problem with configuration is that even though you can get a build on master straight away, if you want
 to build another branch, you need to make a commit there so that Vexor can pick it up.
 
-Vexor also supports SSHing into the build slave, but there is a catch. Ssh access is only available while the slave
+Vexor also supports SSHing into the build slave, but there is a catch. SSH access is only available while the slave
 is running. If your build finishes too fast you are out of luck. So the trick is to add some sleep statements
 in you build script. 
 
@@ -717,7 +720,7 @@ I did not know about this trick and their documentation is not helping me either
 ![Vexor documentation](../../assets/ci-comparison/vexor/documentation.png)
 
 Unfortunately this also means that the time you spent debugging your build also counts against your billing. So
-make sure you are aware of this before connecting.
+make sure you are aware of this before starting your SSH session.
 
 On the bright side they have very good live support. The embedded chat window had always an actual person
 that was ready to answer my questions (with some English language errors but still on point).
@@ -778,7 +781,7 @@ It feels like a solid product, but the competition is much better in regards to 
 Also notice that Wercker does **NOT** support running Docker commands as part of your build
 and this is [actually](http://devcenter.wercker.com/docs/faq/can-i-build-dockerfiles)  by [design](http://devcenter.wercker.com/docs/faq/can-i-run-docker-commands). 
 
-If you work at Wercker and read this, please see how easy configuration can be done with other services (e.g. CircleCI).
+If you work at Wercker and read this, please see how easy configuration can be done with other services (e.g. CircleCI and/or BuddyWorks).
 
 
 | Website    | [Wercker](http://www.wercker.com/) |
@@ -787,8 +790,8 @@ If you work at Wercker and read this, please see how easy configuration can be d
 | User Interface | Clean and well designed  |
 | Build configuration | Very complex yml format with insufficient documentation. Does not work without it.  |
 | Docker support | No and seems that [it will stay that way](http://devcenter.wercker.com/docs/faq/can-i-run-docker-commands).|
-| Extra features    | A [cli](http://devcenter.wercker.com/docs/cli) for local builds. [Team control](http://devcenter.wercker.com/docs/organizations/people-and-teams). An [API](http://devcenter.wercker.com/docs/api). [Pipelines](http://devcenter.wercker.com/docs/pipelines)|
-| Disadvantages    | Requires a yml file with picky format and lack of good documentation  |
+| Extra features    | A [CLI](http://devcenter.wercker.com/docs/cli) for local builds. [Team control](http://devcenter.wercker.com/docs/organizations/people-and-teams). An [API](http://devcenter.wercker.com/docs/api). [Pipelines](http://devcenter.wercker.com/docs/pipelines)|
+| Disadvantages    | Requires a yml file with picky format and unclear documentation  |
 | Killer feature    | Open source CLI that builds locally|
 | **Final Verdict**    | While Wercker could work ok for Java projects, I do not truly recommend it as there are several other products with much easier configuration (e.g. BuddyWorks and CircleCI). |
 
@@ -799,19 +802,19 @@ After all is said and done here is the comparison chart you have been waiting fo
 | Company                          | Clean UI      | Configuration | Cache | Docker support| Pipelines | Local builds | SSH | Recommended |
 | -------------                    |:--------|  ------ |  ------ | ------ |------  | ------ | ------ |------ |
 | [Buddy Works](#buddyworks)       | Yes     | yml/GUI | Yes | Yes|  Yes | No |  No| Yes|
-| [CircleCI](#circleci)            | Yes | yml/GUI | partial| partial | No | No | Yes | Yes|
-| [Codefresh](#codefresh)          | Yes | dockerfile | Yes  | Yes  | No | No  | No | No |
-| [Codeship](#codeship)            | No | yml/GUI | partial | pending | No | pending | Yes  | maybe |
-| [DeployBot](#deploybot)          | No! | awful | - | - | -  |-  | -  | Hell No |
+| [CircleCI](#circleci)            | Yes | yml/GUI | Partial| Partial | No | No | Yes | Yes|
+| [Codefresh](#codefresh)          | Yes | dockerfile | Yes  | Yes  | No | Yes  | No | No |
+| [Codeship](#codeship)            | No | yml/GUI | Partial | pending | No | pending | Yes  | Maybe |
+| [DeployBot](#deploybot)          | No! | awful | No | - | -  |-  | -  | Hell No |
 | [Distelli](#distelli)            | Yes | yml/GUI | No | Yes | Yes | Yes | No | No |
-| [SemaphoreApp](#semaphoreapp)    | Yes | gui | partial | Yes  | No | No  | Yes | maybe|
+| [SemaphoreApp](#semaphoreapp)    | Yes | GUI | Partial | Yes  | No | No  | Yes | Yes (Maven)|
 | [Shippable](#shippable)          | Yes | yml only| No | Yes | No | No | No | No|
 | [SolanoLabs](#solanolabs)        | | | | | | | | |
 | [Travis](#travis)                | No | yml only | Yes | Yes  | No  | No  | No | Yes |
 | [Vexor](#vexor)                  | Yes | yml/GUI | Yes| Yes| No | No | Yes| Yes| 
 | [Wercker](#wercker)              | Yes | yml only| Yes | No | Yes| Yes| No | No |
 
-Some explanations regarding the values and features
+Some explanations regarding the values and features:
 
 #### Clean UI
 
@@ -824,7 +827,7 @@ redesign. Codeship and Travis had some minor problems.
 I have [already described](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/) why requiring yml files is a bad practice. 
 
 At the simplest case each service should allow you to define a simple build just from the UI. A yml file should be optional.
-Shippable, Travis, and Wercker are particular bad examples of requiring a yml file before a build can start. Organizations
+Shippable, Travis, and Wercker are particularly bad examples of requiring a yml file before a build can even start. Organizations
 that have a lot of Micro-services will find it very consuming to commit a yml file to each repository right at the beginning
 (especially when the format of the yml file is a result of trial and error).
 
@@ -834,25 +837,28 @@ Maven and Gradle artifacts should be cached after each build. If you have embrac
 a very good chance that fetching these dependencies might take as much time as the build itself.
 
 `Partial` support means that I could get cache working for Maven but not Gradle. `Yes` means that both my Gradle and Maven 
-had cache enabled. 
+builds had cache enabled. 
 
 #### Docker support
 
 This is a very confusing metric for a lot of people. Several products advertise Docker support and actually mean that they use Docker internally for powering 
-the service itself. Frankly this is irrelevant for me. Docker support for me means if the service allows **me** to use
-Docker in my builds, either by running Docker commands or by creating Docker images.
+the service itself. Frankly this is irrelevant for me. Docker support for me means that the service allows **me** to use
+Docker in my builds, either by overriding the default build environment with a custom Docker image or by creating Docker images as artifacts at the end of the build.
 
 #### Pipelines
 
 A pipeline is any arbitrary sequence of steps as defined [in the continuous delivery book](https://martinfowler.com/books/continuousDelivery.html). Several products advertise pipelines and they just mean that you can add a deployment step
-after your compilation phase. This is certainly a start but complex pipelines cannot be created with such as simple model.
+after your compilation phase. This is certainly a start, but complex pipelines cannot be created with such as simple model.
 
 Distelli and BuddyWorks have the most comprehensive pipeline support. Wercker also offers pipelines in a much more complex manner.
 
 ##### Local builds
 
 It is very convenient to be able to run a build locally in exactly the same manner as the build server. At the time or writing
-only Distelli, Codeship Pro and Wercker support this feature
+only Distelli, Codeship Pro and Wercker support this feature.
+
+Codefresh is built around Docker, so running a build locally is the same as using Docker itself and this is why I mark
+it with `Yes` in the respective column.
 
 ##### SSH into build slaves.
 
