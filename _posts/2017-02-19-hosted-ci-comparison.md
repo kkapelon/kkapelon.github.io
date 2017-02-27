@@ -794,20 +794,74 @@ If you work at Wercker and read this, please see how easy configuration can be d
 
 ### Conclusion
 
+After all is said and done here is the comparison chart you have been waiting for.
+
 | Company                          | Clean UI      | Configuration | Cache | Docker support| Pipelines | Local builds | SSH | Recommended |
 | -------------                    |:--------|  ------ |  ------ | ------ |------  | ------ | ------ |------ |
-| [Buddy Works](#buddyworks)       | yes     | yml/Gui | yes | yes|  yes | no |  no| yes|
-| [CircleCI](#circleci)            | yes | yml/Gui | partial| partial | no | no | yes | yes|
-| [Codefresh](#codefresh)          | yes | dockerfile | yes  | yes  | no | no  | no | no|
-| [Codeship](#codeship)            | no | yml/Gui | partial | pending | no | pending | yes  | maybe |
-| [DeployBot](#deploybot)          | No! | awful | - | - | -  |-  | -  | Hell no |
-| [Distelli](#distelli)            | yes | yml/Gui | no | yes | yes | yes | no | No |
-| [SemaphoreApp](#semaphoreapp)    | yes | gui | partial | yes  | no | no  | yes | maybe|
-| [Shippable](#shippable)          | yes | yml | no | yes | no | no | no | no|
+| [Buddy Works](#buddyworks)       | Yes     | yml/GUI | Yes | Yes|  Yes | No |  No| Yes|
+| [CircleCI](#circleci)            | Yes | yml/GUI | partial| partial | No | No | Yes | Yes|
+| [Codefresh](#codefresh)          | Yes | dockerfile | Yes  | Yes  | No | No  | No | No |
+| [Codeship](#codeship)            | No | yml/GUI | partial | pending | No | pending | Yes  | maybe |
+| [DeployBot](#deploybot)          | No! | awful | - | - | -  |-  | -  | Hell No |
+| [Distelli](#distelli)            | Yes | yml/GUI | No | Yes | Yes | Yes | No | No |
+| [SemaphoreApp](#semaphoreapp)    | Yes | gui | partial | Yes  | No | No  | Yes | maybe|
+| [Shippable](#shippable)          | Yes | yml only| No | Yes | No | No | No | No|
 | [SolanoLabs](#solanolabs)        | | | | | | | | |
-| [Travis](#travis)                | no | yml | yes | yes  | no  | no  | no | yes |
-| [Vexor](#vexor)                  | yes | yml | yes| yes| no | no | yes| yes| 
-| [Wercker](#wercker)              | yes | yml | yes | no | yes| yes| no | no |
+| [Travis](#travis)                | No | yml only | Yes | Yes  | No  | No  | No | Yes |
+| [Vexor](#vexor)                  | Yes | yml/GUI | Yes| Yes| No | No | Yes| Yes| 
+| [Wercker](#wercker)              | Yes | yml only| Yes | No | Yes| Yes| No | No |
+
+Some explanations regarding the values and features
+
+#### Clean UI
+
+By this I mean how easy it was to navigate the UI and perform my tasks. This is a bit subjective so you might
+want to read the details in the respective section for each service. Deploybot has a horrendous UI and needs a complete
+redesign. Codeship and Travis had some minor problems.
+
+#### Configuration
+
+I have [already described](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/) why requiring yml files is a bad practice. 
+
+At the simplest case each service should allow you to define a simple build just from the UI. A yml file should be optional.
+Shippable, Travis, and Wercker are particular bad examples of requiring a yml file before a build can start. Organizations
+that have a lot of Micro-services will find it very consuming to commit a yml file to each repository right at the beginning
+(especially when the format of the yml file is a result of trial and error).
+
+#### Cache
+
+Maven and Gradle artifacts should be cached after each build. If you have embraced the Micro-services paradigm there is
+a very good chance that fetching these dependencies might take as much time as the build itself.
+
+`Partial` support means that I could get cache working for Maven but not Gradle. `Yes` means that both my Gradle and Maven 
+had cache enabled. 
+
+#### Docker support
+
+This is a very confusing metric for a lot of people. Several products advertise Docker support and actually mean that they use Docker internally for powering 
+the service itself. Frankly this is irrelevant for me. Docker support for me means if the service allows **me** to use
+Docker in my builds, either by running Docker commands or by creating Docker images.
+
+#### Pipelines
+
+A pipeline is any arbitrary sequence of steps as defined [in the continuous delivery book](https://martinfowler.com/books/continuousDelivery.html). Several products advertise pipelines and they just mean that you can add a deployment step
+after your compilation phase. This is certainly a start but complex pipelines cannot be created with such as simple model.
+
+Distelli and BuddyWorks have the most comprehensive pipeline support. Wercker also offers pipelines in a much more complex manner.
+
+##### Local builds
+
+It is very convenient to be able to run a build locally in exactly the same manner as the build server. At the time or writing
+only Distelli, Codeship Pro and Wercker support this feature
+
+##### SSH into build slaves.
+
+While build logs are certainly helpful when a build fails, having SSH support for a build slave is the ultimate tool
+for debugging build problems. At the time of writing this capability is offered only by CircleCI, Codeship, SemaphoreApp and
+Vexor.
+
+
+
 
 
 
