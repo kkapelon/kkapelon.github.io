@@ -671,12 +671,55 @@ does exactly what it says on the box.
 | **Final Verdict**    | I can highly recommend Vexor for both Maven and Gradle projects. People who are new to CI/CD will especially find Vexor easy to understand and use. For some advanced usages (e.g. pipelines) you may need to look for another product. |
 
 
-
-
-
-
-
 ### Wercker
+
+[Wercker](http://www.wercker.com/) is a company launched in 2012 with offices in San Francisco, London and Amsterdam.
+They have a very active web page with [blogs posts](http://blog.wercker.com/) covering apart from CI, topics such as deployments and Kubernetes.
+
+Wercker supports both GitHub and Bitbucket. It is very easy to import your repositories.
+
+Wercker has been inspired (in a bad way) by Travis and Shippable and will refuse to run if it doesn't find a yml file
+with settings.
+
+![Wercker yml is required](../../assets/ci-comparison/wercker/yml-required.png)
+
+There is no way to define the settings from the GUI, so my only choice was to add a yml file to my repo. Unfortunately
+the documentation on the exact format expected is not very clear. In particular, the [Wercker documentation](http://devcenter.wercker.com/docs/wercker-yml/creating-a-yml) is very light on the subject and does not include a reference page
+that describes everything that can go into the yml file. The problem is further exacerbated by the fact that Wercker is very
+picky when it comes to the format of the yml file.
+
+I managed to get a build running with Maven, but couldn't get a Gradle build to work correctly. The cache on my Maven build worked out of the box without any configuration.
+
+![Wercker dashboard](../../assets/ci-comparison/wercker/dashboard.png)
+
+On the plus side, Wercker provides a [command line client](http://www.wercker.com/wercker-cli) that not only can check your config file, but even runs
+the build locally (using Docker). The CLI is available only for Linux and MacOSX. The CLI is open-source
+and [available on GitHub](https://github.com/wercker/wercker) (unlike Codeship Pro). A very nice feature indeed.
+
+Wercker also supports pipelines but in strange way. You have to define them in the yml file and then connect
+them in the UI.
+
+![Wercker pipelines](../../assets/ci-comparison/wercker/pipeline.png)
+
+Overall I tried to like Wercker but I am really tired of [battling with yml files](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/).
+It feels like a solid product, but the competition is much better in regards to configuration.
+
+Also notice that Wercker does **NOT** support running Docker commands as part of your build
+and this is [actually](http://devcenter.wercker.com/docs/faq/can-i-build-dockerfiles)  by [design](http://devcenter.wercker.com/docs/faq/can-i-run-docker-commands). 
+
+If you work at Wercker and read this, please see how easy configuration can be done with other services (e.g. CircleCI).
+
+
+| Website    | [Wercker](http://www.wercker.com/) |
+| Pricing    | [Details](http://www.wercker.com/pricing) |
+| Documentation    | Very [basic](http://devcenter.wercker.com/docs/home). Configuration options lack documentation.  |
+| User Interface | Clean and well designed  |
+| Build configuration | Very complex yml format with insufficient documentation. Does not work without it.  |
+| Docker support | No and seems that [it will stay that way](http://devcenter.wercker.com/docs/faq/can-i-run-docker-commands).|
+| Extra features    | A [cli](http://devcenter.wercker.com/docs/cli) for local builds. [Team control](http://devcenter.wercker.com/docs/organizations/people-and-teams). An [API](http://devcenter.wercker.com/docs/api). [Pipelines](http://devcenter.wercker.com/docs/pipelines)|
+| Disadvantages    | Requires a yml file with picky format and lack of good documentation  |
+| Killer feature    | Open source CLI that builds locally|
+| **Final Verdict**    | While Wercker could work ok for Java projects, I do not truly recommend it as there are several other products with much easier configuration (e.g. BuddyWorks and CircleCI). |
 
 ### Conclusion
 
