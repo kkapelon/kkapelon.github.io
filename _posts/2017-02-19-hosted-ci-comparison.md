@@ -15,6 +15,8 @@ for both Maven and Gradle dependencies without any extra configuration.
 Unfortunately SnapCI was [discontinued in February 2017](https://blog.snap-ci.com/blog/2017/02/06/2017-02-06-snap-announcement/) so I have to yet again research all the available options.
 This time I am sharing my discoveries so that I may save you some time.
 
+Feel free also to read the [prequel](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/) of this survey first.
+
 
 #### Hosted Continuous Integration products.
 
@@ -216,7 +218,7 @@ understand what I was doing wrong until I saw what Dockerfile format Codefresh s
 ![Codefresh Java dockerfile](../../assets/ci-comparison/codefresh/dockerfile.png)
 
 Yes you guessed it! Codefresh assumes that you have a single Docker image both for compilation and running of your code.
-This is a major no-no for Java applications. There are several binaries that you need only during the build phase (e.g. Maven, JUnit, Spock) and several things that you only need during runtime (e.g. Tomcat). Creating a single Docker image is not only wasteful but also against the proper isolation guidelines.
+This is a major no-no for Java applications. There are several binaries that you need only during the build phase (e.g. Maven, JUnit, Spock) and several things that you only need during runtime (e.g. Tomcat). Even Java itself is different for each environment (JDK for compilation vs JRE for running). Creating a single Docker image is not only wasteful but also against the proper isolation guidelines.
 
 Things are even worse if you are a Go developer. A Go Docker compilation image requires the full Go dev enviroment. The runtime
 Docker image however requires nothing at all (assuming that you compile statically).
