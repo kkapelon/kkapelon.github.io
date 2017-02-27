@@ -257,14 +257,6 @@ In fact I looked at the preconfigured examples offered by Codefresh and indeed a
 | Killer feature    | The first and only platform build around Docker|
 | **Final Verdict**    | I don't recommend Codefresh for Java projects. In fact I don't recommend Codefresh for any compiled runtime (e.g. C++, Go).  |
 
-
-
-
-
-
-
-
-
 ### Codeship
 
 [Codeship](https://codeship.com/) is another American company from Boston. They have a vibrant web page filled
@@ -429,6 +421,85 @@ very confusing.
 
 
 ### Distelli
+
+[Distelli](https://www.distelli.com/) is a American company launched in 2013 and based in Seattle.
+
+They have a very active web page with [blogs posts](http://www.blog.distelli.com/) covering several topics regarding
+containers, pipelines and Kubernetes deployments.
+
+Calling Distelli a hosted CI service would be an understatement. It is a complete one-shop solution
+for the whole deployment process. It has
+
+* support of declaring your environments and deployments (like [GoCD](https://www.gocd.io/))
+* a graphical [pipeline builder](http://www.blog.distelli.com/single-post/2015/11/10/Introducing-Pipelines-Mission-Control-for-DevOps)
+* support for its own [Docker repository](https://www.distelli.com/docs/europa)
+* support for adding your local data center as a build server
+* support for adding your local data center as a deployment target
+* a complete dashboard for managing [Kubernetes clusters](http://www.blog.distelli.com/single-post/2016/12/14/Continuous-Containers-on-Kubernetes) 
+
+While other CI services stop at the deployment phase, Distelli can also help you monitor your environments
+and finally answer the age-old question "what version of application X is deployed on environment Y".
+
+I didn't have time to evaluate everything that Distelli offers and focused on the CI part mainly. The Kubernetes
+support probably deserves an article on its own.
+
+Adding my sample projects was a very easy process. There is no support for build-system autodetection but Distelli
+will propose templates for popular languages (including Java).
+
+![Distelli Java](../../assets/ci-comparison/distelli/configuration.png)
+
+Once all my projects were imported I could build them right away. Distelli supports either a yml file or a GUI
+for defining custom commands. The documentation on the yml file is [very extensive](https://www.distelli.com/docs/manifest/distelli-manifest) (take notes Wercker).
+
+![Distelli dashboard](../../assets/ci-comparison/distelli/dashboard.png)
+
+The next feature I evaluated were environments and pipelines. Distelli comes with one of the most
+beautiful way of creating pipelines. There is a detailed GUI to create environments, assign servers
+to them and define all the build steps of any complex process you can imagine.
+
+![Distelli pipeline](../../assets/ci-comparison/distelli/pipelines.png)
+
+The beauty however is that Distelli takes a holistic approach to software deployments, allowing you to define
+application dependencies, define environments and their respective servers and in effect model your
+whole runtime environment using a friendly UI. This gives you a much better overview of builds. Apart
+of the general build status you also get a report on where/when that particular build was deployed.
+
+![Distelli overview](../../assets/ci-comparison/distelli/overview.png)
+
+The icing of the cake is that Distelli offers a [build agent](https://www.distelli.com/docs/agent/distelli-agent) which has a combo role. It can act either
+as a local build server (allowing you to monitor local capacity in the Distelli UI) or as an agent
+to be installed for a target deployment server. Very impressive indeed!
+
+I had no problem to download and install the agent, adding my laptop as a deployment target.
+
+![Distelli local server](../../assets/ci-comparison/distelli/my-local-environments.png)
+
+At this point in time I thought I had found the perfect CI platform. The hybrid build agent, the flexible pipeline GUI and the Kubernetes
+dashboard are unique features of Distelli, pushing it well ahead of all its competitors.
+
+But I was quickly discouraged of recommending Distelli as I noticed that both my Maven and Gradle projects did
+not cache their dependencies. They were re-downloaded every time again and again for each build. Unfortunately
+Distelli does not support (!!!) caching directories at the time of writing. 
+
+I don't understand how such an important feature is missing from an otherwise impeccable service. Lack of cache configuration
+is a big omission and prevents me from wholeheartedly recommending Distelli as the ultimate building solution. Sad but true.
+
+I will keep a close eye on Distelli because in the future it might become the king of CI products. 
+
+| Website    | [Distelli](https://www.distelli.com/) |
+| Pricing    | [Details](https://www.distelli.com/pricing) |
+| Documentation    | Probably the [most comprehensive](https://www.distelli.com/docs) I have ever seen |
+| User Interface | Very well thought interface. Pipeline GUI is jaw-dropping|
+| Build configuration | A yml can be used or build steps can be created in place|
+| Docker support | Built-in|
+| Extra features    | [Pipelines](https://www.distelli.com/docs/kb/introduction-to-dashboards), [API](https://www.distelli.com/docs/api/getting-started-with-distelli-api) , [Local build client](https://www.distelli.com/docs/agent/installing-the-distelli-cli), [Kubernetes support](https://distelli.engineering/kubernetes-ci-cd-with-docker-and-node-2ac29cf48b2b#.h50iv82sq) and more|
+| Disadvantages    | No configurable cache for either Maven or Gradle |
+| Killer feature    | An one-stop-shop for your deployment pipelines |
+| **Final Verdict**    | Distelli is very impressive but until it gains cache support I cannot really recommend it for Java projects|
+
+
+
+
 
 ### SemaphoreApp
 
@@ -722,6 +793,21 @@ If you work at Wercker and read this, please see how easy configuration can be d
 | **Final Verdict**    | While Wercker could work ok for Java projects, I do not truly recommend it as there are several other products with much easier configuration (e.g. BuddyWorks and CircleCI). |
 
 ### Conclusion
+
+| Company                          | Clean UI      | Configuration | Cache | Docker support| Pipelines | Local builds | SSH | Recommended |
+| -------------                    |:--------|  ------ |  ------ | ------ |------  | ------ | ------ |------ |
+| [Buddy Works](#buddyworks)       | yes     | yml/Gui | yes | yes|  yes | no |  no| yes|
+| [CircleCI](#circleci)            | yes | yml/Gui | partial| partial | no | no | yes | yes|
+| [Codefresh](#codefresh)          | yes | dockerfile | yes  | yes  | no | no  | no | no|
+| [Codeship](#codeship)            | no | yml/Gui | partial | pending | no | pending | yes  | maybe |
+| [DeployBot](#deploybot)          | No! | awful | - | - | -  |-  | -  | Hell no |
+| [Distelli](#distelli)            | yes | yml/Gui | no | yes | yes | yes | no | No |
+| [SemaphoreApp](#semaphoreapp)    | yes | gui | partial | yes  | no | no  | yes | maybe|
+| [Shippable](#shippable)          | yes | yml | no | yes | no | no | no | no|
+| [SolanoLabs](#solanolabs)        | | | | | | | | |
+| [Travis](#travis)                | no | yml | yes | yes  | no  | no  | no | yes |
+| [Vexor](#vexor)                  | yes | yml | yes| yes| no | no | yes| yes| 
+| [Wercker](#wercker)              | yes | yml | yes | no | yes| yes| no | no |
 
 
 
