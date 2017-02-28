@@ -30,7 +30,7 @@ If I miss anything [let me know](http://codepipes.com/contact.html).
 * [Codeship](#codeship) 
 * [DeployBot](#deploybot)
 * [Distelli](#distelli) 
-* [SemaphoreApp](#semaphoreapp) 
+* [SemaphoreCI](#semaphoreci) 
 * [Shippable](#shippable) 
 * [SolanoLabs](#solanolabs) 
 * [Travis](#travis) 
@@ -505,7 +505,7 @@ I will keep a close eye on Distelli because in the future it might become the ki
 
 
 
-### SemaphoreApp
+### SemaphoreCI
 
 *Disclaimer:* I have written [testing](https://semaphoreci.com/community/tutorials/testing-rest-endpoints-using-rest-assured) [tutorials](https://semaphoreci.com/community/tutorials/how-to-split-junit-tests-in-a-continuous-integration-environment) and a [blog post](http://blog.codepipes.com/containers/go-docker-semaphoreci-gcloud-tutorial.html) for SemaphoreCI, but I have no special
 affiliation with them.
@@ -530,7 +530,7 @@ for anything custom:
 
 ![Semaphore deployments](../../assets/ci-comparison/semaphore/pipeline.png)
 
-As with CircleCI, Semaphore allows you to SSH into your build slave for debugging purposes. The keys used for the SSH access are unrelated with the Github ones. You create them
+As with CircleCI, SemaphoreCI allows you to SSH into your build slave for debugging purposes. The keys used for the SSH access are unrelated with the Github ones. You create them
 explicitly for debugging.
 
 ![Semaphore deployments](../../assets/ci-comparison/semaphore/ssh.png)
@@ -808,13 +808,13 @@ After all is said and done here is the comparison chart you have been waiting fo
 | [Codefresh](#codefresh)          | Yes | dockerfile | Yes  | Yes  | No | Yes  | No | No |
 | [Codeship](#codeship)            | No | yml/GUI | Partial | pending | No | pending | Yes  | Maybe |
 | [DeployBot](#deploybot)          | No! | awful | No | - | -  |-  | -  | Hell No |
-| [Distelli](#distelli)            | Yes | yml/GUI | No | Yes | Yes | Yes | No | No |
-| [SemaphoreApp](#semaphoreapp)    | Yes | GUI | Partial | Yes  | No | No  | Yes | Yes (Maven)|
+| [Distelli](#distelli)            | Yes | yml/GUI | No | Yes | Yes | No | No | No |
+| [SemaphoreCI](#semaphoreci)    | Yes | GUI | Partial | Yes  | No | No  | Yes | Yes (Maven)|
 | [Shippable](#shippable)          | Yes | yml only| No | Yes | No | No | No | No|
 | [SolanoLabs](#solanolabs)        | | | | | | | | |
 | [Travis](#travis)                | No | yml only | Yes | Yes  | No  | No  | No | Yes |
 | [Vexor](#vexor)                  | Yes | yml/GUI | Yes| Yes| No | No | Yes| Yes| 
-| [Wercker](#wercker)              | Yes | yml only| Yes | No | Yes| Yes| No | No |
+| [Wercker](#wercker)              | Yes | yml only| Yes | No | Yes| Yes| No | Maybe |
 
 Some explanations regarding the values and features:
 
@@ -865,7 +865,7 @@ it with `Yes` in the respective column.
 ##### SSH into build slaves.
 
 While build logs are certainly helpful when a build fails, having SSH support for a build slave is the ultimate tool
-for debugging build problems. At the time of writing this capability is offered only by CircleCI, Codeship, SemaphoreApp and
+for debugging build problems. At the time of writing this capability is offered only by CircleCI, Codeship, SemaphoreCI and
 Vexor.
 
 
