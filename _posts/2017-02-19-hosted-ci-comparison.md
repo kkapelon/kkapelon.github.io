@@ -481,12 +481,14 @@ I had no problem to download and install the agent, adding my laptop as a deploy
 At this point in time I thought I had found the perfect CI platform. The hybrid build agent, the flexible pipeline GUI and the Kubernetes
 dashboard are unique features of Distelli, pushing it well ahead of all its competitors.
 
-But I was quickly discouraged of recommending Distelli as I noticed that both my Maven and Gradle projects did
+But I was quickly discouraged from recommending Distelli as I noticed that both my Maven and Gradle projects did
 not cache their dependencies. They were re-downloaded every time again and again for each build. Unfortunately
 Distelli does not support (!!!) caching directories at the time of writing. 
 
 I don't understand how such an important feature is missing from an otherwise impeccable service. Lack of cache configuration
 is a big omission and prevents me from wholeheartedly recommending Distelli as the ultimate building solution. Sad but true.
+
+I contacted Distelli about this show-stopper issue and they informed me that the hosted build servers indeed do not support this. This is why they offer the capability to handle local build servers (where obviously I have complete control).
 
 I will keep a close eye on Distelli because in the future it might become the king of CI products. 
 
@@ -499,10 +501,7 @@ I will keep a close eye on Distelli because in the future it might become the ki
 | Extra features    | [Pipelines](https://www.distelli.com/docs/kb/introduction-to-dashboards), [API](https://www.distelli.com/docs/api/getting-started-with-distelli-api) , [Local build client](https://www.distelli.com/docs/agent/installing-the-distelli-cli), [Kubernetes support](https://distelli.engineering/kubernetes-ci-cd-with-docker-and-node-2ac29cf48b2b#.h50iv82sq) and more|
 | Disadvantages    | No configurable cache for either Maven or Gradle |
 | Killer feature    | An one-stop-shop for your deployment pipelines |
-| **Final Verdict**    | Distelli is very impressive but until it gains cache support I cannot really recommend it for Java projects|
-
-
-
+| **Final Verdict**    | Distelli is very impressive but until it gains cache support I cannot really recommend it for Java projects (unless you only use local build servers).|
 
 
 ### SemaphoreCI
@@ -857,10 +856,13 @@ Distelli and BuddyWorks have the most comprehensive pipeline support. Wercker al
 ##### Local builds
 
 It is very convenient to be able to run a build locally in exactly the same manner as the build server. At the time or writing
-only Distelli, Codeship Pro and Wercker support this feature.
+only Codeship Pro and Wercker support this feature (i.e. building without committing anything).
 
 Codefresh is built around Docker, so running a build locally is the same as using Docker itself and this is why I mark
 it with `Yes` in the respective column.
+
+Distelli takes a completely different approach allowing you to use local build servers (but they are still managed
+by their web interface).
 
 ##### SSH into build slaves.
 
