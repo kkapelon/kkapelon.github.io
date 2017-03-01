@@ -199,7 +199,7 @@ I spent a lot of time trying to decide if I need to include Codefresh in my revi
 to be a hosted CI service ([advertising Java support](https://docs.codefresh.io/docs/java)) and even have a whole blog post about [migration from SnapCI](https://codefresh.io/blog/alternatives-to-snapci/).
 
 In reality however, Codefresh is a Docker Image Management platform. This is a very interesting idea and moves Codefresh
-on a league on its own. Whether that league is above or bellow the "normal" hosted CI services is questionable. I decided
+on a league on its own. Whether that league is above or bellow the "normal" hosted CI services league is questionable. I decided
 to include them for completeness but please make sure that you understand the paradigm behind Codefresh before
 rejecting/adopting it. 
 
@@ -256,7 +256,7 @@ In fact I looked at the preconfigured examples offered by Codefresh and indeed a
 | Docker support | Using Docker is a requirement. Actually the whole platform revolves around it|
 | Extra features    | Support for Docker compose and running Docker images|
 | Disadvantages    | Requires Docker for everything. Only good for interpreted languages  |
-| Killer feature    | The first and only platform build around Docker|
+| Killer feature    | The first and only platform built around Docker|
 | **Final Verdict**    | I don't recommend Codefresh for Java projects. In fact I don't recommend Codefresh for any compiled runtime (e.g. C++, Go).  |
 
 ### Codeship
@@ -621,6 +621,52 @@ Like Codeship, Shippable is an imbalanced product. The UI is great, the features
 
 ### SolanoLabs
 
+[SolanoLabs](https://www.solanolabs.com) (previously known as Tddium ) is an American company founded in 2011 with offices in Boston and San Fransisco. They 
+have a very "enterprisy" [page](https://www.solanolabs.com/services) and a [blog](http://blog.solanolabs.com/)  
+that seems to be filled with press releases mostly, instead of actual engineering content.
+
+The service supports Git repositories from Github only. You can also use
+local GIT repos via the Solano CLI. This is a very useful feature for companies that do not host their code in public clouds.
+
+Creating a new project is a very easy process.
+As with Travis, SolanoLabs has this bad habit of requiring a yml configuration file and will refuse to run without one.
+
+![Solano yml required](../../assets/ci-comparison/solano/yml-required.png)
+
+Unlike Wercker however, SolanoLabs has excellent documentation on the contents of the yml, so it was very easy to create
+one and get a successful build right away.
+
+![Solano build](../../assets/ci-comparison/solano/build.png)
+
+Cache support is very flexible as you can define any directory to be cached. There is explicit documentation for both
+[Gradle and Maven](http://docs.solanolabs.com/ConfiguringLanguage/java/) cache so adding the respective line in the yml file was straightforward.
+
+When a build fails, you can easily connect to the build slave using SSH. The keys are completely different
+than the ones you have in GitHub. By default you get 30 minutes of connection time and you can easily extend them.
+
+ ![Solano ssh](../../assets/ci-comparison/solano/ssh.png)
+
+ In general SolanoCI is a well balanced solution. My only complaint with the service would be the UI sizing. Some of the fonts are really small for no particular reason.
+ The main buttons and important details are ok, but I think that some UX changes would certainly be welcome.
+
+ ![Solano ssh](../../assets/ci-comparison/solano/small-ui.png)
+
+ Overall I was very happy with SolanoCI. It works as it should and judging by its documentation it seems to offer
+ anything you might need. Some features are by request (e.g. Docker) and Pipelines are still in Beta so this could
+ be a disadvantage if you need to use them. I did not try Pipelines but they seem to be defined in the YML file
+ so if you prefer a graphical way you should look at Distelli or BuddyWorks.
+
+| Website    | [SolanoLabs](ttps://www.solanolabs.com) |
+| Pricing    | [Details](https://www.solanolabs.com/#pricing) |
+| Documentation    | Very [comprehensive](http://docs.solanolabs.com/). Explicit support for Java |
+| User Interface | Needs bigger fonts in some places. Could use the full width in bigger screens. |
+| Build configuration | Everything happens via a yml file. Configurable Cache. |
+| Docker support | Yes but you need to [request it first](http://docs.solanolabs.com/Setup/docker/).|
+| Extra features    | Parallel tests, [Command line client](https://github.com/solanolabs/solano), [SSH support](http://docs.solanolabs.com/AccountManagement/ssh-configuration/), [Pipelines](http://docs.solanolabs.com/Beta/build-pipelines/) (in beta), Test results|
+| Disadvantages    | No language autodetection. Configuration file is required. |
+| Killer feature    | Very flexible configuration. Feature rich for enterprise projects|
+| **Final Verdict**    | I can recommend SolanoCI for both Maven and Gradle projects.  Especially for large and complex code-bases SolanoCI seem to offer everything you might need|
+
 ### Travis
 
 [Travis](https://travis-ci.org/) is the service that has become synonymous with hosted CI. It is also the service
@@ -805,12 +851,12 @@ After all is said and done here is the comparison chart you have been waiting fo
 | [Buddy Works](#buddyworks)       | Yes     | yml/GUI | Yes | Yes|  Yes | No |  No| Yes|
 | [CircleCI](#circleci)            | Yes | yml/GUI | Partial| Partial | No | No | Yes | Yes|
 | [Codefresh](#codefresh)          | Yes | dockerfile | Yes  | Yes  | No | Yes  | No | No |
-| [Codeship](#codeship)            | No | yml/GUI | Partial | pending | No | pending | Yes  | Maybe |
+| [Codeship](#codeship)            | No | yml/GUI | Partial | Pending | No | Pending | Yes  | Maybe |
 | [DeployBot](#deploybot)          | No! | awful | No | - | -  |-  | -  | Hell No |
 | [Distelli](#distelli)            | Yes | yml/GUI | No | Yes | Yes | No | No | No |
 | [SemaphoreCI](#semaphoreci)    | Yes | GUI | Partial | Yes  | No | No  | Yes | Yes (Maven)|
 | [Shippable](#shippable)          | Yes | yml only| No | Yes | No | No | No | No|
-| [SolanoLabs](#solanolabs)        | | | | | | | | |
+| [SolanoLabs](#solanolabs)        | Yes | yml only| Yes | Yes | Pending | No | Yes | Yes |
 | [Travis](#travis)                | No | yml only | Yes | Yes  | No  | No  | No | Yes |
 | [Vexor](#vexor)                  | Yes | yml/GUI | Yes| Yes| No | No | Yes| Yes| 
 | [Wercker](#wercker)              | Yes | yml only| Yes | No | Yes| Yes| No | Maybe |
@@ -864,10 +910,12 @@ it with `Yes` in the respective column.
 Distelli takes a completely different approach allowing you to use local build servers (but they are still managed
 by their web interface).
 
+
+
 ##### SSH into build slaves.
 
 While build logs are certainly helpful when a build fails, having SSH support for a build slave is the ultimate tool
-for debugging build problems. At the time of writing this capability is offered only by CircleCI, Codeship, SemaphoreCI and
+for debugging build problems. At the time of writing this capability is offered only by CircleCI, Codeship, SemaphoreCI, SolanoLabs and
 Vexor.
 
 
