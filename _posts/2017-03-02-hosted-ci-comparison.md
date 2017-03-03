@@ -221,13 +221,13 @@ The killer features of Codefresh are that it allows you to view/manage the Docke
 requiring an external Docker registry and it even offers test environments to launch your Docker images!
 
 This is a very impressive feature as it allows you to easily demonstrate new features to your collegues (or customers)
-without requiring any formal deployment environment. You can also use Docker compose on these test environment. I can see a lot of useful scenarios for this capability.
+without requiring any formal deployment environments. You can also use Docker compose on these test environment. I can see a lot of useful scenarios for this capability.
 
 I had no trouble to run my Java application within a Docker image:
 
 ![Codefresh builds](../../assets/ci-comparison/codefresh/live-run.png)
 
- Coming back to the build environment I could not see any support for defining a cache directory for Maven and/or Gradle. 
+ Coming back to the build environment, I could not see any support for defining a cache directory for Maven and/or Gradle. 
  Each build was downloading the full dependencies again and again. I finally found a workaround in [a blog post](https://codefresh.io/blog/caching-build-dependencies-codefresh-volumes/) (outside 
  of their official documentation), but it is not a proper solution as instead of defining multiple cache directories it requires 
  you to use a single reusable cache directory (and point Maven/Gradle to it).
@@ -842,7 +842,7 @@ After all is said and done here is the comparison chart you have been waiting fo
 | -------------                    |:--------|  ------ |  ------ | ------ |------  | ------ | ------ |------ |
 | [Buddy Works](#buddyworks)       | Yes     |yml/GUI | Yes | Yes|  Yes | No |  No| Yes|
 | [CircleCI](#circleci)            | Yes  |yml/GUI | Partial| Partial | No | No | Yes | Yes|
-| [Codefresh](#codefresh)          | Yes  |yml/dockerfile | No  | Yes  | No | No  | No | Maybe |
+| [Codefresh](#codefresh)          | Yes  |yml/dockerfile | No  | Yes  | No | Yes (Docker)  | No | Maybe |
 | [Codeship](#codeship)            | No | yml/GUI | Partial | Pending | No | Pending | Yes  | Maybe |
 | [DeployBot](#deploybot)          | No!  | awful | No | - | -  |-  | -  | Hell No |
 | [Distelli](#distelli)            | Yes  | yml/GUI | No | Yes | Yes | No | No | No |
@@ -852,6 +852,8 @@ After all is said and done here is the comparison chart you have been waiting fo
 | [Travis](#travis)                | No  |yml only | Yes | Yes  | No  | No  | No | Yes |
 | [Vexor](#vexor)                  | Yes   |yml/GUI | Yes| Yes| No | No | Yes| Yes| 
 | [Wercker](#wercker)              | Yes  | yml only| Yes | No | Yes| Yes| No | Maybe |
+
+Not shown in this table are some unique features to Distelli ([Local agent](https://www.distelli.com/docs/kb/using-your-own-build-server), [Kubernetes Dashboard](https://www.distelli.com/docs/k8s/create-project)) and CodeFresh ([launching Docker images](https://docs.codefresh.io/docs/test-your-feature)) so keep that in mind as well.
 
 Some explanations regarding the values and features:
 
