@@ -838,20 +838,20 @@ If you work at Wercker and read this, please see how easy configuration can be d
 
 After all is said and done here is the comparison chart you have been waiting for.
 
-| Company                          | Clean UI      | Configuration | Cache | Docker support| Pipelines | Local builds | SSH | Recommended |
+| Company                          | Clean UI       | Configuration | Cache | Docker support| Pipelines | Local builds | SSH | Recommended |
 | -------------                    |:--------|  ------ |  ------ | ------ |------  | ------ | ------ |------ |
-| [Buddy Works](#buddyworks)       | Yes     | yml/GUI | Yes | Yes|  Yes | No |  No| Yes|
-| [CircleCI](#circleci)            | Yes | yml/GUI | Partial| Partial | No | No | Yes | Yes|
-| [Codefresh](#codefresh)          | Yes | dockerfile | Yes  | Yes  | No | Yes  | No | No |
+| [Buddy Works](#buddyworks)       | Yes     |yml/GUI | Yes | Yes|  Yes | No |  No| Yes|
+| [CircleCI](#circleci)            | Yes  |yml/GUI | Partial| Partial | No | No | Yes | Yes|
+| [Codefresh](#codefresh)          | Yes  |yml/dockerfile | No  | Yes  | No | No  | No | Maybe |
 | [Codeship](#codeship)            | No | yml/GUI | Partial | Pending | No | Pending | Yes  | Maybe |
-| [DeployBot](#deploybot)          | No! | awful | No | - | -  |-  | -  | Hell No |
-| [Distelli](#distelli)            | Yes | yml/GUI | No | Yes | Yes | No | No | No |
-| [SemaphoreCI](#semaphoreci)    | Yes | GUI | Partial | Yes  | No | No  | Yes | Yes (Maven)|
-| [Shippable](#shippable)          | Yes | yml only| No | Yes | No | No | No | No|
-| [SolanoLabs](#solanolabs)        | Yes | yml only| Yes | Yes | Pending | No | Yes | Yes |
-| [Travis](#travis)                | No | yml only | Yes | Yes  | No  | No  | No | Yes |
-| [Vexor](#vexor)                  | Yes | yml/GUI | Yes| Yes| No | No | Yes| Yes| 
-| [Wercker](#wercker)              | Yes | yml only| Yes | No | Yes| Yes| No | Maybe |
+| [DeployBot](#deploybot)          | No!  | awful | No | - | -  |-  | -  | Hell No |
+| [Distelli](#distelli)            | Yes  | yml/GUI | No | Yes | Yes | No | No | No |
+| [SemaphoreCI](#semaphoreci)    | Yes   | GUI | Partial | Yes  | No | No  | Yes | Yes (Maven)|
+| [Shippable](#shippable)          | Yes  | yml only| No | Yes | No | No | No | No|
+| [SolanoLabs](#solanolabs)        | Yes  |yml only| Yes | Yes | Pending | No | Yes | Yes |
+| [Travis](#travis)                | No  |yml only | Yes | Yes  | No  | No  | No | Yes |
+| [Vexor](#vexor)                  | Yes   |yml/GUI | Yes| Yes| No | No | Yes| Yes| 
+| [Wercker](#wercker)              | Yes  | yml only| Yes | No | Yes| Yes| No | Maybe |
 
 Some explanations regarding the values and features:
 
@@ -861,14 +861,18 @@ By this I mean how easy it was to navigate the UI and perform my tasks. This is 
 want to read the details in the respective section for each service. Deploybot has a horrendous UI and needs a complete
 redesign. Codeship and Travis had some minor problems.
 
+
 #### Configuration
 
 I have [already described](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/) why requiring yml files is a bad practice. 
 
 At the simplest case each service should allow you to define a simple build just from the UI. A yml file should be optional.
-Shippable, Travis, and Wercker are particularly bad examples of requiring a yml file before a build can even start. Organizations
+Shippable, Travis, SolanoLabs and Wercker are particularly bad examples of requiring a yml file before a build can even start. Organizations
 that have a lot of Micro-services will find it very consuming to commit a yml file to each repository right at the beginning
 (especially when the format of the yml file is a result of trial and error).
+
+The only products that could autodetect my build system and offer suggestions for the build commands were
+CircleCI, SemaphoreCI and Vexor.
 
 #### Cache
 
@@ -877,6 +881,9 @@ a very good chance that fetching these dependencies might take as much time as t
 
 `Partial` support means that I could get cache working for Maven but not Gradle. `Yes` means that both my Gradle and Maven 
 builds had cache enabled. 
+
+For me this is probably the most important feature as lack of cache will make all builds much slower (and in some case
+the dependency downloading dominates the actual compilation)
 
 #### Docker support
 
@@ -888,20 +895,17 @@ Docker in my builds, either by overriding the default build environment with a c
 
 A pipeline is any arbitrary sequence of steps as defined [in the continuous delivery book](https://martinfowler.com/books/continuousDelivery.html). Several products advertise pipelines and they just mean that you can add a deployment step
 after your compilation phase. This is certainly a start, but complex pipelines cannot be created with such as simple model.
+Pipelines should also be able to fan out (parallel steps) and the merge back in.
 
-Distelli and BuddyWorks have the most comprehensive pipeline support. Wercker also offers pipelines in a much more complex manner.
+Distelli and BuddyWorks have the most comprehensive pipeline support. Wercker also offers pipelines in a much more complex manner. SolanoLabs has proper [Pipeline support as a beta feature](http://docs.solanolabs.com/Beta/build-pipelines/).
 
 ##### Local builds
 
 It is very convenient to be able to run a build locally in exactly the same manner as the build server. At the time or writing
 only Codeship Pro and Wercker support this feature (i.e. building without committing anything).
 
-Codefresh is built around Docker, so running a build locally is the same as using Docker itself and this is why I mark
-it with `Yes` in the respective column.
-
 Distelli takes a completely different approach allowing you to use local build servers (but they are still managed
 by their web interface).
-
 
 
 ##### SSH into build slaves.
@@ -910,6 +914,32 @@ While build logs are certainly helpful when a build fails, having SSH support fo
 for debugging build problems. At the time of writing this capability is offered only by CircleCI, Codeship, SemaphoreCI, SolanoLabs and
 Vexor.
 
+### A final word about pricing
+
+Trying to compare products for their price proved a very difficult process. Some products charge with number of projects,
+some charge with executors, and some (i.e. Vexor) charge by build times! Pricing is something volatile, and I imagine
+that if you are a big/well known company you might get different quotes anyway.
+
+As a starting point I mention which products are free for open source (public) projects and the cheapest plan. If you have a better
+table than this I am happy to include it here.
+
+| Company                          | Open Source projects  | Free version |    Pricing starts at |
+| -------------                    |:--------|   ------ |  ------ |  
+| [Buddy Works](#buddyworks)       | No     | 1 project | $49/month (25 projects 1 executor)| 
+| [CircleCI](#circleci)            | No  | 1500 minutes/1 executor | $50/month (2 executors) | 
+| [Codefresh](#codefresh)          | No  |1 executor/environment | $99 (3 executors) |
+| [Codeship](#codeship)            | No | 1 builder/100 builds | $75 Codeship pro |
+| [DeployBot](#deploybot)          | No  | No | $15 for 10 projects | 
+| [Distelli](#distelli)            | Yes (with limitations) | 1 repository | $7 (10 executors) |
+| [SemaphoreCI](#semaphoreci)    | Yes (no limits)   | Yes | $29 (1 executor unlimited private projects) |
+| [Shippable](#shippable)          | Yes (no limits)   | Yes (150 builds)| $25 (1 executor) | 
+| [SolanoLabs](#solanolabs)        | No  |No| $15 (2 executors/ 10 hours) | 
+| [Travis](#travis)                | Yes (no limits)  |Yes (no limits)  | $69 (1 executor) |
+| [Vexor](#vexor)                  | No   |100 minutes | $0.015 per minute | 
+| [Wercker](#wercker)              | No  | 2 executors | $350 (3 executors) | 
+
+
+That's it! I hope I saved you some time.
 
 
 
