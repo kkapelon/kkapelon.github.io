@@ -884,13 +884,13 @@ a very good chance that fetching these dependencies might take as much time as t
 `Partial` support means that I could get cache working for Maven but not Gradle. `Yes` means that both my Gradle and Maven 
 builds had cache enabled. 
 
-For me this is probably the most important feature as lack of cache will make all builds much slower (and in some case
-the dependency downloading dominates the actual compilation)
+For me this is probably the most important feature as lack of cache will make all builds much slower (and in some cases
+the dependency downloading dominates the actual compilation).
 
 #### Docker support
 
 This is a very confusing metric for a lot of people. Several products advertise Docker support and actually mean that they use Docker internally for powering 
-the service itself. Frankly this is irrelevant for me. Docker support for me means that the service allows **me** to use
+the service itself. Frankly this is irrelevant to me. Docker support for me means that the service allows **me** to use
 Docker in my builds, either by overriding the default build environment with a custom Docker image or by creating Docker images as artifacts at the end of the build.
 
 #### Pipelines
@@ -925,20 +925,20 @@ that if you are a big/well known company you might get different quotes anyway.
 As a starting point I mention which products are free for open source (public) projects and the cheapest plan. If you have a better
 table than this I am happy to include it here.
 
-| Company                          | Open Source projects  | Free version |    Pricing starts at |
+| Company                          | Free for Open Source projects  | Free version |    Pricing starts at |
 | -------------                    |:--------|   ------ |  ------ |  
 | [Buddy Works](#buddyworks)       | No     | 1 project | $49/month (25 projects 1 executor)| 
 | [CircleCI](#circleci)            | Yes (with limitations)  | 1500 minutes/1 executor | $50/month (2 executors) | 
-| [Codefresh](#codefresh)          | Yes (with limitations)  |1 executor/environment | $99 (3 executors) |
-| [Codeship](#codeship)            | No | 1 builder/100 builds | $75 Codeship pro |
-| [DeployBot](#deploybot)          | No  | No | $15 for 10 projects | 
-| [Distelli](#distelli)            | Yes (with limitations) | 1 repository | $7 (10 executors) |
-| [SemaphoreCI](#semaphoreci)    | Yes (no limits)   | Yes | $29 (1 executor unlimited private projects) |
-| [Shippable](#shippable)          | Yes (no limits)   | Yes (150 builds)| $25 (1 executor) | 
-| [SolanoLabs](#solanolabs)        | No  |No| $15 (2 executors/ 10 hours) | 
-| [Travis](#travis)                | Yes (no limits)  |Yes (no limits)  | $69 (1 executor) |
+| [Codefresh](#codefresh)          | Yes (with limitations)  |1 executor/environment | $99/month (3 executors) |
+| [Codeship](#codeship)            | Yes (no limits) | 1 builder/100 builds | $49/month (Basic) or $75/month (Pro version) |
+| [DeployBot](#deploybot)          | No  | No | $15/month for 10 projects | 
+| [Distelli](#distelli)            | Yes (with limitations) | 1 repository | $7/month (10 executors) |
+| [SemaphoreCI](#semaphoreci)    | Yes (no limits)   | Yes | $29/month (1 executor unlimited private projects) |
+| [Shippable](#shippable)          | Yes (no limits)   | Yes (150 builds)| $25/month (1 executor) | 
+| [SolanoLabs](#solanolabs)        | No  |No| $15/month (2 executors/ 10 hours) | 
+| [Travis](#travis)                | Yes (no limits)  |Yes (no limits)  | $69/month (1 executor) |
 | [Vexor](#vexor)                  | No   |100 minutes | $0.015 per minute | 
-| [Wercker](#wercker)              | No  | 2 executors | $350 (3 executors) | 
+| [Wercker](#wercker)              | No  | 2 executors | $350/month (3 executors) | 
 
 
 That's it! I hope I saved you some time.
