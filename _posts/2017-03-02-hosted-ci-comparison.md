@@ -185,7 +185,7 @@ If you work at CircleCI and are reading this, your product is almost perfect. Yo
 | Website    | [CircleCI](https://circleci.com/) |
 | Pricing    | [Details](https://circleci.com/pricing/) |
 | Documentation    | Documentation in CircleCI [is very extensive](https://circleci.com/docs/). It contains guides specific to each language along with the reference information. |
-| User Interface| Out of the products, CircleCI has arguably the best user interface. It is very clean and very well thought.  |
+| User Interface| Out of all the products, CircleCI has arguably the best user interface. It is very clean and very well thought.  |
 | Build configuration | Great autodetection of build systems. Uses either a yml file or custom UI builder. |
 | Docker support | [Basic support](https://circleci.com/docs/docker/) in the present version. Full support [in the next version](https://circleci.com/integrations/docker/).|
 | Extra features    |  [Splitting](https://circleci.com/docs/parallelism/) of tests. Project [Insights](https://circleci.com/blog/announcing-circleci-per-project-insights/). Fully [REST API](https://circleci.com/docs/api/)|
@@ -928,8 +928,8 @@ table than this I am happy to include it here.
 | Company                          | Open Source projects  | Free version |    Pricing starts at |
 | -------------                    |:--------|   ------ |  ------ |  
 | [Buddy Works](#buddyworks)       | No     | 1 project | $49/month (25 projects 1 executor)| 
-| [CircleCI](#circleci)            | No  | 1500 minutes/1 executor | $50/month (2 executors) | 
-| [Codefresh](#codefresh)          | No  |1 executor/environment | $99 (3 executors) |
+| [CircleCI](#circleci)            | Yes (with limitations)  | 1500 minutes/1 executor | $50/month (2 executors) | 
+| [Codefresh](#codefresh)          | Yes (with limitations)  |1 executor/environment | $99 (3 executors) |
 | [Codeship](#codeship)            | No | 1 builder/100 builds | $75 Codeship pro |
 | [DeployBot](#deploybot)          | No  | No | $15 for 10 projects | 
 | [Distelli](#distelli)            | Yes (with limitations) | 1 repository | $7 (10 executors) |
