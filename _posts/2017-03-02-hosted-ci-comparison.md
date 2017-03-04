@@ -643,12 +643,12 @@ than the ones you have in GitHub. By default you get 30 minutes of connection ti
 
  ![Solano ssh](../../assets/ci-comparison/solano/small-ui.png)
 
- Overall I was very happy with SolanoCI. It works as it should and judging by its documentation it seems to offer
+ Overall I was very happy with SolanoLabs. It works as it should and judging by its documentation it seems to offer
  anything you might need. Some features are by request (e.g. Docker) and Pipelines are still in Beta so this could
  be a disadvantage if you need to use them. I did not try Pipelines but they seem to be defined in the YML file
  so if you prefer a graphical way you should look at Distelli or BuddyWorks.
 
-| Website    | [SolanoLabs](ttps://www.solanolabs.com) |
+| Website    | [SolanoLabs](https://www.solanolabs.com) |
 | Pricing    | [Details](https://www.solanolabs.com/#pricing) |
 | Documentation    | Very [comprehensive](http://docs.solanolabs.com/). Explicit support for Java |
 | User Interface | Needs bigger fonts in some places. Could use the full width in bigger screens. |
@@ -662,7 +662,7 @@ than the ones you have in GitHub. By default you get 30 minutes of connection ti
 ### Travis
 
 [Travis](https://travis-ci.org/) is the service that has become synonymous with hosted CI. It is also the service
-that started [this annoying trend](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/) or requiring yml files for a build.
+that started [this annoying trend](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/) of requiring yml files for a build.
 
 Travis supports Github but not Bitbucket. Adding a new repository is very easy and painless. 
 
@@ -934,9 +934,9 @@ table than this I am happy to include it here.
 | [DeployBot](#deploybot)          | No  | No | $15/month for 10 projects | 
 | [Distelli](#distelli)            | Yes (with limitations) | 1 repository | $7/month (10 executors) |
 | [SemaphoreCI](#semaphoreci)    | Yes (no limits)   | Yes | $29/month (1 executor unlimited private projects) |
-| [Shippable](#shippable)          | Yes (no limits)   | Yes (150 builds)| $25/month (1 executor) | 
+| [Shippable](#shippable)          | Yes (no limits)   | Yes (150 builds)| $25/month (2 executors) | 
 | [SolanoLabs](#solanolabs)        | No  |No| $15/month (2 executors/ 10 hours) | 
-| [Travis](#travis)                | Yes (no limits)  |Yes (no limits)  | $69/month (1 executor) |
+| [Travis](#travis)                | Yes (no limits)  |No  | $69/month (1 executor) |
 | [Vexor](#vexor)                  | No   |100 minutes | $0.015 per minute | 
 | [Wercker](#wercker)              | No  | 2 executors | $350/month (3 executors) | 
 
