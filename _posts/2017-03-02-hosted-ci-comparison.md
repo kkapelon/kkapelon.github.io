@@ -897,7 +897,7 @@ Docker in my builds, either by overriding the default build environment with a c
 
 A pipeline is any arbitrary sequence of steps as defined [in the continuous delivery book](https://martinfowler.com/books/continuousDelivery.html). Several products advertise pipelines and they just mean that you can add a deployment step
 after your compilation phase. This is certainly a start, but complex pipelines cannot be created with such as simple model.
-Pipelines should also be able to fan out (parallel steps) and the merge back in.
+Pipelines should also be able to fan out (parallel steps) and then merge back in.
 
 Distelli and BuddyWorks have the most comprehensive pipeline support. Wercker also offers pipelines in a much more complex manner. SolanoLabs has proper [Pipeline support as a beta feature](http://docs.solanolabs.com/Beta/build-pipelines/).
 
