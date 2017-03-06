@@ -307,8 +307,8 @@ You ssh into a clone of the build machine while the build machine actually runs 
 build!
 This means that you can debug a failed build at your leisure without blocking the build
 queue.
-From all products tested, only Codeship supports this nonblocking
-ssh.
+From all products tested, only Codeship  and SemaphoreCI support this nonblocking
+ssh. 
 The keys used for the SSH access are unrelated with the Github ones. You create them
 explicitly for debugging.
 
@@ -509,7 +509,8 @@ I had a feeling that my experience with SemaphoreCI would be a positive one, rig
 ![Semaphore autodetection](../../assets/ci-comparison/semaphore/lein-autodetect.png)
 
 They also closely follow Gradle as they had the latest version (3.3 at the time of writing) installed in the build slave.
-Unfortunately the caching support is only active for Maven and no support exists for Gradle by default.
+Caching for both Maven and Gradle is enabled by default, but unfortunately cache is only created during the "setup" phase
+so as with CircleCI you might miss caching for some testing libraries.
 
 Overall the UI of SemaphoreCI is very stream-lined and well thought. They have a Jenkins-like dashboard that gathers
 all projects along with their latest build.
@@ -521,7 +522,7 @@ for anything custom:
 
 ![Semaphore deployments](../../assets/ci-comparison/semaphore/pipeline.png)
 
-As with CircleCI, SemaphoreCI allows you to SSH into your build slave for debugging purposes. The keys used for the SSH access are unrelated with the Github ones. You create them
+As with CircleCI, SemaphoreCI allows you to SSH into your build slave for debugging purposes. If you are paying for more than one boxes you can also SSH to the build slave, while the next build is already running (like Codeship). The keys used for the SSH access are unrelated with the Github ones. You create them
 explicitly for debugging.
 
 ![Semaphore deployments](../../assets/ci-comparison/semaphore/ssh.png)
@@ -539,10 +540,10 @@ If Gradle cache support was activated by default I would recommend it without an
 | User Interface | Very well thought interface. Could be improved by making use of the whole screen space in big screens.|
 | Build configuration | Impressive project autodetection. Very easy to add build steps.|
 | Docker support | Built-in|
-| Extra features    | [Insights](https://semaphoreci.com/blog/2015/11/20/semaphore-insights.html), Deployment pipelines, [test parallelism](https://semaphoreci.com/docs/running-tests-in-parallel.html)|
-| Disadvantages    | No Gradle cache. Maven cache [is ready](https://semaphoreci.com/docs/caching-between-builds.html)  |
+| Extra features    | [Insights](https://semaphoreci.com/blog/2015/11/20/semaphore-insights.html), Deployment pipelines, [test parallelism](https://semaphoreci.com/docs/running-tests-in-parallel.html), [API](https://semaphoreci.com/docs/api.html), [Team controls](https://semaphoreci.com/docs/organizations/creating-a-team.html)|
+| Disadvantages    | Cache needs some tuning. Lack of advanced pipelines |
 | Killer feature    | You can ssh to build servers. Excellent autodetection of build systems|
-| **Final Verdict**    | Highly recommended for Maven projects. Gradle projects need a workaround for cache support |
+| **Final Verdict**    | I can recommend SemaphoreCI for both Maven and Gradle projects |
 
 
 ### Shippable
@@ -846,7 +847,7 @@ After all is said and done here is the comparison chart you have been waiting fo
 | [Codeship](#codeship)            | No | yml/GUI | Partial | Pending | No | Pending | Yes  | Maybe |
 | [DeployBot](#deploybot)          | No!  | awful | No | - | -  |-  | -  | Hell No |
 | [Distelli](#distelli)            | Yes  | yml/GUI | No | Yes | Yes | No | No | No |
-| [SemaphoreCI](#semaphoreci)    | Yes   | GUI | Partial | Yes  | No | No  | Yes | Yes (Maven)|
+| [SemaphoreCI](#semaphoreci)    | Yes   | GUI | Partial | Yes  | No | No  | Yes | Yes|
 | [Shippable](#shippable)          | Yes  | yml only| No | Yes | No | No | No | No|
 | [SolanoLabs](#solanolabs)        | Yes  |yml only| Yes | Yes | Pending | No | Yes | Yes |
 | [Travis](#travis)                | No  |yml only | Yes | Yes  | No  | No  | No | Yes |
@@ -881,8 +882,8 @@ CircleCI, SemaphoreCI and Vexor.
 Maven and Gradle artifacts should be cached after each build. If you have embraced the Micro-services paradigm there is
 a very good chance that fetching these dependencies might take as much time as the build itself.
 
-`Partial` support means that I could get cache working for Maven but not Gradle. `Yes` means that both my Gradle and Maven 
-builds had cache enabled. 
+`Partial` support means that I could get cache working for Maven but not Gradle (or that caching is non configurable in general). `Yes` means that both my Gradle and Maven 
+builds had cache enabled with no problems at all. 
 
 For me this is probably the most important feature as lack of cache will make all builds much slower (and in some cases
 the dependency downloading dominates the actual compilation).
@@ -933,7 +934,7 @@ table than this I am happy to include it here.
 | [Codeship](#codeship)            | Yes (no limits) | 1 builder/100 builds | $49/month (Basic) or $75/month (Pro version) |
 | [DeployBot](#deploybot)          | No  | No | $15/month for 10 projects | 
 | [Distelli](#distelli)            | Yes (with limitations) | 1 repository | $7/month (10 executors) |
-| [SemaphoreCI](#semaphoreci)    | Yes (no limits)   | Yes | $29/month (1 executor unlimited private projects) |
+| [SemaphoreCI](#semaphoreci)    | Yes (no limits)   | 100 builds | $29/month (1 executor unlimited private projects) |
 | [Shippable](#shippable)          | Yes (no limits)   | Yes (150 builds)| $25/month (2 executors) | 
 | [SolanoLabs](#solanolabs)        | No  |No| $15/month (2 executors/ 10 hours) | 
 | [Travis](#travis)                | Yes (no limits)  |No  | $69/month (1 executor) |
