@@ -325,7 +325,9 @@ This is a better illustration of the similarity of these tests:
 This type of tests are called _parameterized_ tests because they share they same test logic and all scenarios depend
 on different parameters passed to that test logic.
 
-Parameterized test with JUnit are possible, but the resulting syntax is certainly ugly. I challenge you 
+#### Parameterized support in JUnit is very limiting and restricting
+
+Parameterized tests with JUnit are possible, but the resulting syntax is certainly ugly. I challenge you 
 to read the [official documentation of JUnit](https://github.com/junit-team/junit4/wiki/parameterized-tests). I will wait
 for you to come back.
 
@@ -344,6 +346,8 @@ are not aware of JUnit parameterized tests.
 
 I know that there are external libraries that augment the way JUnit handles parameterized tests, but their existence
 further enforces my argument that Spock is batteries-included unlike JUnit.
+
+#### Writing parameterized tests in an intuitive way
 
 Spock can instead offer data tables that present the unit test in a much more understandable manner. Powered
 by its Groovy DSL it allows you to keep together data and its description in a tabular format:
@@ -415,15 +419,27 @@ can see on the test report which scenario failed (instead of failing the whole u
 Spock data tables are the most basic form of parameterized tests. Spock also supports [data pipes and even custom
 iterators](http://spockframework.org/spock/docs/1.0/data_driven_testing.html) for more powerful ways of dealing with input/output parameters.
 
-
-
-
+In a future article we will explore all facilities offered by Spock for parameterized tests - as they deserve an analysis on their own.
 
 
 
 ### 5. Spock has built-in mocking and stubbing capabilities ###
 
-To be written
+When it comes to mocking, there is really no comparison against JUnit, as JUnit does not even support mocking. Until recently you needed a separate framework if you wanted to use mocking in your unit tests. Several mocking frameworks exist for Java, but lately the dominant one is [Mockito](http://site.mockito.org/).
+
+
+Spock on the other hand wants to help you for all your testing needs by providing access to powerful facilities for mocks and stubs built-in into the base project.
+
+_Note_: If you don't know what mocking is, or have never used Mockito at all, then you should first read this [introductory post about Mockito](https://semaphoreci.com/community/tutorials/stubbing-and-mocking-with-mockito-2-and-junit).
+
+#### Basic Stubbing with Spock
+
+#### Basic Mocking with Spock
+
+#### Spock matchers (and why they are better than Mockito)
+
+#### Advanced mocking with Groovy Closures
+
 
 
 ### Conclusion
@@ -431,7 +447,11 @@ To be written
 This was just a small selection of cases where Spock makes your tests better. Even if you are a diehard JUnit fan, you should acknowledge the advantages of Spock
 and what it means for your unit tests.
 
-You can also get the PDF slides of my [presentation for Spock versus JUnit](http://codepipes.com/presentations/spock-vs-junit.pdf).
+It should also be clear that Spock aims to be the ultimate solution when it comes to testing, covering the full testing lifecycle.
+
+![Spock Testing framework goals](../../assets/spock-vs-junit/one-stop-shop.png)
+
+You can find some additional information in the PDF slides of my [presentation for Spock versus JUnit](http://codepipes.com/presentations/spock-vs-junit.pdf).
 
  
 
