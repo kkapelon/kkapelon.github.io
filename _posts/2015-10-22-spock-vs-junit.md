@@ -11,6 +11,17 @@ ideas that vastly improve unit testing.
 In this post I will summarize 5 big differences between the two frameworks so that you can draw your own conclusions.
 If you wish to see more details about Spock, consult its [official documentation](http://docs.spockframework.org).
 
+1. [Test structure](#spock-enforces-a-clear-test-structure)
+1. [Failure context](#spock-is-much-more-helpful-when-tests-fail) 
+1. [Test readability](#spock-tests-are-readable-by-non-technical-people) 
+1. [Data tables](#spock-has-a-custom-dsl-for-parameterized-tests) 
+1. [Built-in Mocking](#spock-has-built-in-mocking-and-stubbing-capabilities) 
+
+Each of these areas will probably need a full article on their own to talk with more detail on the new features
+that Spock brings into the table. We will only scratch the surface for each one. 
+
+Consider this article a really quick tour of major Spock features. There is much more detail in each individual area and for brevity purposes it is impossible to cover everything in this single post. In fact I would need a [full book](https://github.com/kkapelon/java-testing-with-spock) to cover everything in depth.
+
 ### 1. Spock enforces a clear test structure ###
 
 The number one reason for using Spock is to make your tests more readable. This may not seem important to you
@@ -428,13 +439,69 @@ In a future article we will explore all facilities offered by Spock for paramete
 When it comes to mocking, there is really no comparison against JUnit, as JUnit does not even support mocking. Until recently you needed a separate framework if you wanted to use mocking in your unit tests. Several mocking frameworks exist for Java, but lately the dominant one is [Mockito](http://site.mockito.org/).
 
 
-Spock on the other hand wants to help you for all your testing needs by providing access to powerful facilities for mocks and stubs built-in into the base project.
+Spock on the other hand wants to help you for all your testing needs by providing access to powerful facilities for mocks and stubs built-in into the base package.
 
 _Note_: If you don't know what mocking is, or have never used Mockito at all, then you should first read this [introductory post about Mockito](https://semaphoreci.com/community/tutorials/stubbing-and-mocking-with-mockito-2-and-junit).
 
 #### Basic Stubbing with Spock
 
+Spock supports the typical Mockito mantra of `when(something).thenReturn(somethingElse)` with its own simpler syntax. Rather than introducing two new methods (`when` and `then`), Spock uses the `>>` operator which means "return that".
+
+As an example let's assume that you are writing unit tests for a bank that approves loans. Here is the central logic
+
+{% highlight java %}
+public class LoanApprover {
+
+    public boolean approveLoan(Customer customer, long amount){
+        if(amount < 1000){
+            return true;
+        }
+        if(amount < 50000  && customer.hasGoodCreditScore()){
+            return true;
+        }
+        return false;
+    }
+}
+
+{% endhighlight %}
+
+Here is the  same unit test for both Mockito and Spock
+
+{% highlight groovy %}
+
+//JUnit/Mockito Test method
+@Test
+public void goodCredit(){
+    Customer sampleCustomer = mock(Customer.class);
+    when(sampleCustomer.hasGoodCreditScore()).thenReturn(true);
+
+    LoanApprover loanApprover = new LoanApprover();
+    assertTrue(loanApprover.approveLoan(sampleCustomer, 10000));
+}
+    
+//Spock Test method
+public void "customer with good credit and loan of 10000 should be approved"() {
+    given: "a customer with good credit"
+    Customer sampleCustomer = Stub(Customer.class)
+    sampleCustomer.hasGoodCreditScore() >> true
+        
+    expect: "an approval of the loan"
+    LoanApprover loanApprover = new LoanApprover()
+    loanApprover.approveLoan(sampleCustomer, 10000) == true
+}
+{% endhighlight %}
+
+As you can see in this simple example, both Spock and Mockito work in a similar manner. The caret syntax in Spock combines the when/thenReturn syntax of Mockito.
+
+It is interesting to note that unlike Mockito, Spock is clear about the nature of the fake object (i.e. stub vs mock). In this particular example we only query the `Customer` for a return result, and therefore in Spock we create a Stub instead of a Mock. The difference is subtle and will become more apparent in the following sections.
+
+Every feature you love in Mockito when it comes to stubbing is also supported by Spock. I won't get into details here but things like returning values multiple times, matching specific arguments or creating custom responses are very easy to implement with Spock (and usually in a simpler syntax).
+
 #### Basic Mocking with Spock
+
+
+
+#### Mocking and Stubbing the same object
 
 #### Spock matchers (and why they are better than Mockito)
 
