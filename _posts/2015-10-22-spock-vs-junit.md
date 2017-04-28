@@ -11,11 +11,11 @@ ideas that vastly improve unit testing.
 In this post I will summarize 5 big differences between the two frameworks so that you can draw your own conclusions.
 If you wish to see more details about Spock, consult its [official documentation](http://docs.spockframework.org).
 
-1. [Test structure](#spock-enforces-a-clear-test-structure)
-1. [Failure context](#spock-is-much-more-helpful-when-tests-fail) 
-1. [Test readability](#spock-tests-are-readable-by-non-technical-people) 
-1. [Data tables](#spock-has-a-custom-dsl-for-parameterized-tests) 
-1. [Built-in Mocking](#spock-has-built-in-mocking-and-stubbing-capabilities) 
+1. [Test structure](#1-spock-enforces-a-clear-test-structure)
+1. [Failure context](#2-spock-is-much-more-helpful-when-tests-fail) 
+1. [Test readability](#3-spock-tests-are-readable-by-non-technical-people) 
+1. [Data tables](#4-spock-has-a-custom-dsl-for-parameterized-tests) 
+1. [Built-in Mocking](#5-spock-has-built-in-mocking-and-stubbing-capabilities) 
 
 Each of these areas will probably need a full article on their own to talk with more detail on the new features
 that Spock brings into the table. We will only scratch the surface for each one. 
@@ -499,9 +499,140 @@ Every feature you love in Mockito when it comes to stubbing is also supported by
 
 #### Basic Mocking with Spock
 
+Let's say that our `LoanApprover` class was a bit more smart. Instead of reporting back with a boolean result if the loan is approved or not, it instead sends an email. Here is the code:
 
+{% highlight java %}
+public class LoanApproverWithEmail {
+    private final EmailService emailService;
+    
+    public LoanApproverWithEmail(final EmailService emailService){
+        this.emailService = emailService;
+    }
 
-#### Mocking and Stubbing the same object
+    public void approveLoan(Customer customer, long amount){
+        if(loanApproved(customer, amount)){
+            emailService.sendConfirmation(customer.getEmailAddress());
+        }
+        else{
+            emailService.sendRejection(customer.getEmailAddress());
+        }
+    }
+    
+    private boolean loanApproved(Customer customer, long amount){
+        if(amount < 1000){
+            return true;
+        }
+        if(amount < 50000  && customer.hasGoodCreditScore()){
+            return true;
+        }
+        return false;
+    }
+}
+{% endhighlight %}
+
+This time, we use [constructor injection](https://en.wikipedia.org/wiki/Dependency_injection#Constructor_injection) to use an external email service, which for our purposes has two methods called `sendConfirmation()` and `sendRejection()`.
+
+As our test method -`approveLoan` - is a `void` one, we cannot use a stub here to write a unit test. We have to mock the `EmailService` instead, and check what it does after our unit test has finished.
+
+Writing a Mockito test is straightforward (assuming that you are already familiar with Mockito). Instead of using JUnit assertions, we need the Mockito `verify` directives. 
+
+{% highlight java %}
+
+@Test
+public void lowAmountIsAlwaysAccepted(){
+    Customer sampleCustomer = new Customer();
+        
+    EmailService emailService = mock(EmailService.class);
+    LoanApproverWithEmail loanApprover = 
+        new LoanApproverWithEmail(emailService);
+
+    //Loans that low will be accepted regardless of credit score
+    loanApprover.approveLoan(sampleCustomer, 600);
+        
+    verify(emailService).sendConfirmation(sampleCustomer.getEmailAddress());
+    verify(emailService,times(0)).
+        sendRejection(sampleCustomer.getEmailAddress());
+}
+    
+@Test
+public void bigAmountsAreAlwaysRejected(){
+    Customer sampleCustomer = new Customer();
+        
+    EmailService emailService = mock(EmailService.class);
+    LoanApproverWithEmail loanApprover = 
+        new LoanApproverWithEmail(emailService);
+
+    //Loans that high will be rejected regardless of credit score
+    loanApprover.approveLoan(sampleCustomer, 75000);
+        
+    verify(emailService,times(0)).
+        sendConfirmation(sampleCustomer.getEmailAddress());
+    verify(emailService).sendRejection(sampleCustomer.getEmailAddress());
+}
+
+{% endhighlight %}
+
+These two unit tests mock the `EmailService` class. Then after the loan is requested, we check the kind of email that was sent to the customer. If a confirmation email was sent, we know that the loan was approved. If a rejection email was sent, we know that the loan was not approved.
+
+Just to make the unit test more strict, we also verify that indeed only one kind of email was sent to the customer. It would be very unfortunate for a customer to receive both a rejection and an acceptance email for the same loan.
+
+In this particular case, the mocking of the email service was essential so that we also avoided sending a real email every time this unit test runs.
+
+Now let's see the same test with Spock:
+
+{% highlight groovy %}
+
+public void "very low loan amounts are always rejected"() {
+    given: "a customer with any credit"
+    Customer sampleCustomer = new Customer()
+        
+    and: "an email service that is mocked"
+    EmailService emailService = Mock(EmailService.class)
+    LoanApproverWithEmail loanApprover = 
+        new LoanApproverWithEmail(emailService);
+        
+    when: "customer requests a loan lower than 1000 USD"
+    loanApprover.approveLoan(sampleCustomer, 600);
+        
+    then: "a confirmation email is sent to the customer"
+    1 * emailService.sendConfirmation(sampleCustomer.getEmailAddress())
+    0 * emailService.sendRejection(sampleCustomer.getEmailAddress())
+}
+    
+public void "very high loan amounts are always rejected"() {
+    given: "a customer with any credit"
+    Customer sampleCustomer = new Customer()
+        
+    and: "an email service that is mocked"
+    EmailService emailService = Mock(EmailService.class)
+    LoanApproverWithEmail loanApprover = 
+        new LoanApproverWithEmail(emailService);
+        
+    when: "customer requests a loan higher than 50000 USD"
+    loanApprover.approveLoan(sampleCustomer, 75000);
+        
+    then: "a rejection email is sent to the customer"
+    0 * emailService.sendConfirmation(sampleCustomer.getEmailAddress())
+    1 * emailService.sendRejection(sampleCustomer.getEmailAddress())
+}
+
+{% endhighlight %}
+
+In a similar manner with Mockito, the JUnit asserts are not used at all. Instead, a special Spock syntax is used 
+for method verification. This follows the format:
+
+```
+N * mockedObject.method(arguments)
+```
+
+This line means: "after this test is finished, this `method` of `mockedObject` should have been called N times with these `arguments`". If this indeed happened, the test will pass. Otherwise Spock will fail the test.
+
+The syntax is a bit cleaner than Mockito because you don't need special `verify` and `times` directives. The verification code is much closer to the actual Java code.
+
+Also notice, that the mocked object is created as a `Mock()` this time, and not as a `Stub()` like the previous example. Spock makes it very clear for the reader which classes are instrumented with dummy results (stubs) and which are used for verification (mocks) while Mockito does not make this distinction. 
+
+Technically, the test will work the same in both cases, but for readability purposes the Spock approach is obviously better, especially for large unit tests where multiple fake objects are created.
+
 
 #### Spock matchers (and why they are better than Mockito)
 
@@ -514,7 +645,7 @@ Every feature you love in Mockito when it comes to stubbing is also supported by
 This was just a small selection of cases where Spock makes your tests better. Even if you are a diehard JUnit fan, you should acknowledge the advantages of Spock
 and what it means for your unit tests.
 
-It should also be clear that Spock aims to be the ultimate solution when it comes to testing, covering the full testing lifecycle.
+It should also be clear that Spock aims to be the ultimate solution when it comes to testing, covering the full testing lifecycle, without any additional libraries.
 
 ![Spock Testing framework goals](../../assets/spock-vs-junit/one-stop-shop.png)
 
