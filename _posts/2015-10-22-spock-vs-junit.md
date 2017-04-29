@@ -20,7 +20,7 @@ If you wish to see more details about Spock, consult its [official documentation
 Each of these areas will probably need a full article on their own to talk with more detail on the new features
 that Spock brings into the table. We will only scratch the surface for each one. 
 
-Consider this article a really quick tour of major Spock features. There is much more detail in each individual area and for brevity purposes it is impossible to cover everything in this single post. In fact I would need a [full book](https://github.com/kkapelon/java-testing-with-spock) to cover everything in depth.
+Consider this article a really quick tour of major Spock features. There is much more detail in each individual area and for brevity purposes it is impossible to cover everything in this single post. 
 
 ### 1. Spock enforces a clear test structure ###
 
@@ -636,14 +636,111 @@ Technically, the test will work the same in both cases, but for readability purp
 
 #### Spock matchers (and why they are better than Mockito)
 
-#### Advanced mocking with Groovy Closures
+Let's say that our email service also keeps a timestamp of when an email was sent. The two methods that sent email are augmented with this extra argument.
 
+{% highlight java %}
+public interface EmailService { 
+    void sendConfirmation(String emailAddress, LocalDateTime when);
 
+    void sendRejection(String emailAddress, LocalDateTime when);
+}
+{% endhighlight %}
+
+Let's also assume that this date is not known in advance. Maybe it is the current date, maybe it is the next working day, maybe it is the end of the week, we don't really care. But we have to mock it.
+
+Mockito offers several [matchers](https://static.javadoc.io/org.mockito/mockito-core/2.7.22/org/mockito/Mockito.html#3) for ignoring the exact values of arguments. 
+
+Unfortunately as you may already know Mockito does *not* support mixing matchers with actual arguments. Our first try with Mockito would be the following:
+
+{% highlight java %}
+
+@Test
+public void lowAmountIsAlwaysAccepted(){
+    Customer sampleCustomer = new Customer();
+        
+    EmailService emailService = mock(EmailService.class);
+    LoanApproverWithDate loanApprover = new LoanApproverWithDate(emailService);
+
+    //Loans that high will be rejected regardless of credit score
+    loanApprover.approveLoan(sampleCustomer, 50000);
+        
+    verify(emailService,times(0)).
+        sendConfirmation(sampleCustomer.getEmailAddress(), any());
+    verify(emailService).
+        sendRejection(sampleCustomer.getEmailAddress(), any());
+}
+{% endhighlight %}
+
+If you are a veteran user of Mockito you will know already that this test will not even run.
+
+![Mockito problem with partial matchers](../../assets/spock-vs-junit/mockito-partial-matchers.png)
+
+Here Mockito clearly tells us that we need to use matchers for all arguments. To overcome this limitation we
+modify the unit test and ignore the first argument of the email method as well using the `anyString` matcher.
+
+{% highlight java %}
+
+@Test
+public void lowAmountIsAlwaysAccepted(){
+    Customer sampleCustomer = new Customer();
+        
+    EmailService emailService = mock(EmailService.class);
+    LoanApproverWithDate loanApprover = new LoanApproverWithDate(emailService);
+
+    //Loans that high will be rejected regardless of credit score
+    loanApprover.approveLoan(sampleCustomer, 50000);
+       
+    verify(emailService,times(0)).
+        sendConfirmation(anyString(), any());
+    verify(emailService).
+        sendRejection(anyString(), any());
+}
+{% endhighlight %}
+
+Now the test correctly runs. However it is not as strict as we want. Because the email address is now ignored
+we are no longer sure that the email address is correct and actually reflects the email address of the customer.
+
+In this contrived example, this might not seem like a big problem, but in a real world unit test this Mockito limitation
+might let bugs slip into production.
+
+Like Mockito, Spock supports ignoring method arguments and uses the underscore character `_` to mark them. __Unlike__ Mockito however, it _does_ support mixing matchers with real arguments. So our original test that ignores the date but checks the email
+is directly supported in Spock.
+
+{% highlight groovy %}
+
+public void "very low loan amounts are always rejected regardless of credit"(){
+    given: "a customer with any credit"
+    Customer sampleCustomer = new Customer()
+
+    and: "an email service that is mocked"
+    EmailService emailService = Mock(EmailService.class)
+    LoanApproverWithDate loanApprover = new LoanApproverWithDate(emailService);
+        
+    when: "customer request a loan lower than 1000 USD"
+    loanApprover.approveLoan(sampleCustomer, 600);
+        
+    then: "a confirmation email is sent to the customer"
+    1 * emailService.sendConfirmation(sampleCustomer.getEmailAddress(), _ )
+    0 * emailService.sendRejection(sampleCustomer.getEmailAddress(), _ )
+}
+
+{% endhighlight %}
+
+This test runs correctly because Spock can indeed mix matchers and real arguments:
+
+![Spock with partial matchers](../../assets/spock-vs-junit/spock-partial-matchers.png)
+
+I consider this a big advantage of Spock over Mockito. The ability to define exactly what you want to ignore is an important pillar of strict tests. I hope that Mockito can overcome this limitation in the future, but until that happens, Spock can help you to refine your tests with the exact arguments that you want.
+
+Spock has several other capabilities when it comes to mocking and stubbing, but these deserve a full article on their own.
+As always, more details can found in the [Spock documentation](http://spockframework.org/spock/docs/1.0/interaction_based_testing.html) pages.
 
 ### Conclusion
 
-This was just a small selection of cases where Spock makes your tests better. Even if you are a diehard JUnit fan, you should acknowledge the advantages of Spock
-and what it means for your unit tests.
+This was just a small selection of cases where Spock makes your tests better. I have left out several other advanced features of Spock for brevity reasons.
+
+Even if you are a diehard JUnit fan, you should acknowledge the advantages of Spock
+and what it means for your unit tests when it comes to size of code, readability and built-in features.
 
 It should also be clear that Spock aims to be the ultimate solution when it comes to testing, covering the full testing lifecycle, without any additional libraries.
 
