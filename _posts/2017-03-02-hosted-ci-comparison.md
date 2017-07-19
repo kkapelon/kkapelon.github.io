@@ -4,6 +4,12 @@ title: Comparison of Hosted Continuous Integration products
 category: hosted-ci-comparison
 ---
 
+| Version history | Changes       | 
+| -------------   |:--------|  
+| July 20017      | [Codeship](#codeship)  redesigned their UI |
+| April 2017      | Oracle buys [Wercker](#wercker)  |
+| March 2017      | First version  |
+
 ### A brief comparison of hosted Continuous Integration services
 
 I was a happy user of [SnapCI](https://snap-ci.com/). I really liked the way pipelines worked and how easy was
@@ -51,7 +57,7 @@ Because I am mainly a Java developer I have tested all of them with JVM projects
 * [AppHarbor](https://appharbor.com/) (.NET only)
 * [MagnumCI](https://magnum-ci.com/) (Supports Ruby, Go, PHP, Python but not Java)
 
-I also did not spent too much time with [Bitbucket pipelines](https://bitbucket.org/product/features/pipelines) as they are tied with Bitbucket. 
+I also did not spend too much time with [Bitbucket pipelines](https://bitbucket.org/product/features/pipelines) as they are tied with Bitbucket (same with [Gitlab CI](https://about.gitlab.com/features/gitlab-ci-cd/))
 
 
 #### My sample projects
@@ -265,6 +271,9 @@ existence of a Maven or Gradle file in the repo and act accordingly (at least as
 
 ![Codeship no autodetection](../../assets/ci-comparison/codeship/codeship-no-autodetection.png)
 
+Project setup is geared only towards dynamic languages (same problem as with [CircleCI](#circleci)). Codeship assumes that your build has two phases, downloading
+of dependencies and running unit tests. Obviously this is not the way compiled languages like Java work (as both Maven and Gradle fetch their dependencies on demand)
+
 
 However the thing that bothers me most with Codeship is that once you are finished with the
 setup a build does NOT run at all. There is no build button!
@@ -279,21 +288,12 @@ build. Duh!
 I forgive Codeship for the lack of autodetection of build system, but I find no excuses for the
 lack of a "build Now" button.
 
-The user interface of Codeship has a clean layout and shows all needed information. It has
-however two minor quirks that spoil the experience.
-The first problem is that there is no “dashboard” (or at least I did not find it). You can only
-select a single project and manage it.
+The user interface of Codeship has a clean layout and shows all needed information. It also comes
+with a very helpful dashboard that shows all your projects along with their latest build.
 
-![Codeship no dashboard](../../assets/ci-comparison/codeship/no-dashboard.png)
+![Codeship dashboard](../../assets/ci-comparison/codeship/dashboard.png)
 
-So if you have let’s say 8 projects there is no way to see a single page that gives you the
-pass/fail status of all projects. You need to visit them one by one to see their last build.
-
-The second problem is that in the feedback screen where you see the results of the build an
-"accordion" component is used. This means that it is impossible to expand all sections at
-once to see what is happening. Only one section can be open. Sad but true.
-
-My experiments show that Maven dependencies are cached but Gradle ones do not.
+My experiments show that Maven dependencies are cached but Gradle ones [do not](https://documentation.codeship.com/basic/builds-and-configuration/dependency-cache/).
 If you use Gradle Wrapper in your build you will even be forced to redownload
 it for every
 build that runs.
@@ -302,7 +302,12 @@ On the other hand Codeship build servers have preinstalled
 all the popular build tools and
 even some exotic ones (for Scala and Clojure).
 
-Like CircleCI, Codeship support ssh access to the build servers but with an additional twist!
+The build log is very well designed and shows the result of all individual commands.
+
+![Codeship log](../../assets/ci-comparison/codeship/codeship-build.png)
+
+
+Like [CircleCI](#circleci), Codeship supports ssh access to the build servers but with an additional twist!
 You ssh into a clone of the build machine while the build machine actually runs the next
 build!
 This means that you can debug a failed build at your leisure without blocking the build
@@ -319,18 +324,17 @@ On the plus side Codeship:
 
 * has explicit support for deployment pipelines where you define what happens
 during deployment. 
-* comes with [A REST API](https://documentation.codeship.com/basic/getting-started/api/)
-* supports [Test parallelism](https://documentation.codeship.com/basic/getting-started/parallelci/)
+* comes with [a REST API](https://documentation.codeship.com/basic/getting-started/api/)
+* supports [Test Parallelism](https://documentation.codeship.com/basic/getting-started/parallelci/)
 
-Documentation is fairly basic. There are some topics without documentation (e.g. how
-caching works) but in general I found it descriptive and up-to-date.
+Documentation is quite extensive. In general I found it descriptive and up-to-date.
 
 To sum up, Codeship is an imbalanced solution. On one hand it has the killer feature of nonblocking
 ssh
 debugging, but on the other hand the lack of a "build now" button really puzzles me. There is
 caching support for Maven but not for Gradle. The fact that built-in Gradle is still at 
 version 1.10 perhaps shows what Codeship thinks of supporting it. The technical product under the hood is a
-solid one, but it is plagued by several UI problems.
+solid one, but Java is a second class citizen and Gradle builds are really viable.
 
 Admittedly Codeship seems to be in a transition to their [Codeship Pro service](https://documentation.codeship.com/pro/getting-started/getting-started/), which is a Docker
 based solution that comes with its own executable (called [Jet](https://documentation.codeship.com/pro/getting-started/installation/#what-is-jet)) that allows you to run your build locally. 
@@ -342,10 +346,9 @@ I really wanted to spend some time with Codeship Pro but  I stumbled again upon 
 first build" message and I did not want to add any more dummy commits to my projects just so that Codeship can pick the changes.
 
 If you work at Codeship and are reading this, your product needs some design changes. You
-should either support Gradle cache or even better make the cache mechanism transparent
-and configurable. Not all Java projects use Maven. Add a "buildnow"
+should either support Gradle cache or even better make the cache mechanism configurable (like [Buddy Works](#buddyworks)). Not all Java projects use Maven. Add a _build now_
 button to all screens
-(this is a no brainer). Add a dashboard screen for all projects. Your ssh feature is killer and
+(this is a no brainer). Your ssh feature is killer and
 you should advertise it more.
 
 I have a feeling that Codeship is best for interpreted runtimes (Python, Ruby etc) so maybe Java is not
@@ -355,7 +358,7 @@ getting the attention it deserves from the company.
 | Website    | [Codeship](https://codeship.com/) |
 | Pricing    | [Details](https://codeship.com/pricing) |
 | Documentation    | Good but [nothing impressive here](https://documentation.codeship.com/) |
-| User Interface | Big problems with UX. The accordion component for the logs is especially problematic. Lack of a dashboard that shows all projects.  |
+| User Interface | Clean and well designed  |
 | Build configuration | No project autodetection. No support for Gradle |
 | Docker support | None in the basic version. Full Docker support (and more) in the pro version|
 | Extra features    | [Rest API](https://documentation.codeship.com/basic/getting-started/api/), Deployment pipelines, test parallelism, [Roles](https://documentation.codeship.com/general/account/organizations/)|
@@ -787,8 +790,12 @@ does exactly what it says on the box.
 
 ### Wercker
 
+
+
 [Wercker](http://www.wercker.com/) is a company launched in 2012 with offices in San Francisco, London and Amsterdam.
 They have a very active web page with [blogs posts](http://blog.wercker.com/) covering apart from CI, topics such as deployments and Kubernetes.
+
+**Update April 2017**: Oracle [bought Wercker](https://www.oracle.com/corporate/acquisitions/wercker/index.html) so my review might soon be obsolete.
 
 Wercker supports both GitHub and Bitbucket. It is very easy to import your repositories.
 
@@ -844,7 +851,7 @@ After all is said and done here is the comparison chart you have been waiting fo
 | [Buddy Works](#buddyworks)       | Yes     |yml/GUI | Yes | Yes|  Yes | No |  No| Yes|
 | [CircleCI](#circleci)            | Yes  |yml/GUI | Partial| Partial | No | No | Yes | Yes|
 | [Codefresh](#codefresh)          | Yes  |yml/dockerfile | No  | Yes  | No | Yes (Docker)  | No | Maybe |
-| [Codeship](#codeship)            | No | yml/GUI | Partial | Pending | No | Pending | Yes  | Maybe |
+| [Codeship](#codeship)            | Yes | yml/GUI | Partial | Pending | No | Pending | Yes  | Maybe |
 | [DeployBot](#deploybot)          | No!  | awful | No | - | -  |-  | -  | Hell No |
 | [Distelli](#distelli)            | Yes  | yml/GUI | No | Yes | Yes | No | No | No |
 | [SemaphoreCI](#semaphoreci)    | Yes   | GUI | Partial | Yes  | No | No  | Yes | Yes|
@@ -943,6 +950,8 @@ table than this I am happy to include it here.
 
 
 That's it! I hope I saved you some time.
+
+
 
 
 
