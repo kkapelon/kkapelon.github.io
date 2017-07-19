@@ -334,7 +334,7 @@ ssh
 debugging, but on the other hand the lack of a "build now" button really puzzles me. There is
 caching support for Maven but not for Gradle. The fact that built-in Gradle is still at 
 version 1.10 perhaps shows what Codeship thinks of supporting it. The technical product under the hood is a
-solid one, but Java is a second class citizen and Gradle builds are really viable.
+solid one, but Java is a second class citizen and Gradle builds are not really viable.
 
 Admittedly Codeship seems to be in a transition to their [Codeship Pro service](https://documentation.codeship.com/pro/getting-started/getting-started/), which is a Docker
 based solution that comes with its own executable (called [Jet](https://documentation.codeship.com/pro/getting-started/installation/#what-is-jet)) that allows you to run your build locally. 
@@ -359,12 +359,12 @@ getting the attention it deserves from the company.
 | Pricing    | [Details](https://codeship.com/pricing) |
 | Documentation    | Good but [nothing impressive here](https://documentation.codeship.com/) |
 | User Interface | Clean and well designed  |
-| Build configuration | No project autodetection. No support for Gradle |
+| Build configuration | No project autodetection. Anciend Gradle version. No compilation phase |
 | Docker support | None in the basic version. Full Docker support (and more) in the pro version|
 | Extra features    | [Rest API](https://documentation.codeship.com/basic/getting-started/api/), Deployment pipelines, test parallelism, [Roles](https://documentation.codeship.com/general/account/organizations/)|
 | Disadvantages    | No Gradle cache, needs a push to start the first build (!!!)  |
 | Killer feature    | You can ssh to a clone of your environment. The Jet local build process  in Codeship Pro.|
-| **Final Verdict**    | Codeship might be ok (if you forgive the UI problems) for a small number of Maven projects. If you use Gradle then don't even bother. |
+| **Final Verdict**    | Codeship might be ok for a small number of Maven projects. If you use Gradle then don't even bother. |
 
 ### Deploybot
 
