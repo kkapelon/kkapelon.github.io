@@ -6,7 +6,7 @@ category: hosted-ci-comparison
 
 | Version history | Changes       | 
 | -------------   |:--------|  
-| July 20017      | [Codeship](#codeship)  redesigned their UI |
+| July 2017      | [Codeship](#codeship)  redesigned their UI |
 | April 2017      | Oracle buys [Wercker](#wercker)  |
 | March 2017      | First version  |
 
