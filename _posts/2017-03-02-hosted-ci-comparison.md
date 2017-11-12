@@ -6,6 +6,7 @@ category: hosted-ci-comparison
 
 | Version history | Changes       | 
 | -------------   |:--------|  
+| September 2017      | [Puppet](https://puppet.com/)  buys [Distelli](#distelli) |
 | July 2017      | [Codeship](#codeship)  redesigned their UI |
 | April 2017      | Oracle buys [Wercker](#wercker)  |
 | March 2017      | First version  |
@@ -422,6 +423,8 @@ very confusing.
 ### Distelli
 
 [Distelli](https://www.distelli.com/) is a American company launched in 2013 and based in Seattle.
+
+**Update September 2017**: Puppet [bought Distelli](https://puppet.com/blog/welcome-distelli-to-puppet-family) so my review might soon be obsolete.
 
 They have a very active web page with [blogs posts](http://www.blog.distelli.com/) covering several topics regarding
 containers, pipelines and Kubernetes deployments.
