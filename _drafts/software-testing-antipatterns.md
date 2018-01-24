@@ -63,7 +63,18 @@ If you have never encountered the testing pyramid before, I would urge you to be
 
 ### Anti-Pattern 1 - Having unit tests without integration tests
 
-sd
+This problem is very classic with small to medium companies. The application that is being developed in the company has only unit tests (the base of the pyramid) and nothing else.
+Usually lack of integration tests is caused by any of the following issues:
+
+1. The company has no senior developers. The team has only junior developers who for some reason are only aware of basic unit tests.
+1. Integration tests existed at one point but were abandonded because they caused more trouble than their worth. Unit tests were much more easy to maintain and so they prevailed.
+1. The running environment of the application is very "challenging" to setup. Features are "tested" in production.
+
+I cannot really say anything about the first issue. Every effective team should have at least some kind of mentor/champion that can show good practices to the other members. The second issue is covered in detail in antipatterns 8, 9 and 10
+
+This brings us to the last issue - difficulty in setting up a test environment. 
+
+
 
 
 
