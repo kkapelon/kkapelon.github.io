@@ -40,6 +40,16 @@ If you have never encountered the testing pyramid before, I would urge you to be
 
  The second category suffers from a blurry definition and most naming controversies regarding testing start here. The "scope" for integration tests is also highly controversial and especially the nature of access to the application ([black](https://en.wikipedia.org/wiki/Black-box_testing) or [white](https://en.wikipedia.org/wiki/White-box_testing) box testing and whether [mocking](https://en.wikipedia.org/wiki/Mock_object) is allowed or not).
 
+As a basic rule of thumb if
+
+ * a test uses a database
+ * a test uses the network to call another component/application
+ * a test uses an external system (e.g. a queue or a mail server)
+ * a test reads/writes files or performs other I/O
+ * a test does not rely on the source code but instead it uses the deployed binary of the app
+
+…then it is an integration test and not a unit test. 
+
  With the naming out of the way, we can dive into the list. The order of anti-patterns roughly follows their appearance in the the wild. Frequent problems are gathered in the top positions. 
 
 ### Software Testing Anti-Pattern List
@@ -49,11 +59,11 @@ If you have never encountered the testing pyramid before, I would urge you to be
 1. Having integration tests without unit tests
 1. Having the wrong kind of tests
 1. Testing the wrong functionality
-1. Treating test code as a second class citizen
 1. Testing internal implementation
 1. Paying excessive attention to test coverage
 1. Having flaky or slow tests
 1. Running tests manually
+1. Treating test code as a second class citizen
 1. Ignoring tests
 1. Not converting production bugs to tests
 1. Treating TDD as a religion
@@ -66,13 +76,30 @@ If you have never encountered the testing pyramid before, I would urge you to be
 This problem is very classic with small to medium companies. The application that is being developed in the company has only unit tests (the base of the pyramid) and nothing else.
 Usually lack of integration tests is caused by any of the following issues:
 
-1. The company has no senior developers. The team has only junior developers who for some reason are only aware of basic unit tests.
+1. The company has no senior developers. The team has only junior developers fresh out of college who have only see unit tests
 1. Integration tests existed at one point but were abandonded because they caused more trouble than their worth. Unit tests were much more easy to maintain and so they prevailed.
 1. The running environment of the application is very "challenging" to setup. Features are "tested" in production.
 
 I cannot really say anything about the first issue. Every effective team should have at least some kind of mentor/champion that can show good practices to the other members. The second issue is covered in detail in antipatterns 8, 9 and 10
 
-This brings us to the last issue - difficulty in setting up a test environment. 
+This brings us to the last issue - difficulty in setting up a test environment. Now don't get me wrong, there are indeed some applications that are *really* hard to test. Once I had to work with a set of REST applications that actually required special hardware on their host machine. This hardware existed only in production, making integration tests very challenging. But this is a corner case. For the run-of-the-mill web or back-end application that they typical company requires, setting up a test environment should be a non-issue. With the appearance of Virtual Machines and lately Containers this is more true than even. Basically if you are trying to test an application that is hard to setup, you need to fix the setup process first before dealing with the tests themselves.
+
+But why are integration tests essential in the first place?  
+
+The truth here is that there are some types of issues that *only* integration tests can detect. The canonical example is everything that has to do with database operations. Database transactions, database triggers and any stored procedures can only be examined with integration tests that touch them. Any connections to other modules either developed by you or external teams need integration tests (a.k.a. contract tests). Any tests that need to verify performance tests are integration tests by definition. Here is a summary
+
+ | Type of issue | Detected by Unit tests | Detected by Integration tests | 
+ | ------- | ---------- | --------- |  
+ | Basic business logic | yes | yes | 
+ | Component integration problems | no | yes | 
+ | Transactions | no  | yes | 
+ | Database triggers/procedures | no | yes |
+ | Wrong Contracts with other modules/APIs | no | yes |
+ | Wrong Contracts with other systems | no | yes |
+ | Performance/Timeouts | no | yes |
+ | Deadlocks/Livelocks | maybe | yes |
+ | Cross-cutting Security Concerns| no | yes |
+
 
 
 
