@@ -73,16 +73,16 @@ As a basic rule of thumb if
 
 ### Anti-Pattern 1 - Having unit tests without integration tests
 
-This problem is very classic with small to medium companies. The application that is being developed in the company has only unit tests (the base of the pyramid) and nothing else.
+This problem is a classic one with small to medium companies. The application that is being developed in the company has only unit tests (the base of the pyramid) and nothing else.
 Usually lack of integration tests is caused by any of the following issues:
 
-1. The company has no senior developers. The team has only junior developers fresh out of college who have only see unit tests
+1. The company has no senior developers. The team has only junior developers fresh out of college who have only seen unit tests
 1. Integration tests existed at one point but were abandonded because they caused more trouble than their worth. Unit tests were much more easy to maintain and so they prevailed.
 1. The running environment of the application is very "challenging" to setup. Features are "tested" in production.
 
 I cannot really say anything about the first issue. Every effective team should have at least some kind of mentor/champion that can show good practices to the other members. The second issue is covered in detail in antipatterns 8, 9 and 10
 
-This brings us to the last issue - difficulty in setting up a test environment. Now don't get me wrong, there are indeed some applications that are *really* hard to test. Once I had to work with a set of REST applications that actually required special hardware on their host machine. This hardware existed only in production, making integration tests very challenging. But this is a corner case. For the run-of-the-mill web or back-end application that they typical company requires, setting up a test environment should be a non-issue. With the appearance of Virtual Machines and lately Containers this is more true than even. Basically if you are trying to test an application that is hard to setup, you need to fix the setup process first before dealing with the tests themselves.
+This brings us to the last issue - difficulty in setting up a test environment. Now don't get me wrong, there are indeed some applications that are *really* hard to test. Once I had to work with a set of REST applications that actually required special hardware on their host machine. This hardware existed only in production, making integration tests very challenging. But this is a corner case. For the run-of-the-mill web or back-end application that the typical company requires, setting up a test environment should be a non-issue. With the appearance of Virtual Machines and lately Containers this is more true than even. Basically if you are trying to test an application that is hard to setup, you need to fix the setup process first before dealing with the tests themselves.
 
 But why are integration tests essential in the first place?  
 
@@ -100,6 +100,31 @@ The truth here is that there are some types of issues that *only* integration te
  | Deadlocks/Livelocks | maybe | yes |
  | Cross-cutting Security Concerns| no | yes |
 
+ In general, any cross-cutting concern of your application will require integration tests. With the recent microservice craze integration tests become even more important as you now have contracts between your own services. If those services are developed by other teams, you need an automatic way to verify that interface contracts are not broken. This can only be covered with integration tests.
+
+ To sum up, unless you are creating something extrememely isolated (e.g. a command line linux utility), you really **need** integration tests to catch issues not caught by unit tests.
+
+
+### Anti-Pattern 2 - Having integration tests without unit tests
+
+This is the inverse of the previous anti-pattern. This anti-pattern is more common in large companies and large enterprise projects. Almost always the history behind this anti-pattern involves developers who believe that unit tests have no real value and only integration tests can catch regressions. There is a large majority of experienced developers who consider unit tests a waste of time. Usually if you probe them with questions, you will discover that at some point in the past, upper management had forced them to increase code coverage (See anti-pattern 6) forcing them to write trivial unit tests.
+
+Now don't get me wrong, in theory you *could* have only integration tests in a software project. But in practice this would become very expensive to test (both in developer time and in build time).
+We saw in the table of the previous section that integration tests can also find business logic errors after each run, and so they could "replace" unit tests in that manner. But is this strategy viable in the long run?
+
+Let's look at an example. Assume that you have a service with the following 4 methods/classes/functions.
+
+![Cyclomatic complexity for 4 modules](../../assets/testing-anti-patterns/just-unit-tests.png)
+
+The number on each module denotes its [cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity) or in other words the separate code paths this module can take. 
+
+Mary "by the book" Developer wants to write unit tests for this service (because she understands that unit tests *do* have value). How many tests does she need to write in order to get full coverage of all possible scenarios?
+
+It should be obvious that one can write 2 + 5 + 3 + 2 = 12 isolated unit tests that cover fully the **business logic** of these modules. Remember that this number is just for a single service, and the application Mary is working on, has multiple services.
+
+Joe "Grumpy" developer on the other hand does not believe in the value of unit tests. He thinks that unit tests are a waste of time and he decides to write only integration tests for this module. How many integration tests should he write? He starts looking at all the possible paths a request can take in that service.
+
+![Examining code paths in a service](../../assets/testing-anti-patterns/just-integration-tests.png)
 
 
 
