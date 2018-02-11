@@ -6,6 +6,7 @@ category: hosted-ci-comparison
 
 | Version history | Changes       | 
 | -------------   |:--------|  
+| February 2018      | [Cloudbees](https://www.cloudbees.com/)  buys [Codeship](#codeship) |
 | September 2017      | [Puppet](https://puppet.com/)  buys [Distelli](#distelli) |
 | July 2017      | [Codeship](#codeship)  redesigned their UI |
 | April 2017      | Oracle buys [Wercker](#wercker)  |
@@ -259,6 +260,8 @@ Lack of built-in cache support is the only thing that prevents me from fully rec
 | **Final Verdict**    | Both Maven and Gradle project could work ok with Codefresh but caching dependencies is not supported out of the box |
 
 ### Codeship
+
+**Update February 2018**: Cloudbees [bought Codeship](https://blog.codeship.com/codeship-acquired-by-cloudbees/) so my review might soon be obsolete.
 
 [Codeship](https://codeship.com/) is another American company from Boston. They have a vibrant web page filled
 with guides and [blog posts](https://blog.codeship.com/) about CI topics. Codeship supports GitHub , Bitbucket and even Gitlab. You can authenticate with any of them and
