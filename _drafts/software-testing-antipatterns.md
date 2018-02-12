@@ -112,6 +112,8 @@ This is the inverse of the previous anti-pattern. This anti-pattern is more comm
 Now don't get me wrong, in theory you *could* have only integration tests in a software project. But in practice this would become very expensive to test (both in developer time and in build time).
 We saw in the table of the previous section that integration tests can also find business logic errors after each run, and so they could "replace" unit tests in that manner. But is this strategy viable in the long run?
 
+#### Integration tests are complex
+
 Let's look at an example. Assume that you have a service with the following 4 methods/classes/functions.
 
 ![Cyclomatic complexity for 4 modules](../../assets/testing-anti-patterns/just-unit-tests.png)
@@ -125,6 +127,51 @@ It should be obvious that one can write 2 + 5 + 3 + 2 = 12 isolated unit tests t
 Joe "Grumpy" developer on the other hand does not believe in the value of unit tests. He thinks that unit tests are a waste of time and he decides to write only integration tests for this module. How many integration tests should he write? He starts looking at all the possible paths a request can take in that service.
 
 ![Examining code paths in a service](../../assets/testing-anti-patterns/just-integration-tests.png)
+
+Again it should be obvious that all possible scenarios of codepaths are 2 * 5 * 3 * 2 = 60. Does that mean that Joe will actually write 60 integration tests? Of course not! He will try and cheat. He will try to select a subset of integration tests that feel "representative". This sumset of tests will give him enough coverage with the minimum amount of effort.
+
+This sounds easy enough in theory, but can quickly become problematic. The reality is that these 60 code paths are not created equally. Some of them are corner cases. For example if we look at module C we see that is has 3 different code paths. One of them is a very special case, that can only be recreated if C gets a special input from component b, which is itself a corner case and can only be obtained by a special input from component A. This means that this particular scenario might require a very complex setup in order to select the inputs that will trigget the special condition on the component C.
+
+Mary on the other hand, can just recreate the corner case with a simple unit test, with no added complexity at all.
+
+![Basic unit test](../../assets/testing-anti-patterns/unit-test-corner-case.png)
+
+Does that mean that Mary will *only* write unit tests for this service? After all that will lead her to anti-pattern 1. To avoid this she will write *both* unit *and* integration tests. She will keep all unit tests for the actual business logic and then she will write 1 or 2 integration tests that make sure that the rest of the system works as expected (i.e. the parts that help these modules do their job)
+
+![correct Integration tests](../../assets/testing-anti-patterns/correct-integration-tests.png)
+
+
+
+#### Integration tests are slow
+
+The second big issue with integration tests apart from their complexity is their speed. Usually an integration test is one order of magnitute than a unit tests. Unit tests need just the source code of the application and nothing else. They are almost always CPU bound. Integration tests perform I/O with external systems making them much more difficult to run in an effective manner. 
+
+Just to get an idea on the difference for the running time let's assume the following numbers.
+
+* Each unit test takes 60ms (on average)
+* Each integration test takes 800ms (on average)
+* The application has 40 services like the one shown in the previous section
+* Mary is writing 10 unit tests and 2 integration tests for each service
+* Joe is writing 12 integration tests for each service
+
+Now let's do the calculations. Notice that I assume that Joe has found the perfect subset of integration tests that give him the same code coverage as Mary (which would not be true in a real application).
+
+ |  Time to run | Having only integration tests (Joe) | Having both Unit and Integration tests (Mary) | 
+ | ------- | ---------- | --------- |  
+ | Just Unit tests | N/A | 24 seconds | 
+ | Just Integration tests | 6.4 minutes | 64 seconds | 
+ | All tests | 6.4 minutes  | 1.4 minutes |
+
+ The difference in total running time is enormous. Waiting for 1 minute after each code change is vastly different than waiting for 6 minutes. The 800ms I assumed for each integration test is vastly conservative. I have seen integration test suites where a single test can take several minutes on its own.
+
+ In summary, trying to use *only* integration tests to cover business logic is a huge time sink. Even if you automate the tests with CI, your feedback loop (time from commit to getting back the test result) will be very long.
+
+
+#### Integration tests are hard to debug
+
+The last reason that having only integration tests (without any unit tests) is an anti-pattern is the amount of time spent to debug a failed test. Since an integration test is testing multiple software components (by definition), when it breaks, the failure can come from *any* of the tested components. Pinpoint the problem can be a hard task depending on the number of components involved.
+
+When an integration tests fails you need to be able to understand why it failed and how to fix it. The complexity and breadth of integration tests make them extremely difficult to debug. Again, as an example let's say that your application only has integration tests. You run them and get the following result.
 
 
 
