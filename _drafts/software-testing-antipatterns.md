@@ -174,11 +174,20 @@ Now let's do the calculations. Notice that I assume that Joe has found the perfe
  In summary, trying to use *only* integration tests to cover business logic is a huge time sink. Even if you automate the tests with CI, your feedback loop (time from commit to getting back the test result) will be very long.
 
 
-#### Integration tests are hard to debug
+#### Integration tests are harder to debug than unit tests
 
 The last reason why having only integration tests (without any unit tests) is an anti-pattern is the amount of time spent to debug a failed test. Since an integration test is testing multiple software components (by definition), when it breaks, the failure can come from *any* of the tested components. Pinpointing the problem can be a hard task depending on the number of components involved.
 
-When an integration tests fails you need to be able to understand why it failed and how to fix it. The complexity and breadth of integration tests make them extremely difficult to debug. Again, as an example let's say that your application only has integration tests. You run them and get the following result.
+When an integration tests fails you need to be able to understand why it failed and how to fix it. The complexity and breadth of integration tests make them extremely difficult to debug. Again, as an example let's say that your application only has integration tests. The application you are developing is the typical e-shop.
+
+A developer in your team (or even you) creates a new commit, which triggers the integration tests with the following result:
+
+![breakage of integration tests](../../assets/testing-anti-patterns/integration-tests-break.png)
+
+
+The integration test "Customer buys item is broken". In the context of an e-shop application this is not very helpful. There are many reasons why this test might be broken. There is no way 
+to know why the test broke without diving into the logs and metrics of the test environment (assuming that they can pinpoint the problem). In several cases (and more complex application) the only way
+to truly debug an integration test is to checkout the code, recreate the test environment locally, then run the integration tests and see it fail in the local developmenet environment.
 
 
 
