@@ -82,11 +82,13 @@ Usually lack of integration tests is caused by any of the following issues:
 
 I cannot really say anything about the first issue. Every effective team should have at least some kind of mentor/champion that can show good practices to the other members. The second issue is covered in detail in antipatterns 8, 9 and 10
 
-This brings us to the last issue - difficulty in setting up a test environment. Now don't get me wrong, there are indeed some applications that are *really* hard to test. Once I had to work with a set of REST applications that actually required special hardware on their host machine. This hardware existed only in production, making integration tests very challenging. But this is a corner case. For the run-of-the-mill web or back-end application that the typical company requires, setting up a test environment should be a non-issue. With the appearance of Virtual Machines and lately Containers this is more true than even. Basically if you are trying to test an application that is hard to setup, you need to fix the setup process first before dealing with the tests themselves.
+This brings us to the last issue - difficulty in setting up a test environment. Now don't get me wrong, there are indeed some applications that are *really* hard to test. Once I had to work with a set of REST applications that actually required special hardware on their host machine. This hardware existed only in production, making integration tests very challenging. But this is a corner case. 
+
+For the run-of-the-mill web or back-end application that the typical company creates, setting up a test environment should be a non-issue. With the appearance of Virtual Machines and lately Containers this is more true than ever. Basically if you are trying to test an application that is hard to setup, you need to fix the setup process first before dealing with the tests themselves.
 
 But why are integration tests essential in the first place?  
 
-The truth here is that there are some types of issues that *only* integration tests can detect. The canonical example is everything that has to do with database operations. Database transactions, database triggers and any stored procedures can only be examined with integration tests that touch them. Any connections to other modules either developed by you or external teams need integration tests (a.k.a. contract tests). Any tests that need to verify performance tests are integration tests by definition. Here is a summary
+The truth here is that there are some types of issues that *only* integration tests can detect. The canonical example is everything that has to do with database operations. Database transactions, database triggers and any stored procedures can only be examined with integration tests that touch them. Any connections to other modules either developed by you or external teams need integration tests (a.k.a. contract tests). Any tests that need to verify performance, are integration tests by definition. Here is a summary on why we need integration tests:
 
  | Type of issue | Detected by Unit tests | Detected by Integration tests | 
  | ------- | ---------- | --------- |  
@@ -100,7 +102,7 @@ The truth here is that there are some types of issues that *only* integration te
  | Deadlocks/Livelocks | maybe | yes |
  | Cross-cutting Security Concerns| no | yes |
 
- In general, any cross-cutting concern of your application will require integration tests. With the recent microservice craze integration tests become even more important as you now have contracts between your own services. If those services are developed by other teams, you need an automatic way to verify that interface contracts are not broken. This can only be covered with integration tests.
+ Basically any cross-cutting concern of your application will require integration tests. With the recent microservice craze integration tests become even more important as you now have contracts between your own services. If those services are developed by other teams, you need an automatic way to verify that interface contracts are not broken. This can only be covered with integration tests.
 
  To sum up, unless you are creating something extrememely isolated (e.g. a command line linux utility), you really **need** integration tests to catch issues not caught by unit tests.
 
@@ -128,7 +130,7 @@ Joe "Grumpy" developer on the other hand does not believe in the value of unit t
 
 ![Examining code paths in a service](../../assets/testing-anti-patterns/just-integration-tests.png)
 
-Again it should be obvious that all possible scenarios of codepaths are 2 * 5 * 3 * 2 = 60. Does that mean that Joe will actually write 60 integration tests? Of course not! He will try and cheat. He will try to select a subset of integration tests that feel "representative". This sumset of tests will give him enough coverage with the minimum amount of effort.
+Again it should be obvious that all possible scenarios of codepaths are 2 * 5 * 3 * 2 = 60. Does that mean that Joe will actually write 60 integration tests? Of course not! He will try and cheat. He will try to select a subset of integration tests that feel "representative". This "representative" subset of tests will give him enough coverage with the minimum amount of effort.
 
 This sounds easy enough in theory, but can quickly become problematic. The reality is that these 60 code paths are not created equally. Some of them are corner cases. For example if we look at module C we see that is has 3 different code paths. One of them is a very special case, that can only be recreated if C gets a special input from component b, which is itself a corner case and can only be obtained by a special input from component A. This means that this particular scenario might require a very complex setup in order to select the inputs that will trigget the special condition on the component C.
 
@@ -138,13 +140,18 @@ Mary on the other hand, can just recreate the corner case with a simple unit tes
 
 Does that mean that Mary will *only* write unit tests for this service? After all that will lead her to anti-pattern 1. To avoid this she will write *both* unit *and* integration tests. She will keep all unit tests for the actual business logic and then she will write 1 or 2 integration tests that make sure that the rest of the system works as expected (i.e. the parts that help these modules do their job)
 
+The integration tests needed in this system should focus on the rest of the components. The business logic itself can be handled by the unit tests. Mary's integration tests will
+focus on testing serialization/deserialization and with the communication to the queue and the database of the system.
+
 ![correct Integration tests](../../assets/testing-anti-patterns/correct-integration-tests.png)
+
+In the end the number of integration tests will be much smaller than the number of unit tests (matching the shape of the test pyramid described in the first section of this article).
 
 
 
 #### Integration tests are slow
 
-The second big issue with integration tests apart from their complexity is their speed. Usually an integration test is one order of magnitute than a unit tests. Unit tests need just the source code of the application and nothing else. They are almost always CPU bound. Integration tests perform I/O with external systems making them much more difficult to run in an effective manner. 
+The second big issue with integration tests apart from their complexity is their speed. Usually an integration test is one order of magnitute slower than a unit test. Unit tests need just the source code of the application and nothing else. They are almost always CPU bound. Integration tests on the other hand can perform I/O with external systems making them much more difficult to run in an effective manner. 
 
 Just to get an idea on the difference for the running time let's assume the following numbers.
 
@@ -169,7 +176,7 @@ Now let's do the calculations. Notice that I assume that Joe has found the perfe
 
 #### Integration tests are hard to debug
 
-The last reason that having only integration tests (without any unit tests) is an anti-pattern is the amount of time spent to debug a failed test. Since an integration test is testing multiple software components (by definition), when it breaks, the failure can come from *any* of the tested components. Pinpoint the problem can be a hard task depending on the number of components involved.
+The last reason why having only integration tests (without any unit tests) is an anti-pattern is the amount of time spent to debug a failed test. Since an integration test is testing multiple software components (by definition), when it breaks, the failure can come from *any* of the tested components. Pinpointing the problem can be a hard task depending on the number of components involved.
 
 When an integration tests fails you need to be able to understand why it failed and how to fix it. The complexity and breadth of integration tests make them extremely difficult to debug. Again, as an example let's say that your application only has integration tests. You run them and get the following result.
 
