@@ -145,7 +145,7 @@ focus on testing serialization/deserialization and with the communication to the
 
 ![correct Integration tests](../../assets/testing-anti-patterns/correct-integration-tests.png)
 
-In the end the number of integration tests will be much smaller than the number of unit tests (matching the shape of the test pyramid described in the first section of this article).
+In the end, the number of integration tests will be much smaller than the number of unit tests (matching the shape of the test pyramid described in the first section of this article).
 
 
 
@@ -185,9 +185,96 @@ A developer in your team (or even you) creates a new commit, which triggers the 
 ![breakage of integration tests](../../assets/testing-anti-patterns/integration-tests-break.png)
 
 
-The integration test "Customer buys item is broken". In the context of an e-shop application this is not very helpful. There are many reasons why this test might be broken. There is no way 
-to know why the test broke without diving into the logs and metrics of the test environment (assuming that they can pinpoint the problem). In several cases (and more complex application) the only way
+As a developer you look at the test result and see that the integration test named "Customer buys item" is broken. In the context of an e-shop application this is not very helpful. There are many reasons why this test might be broken. 
+
+There is no way 
+to know why the test broke without diving into the logs and metrics of the test environment (assuming that they can pinpoint the problem). In several cases (and more complex applications) the only way
 to truly debug an integration test is to checkout the code, recreate the test environment locally, then run the integration tests and see it fail in the local developmenet environment.
+
+Now imagine that you work with Mary on this application so you have both integration and unit tests. Your team makes some commits, you run all the tests and get the following:
+
+![breakage of both kinds of tests](../../assets/testing-anti-patterns/both-tests-break.png)
+
+Now two tests are broken:
+
+* "Customer buys item" is broken as before (integration test)
+* "Special discount test" is also broken (unit test)
+
+It is now very easy to see the pattern. You can go directly to the source code of the *Discount* functionality, locate the bug and fix it and in 99% of the cases the integration
+test will be fixed as well. 
+
+Having unit tests break *before* or *with* integration tests is a much more painless process when you need to locate a bug.
+
+##### Quick summary of why you need integration tests
+
+This is the longest section of this article, but I consider it very important. In summary while *in theory* you could only have integration tests, *in practice*
+
+1. Unit tests are easier to maintain 
+1. Unit tests can easily replicate corner cases and not-so-freqent scenario
+1. Unit tests run much faster than integration tests
+1. Broken unit tests are easier to fix than broken integration tests
+
+If you only have integration tests, you waste developer time and company money.
+
+
+### Anti-Pattern 3 - Having the wrong kind of tests
+
+Now that we have seen why we need both kinds of tests (unit *and* integration), we need to decide on *how many* tests we need from each category.
+
+There is no hard and fast rule here, it depends on your application. The imporant point here is that you need to spend some time. The test pyramid is only a suggestion on the amount
+of tests that you should create. It assumes that you are writing a commercial web application, but that is not always the case. Let's see some examples
+
+
+#### Example - Linux command line utility
+
+Your application is a command line utility. It reads one special format of a file (let's say a CSV) and export another format (let's say JSON) after doing some transformation.
+The application is self-contained, does not communicate with any other system or use the network. The transformations are complex mathematical processes that are critical for
+the correct functionality of the application (it should always be correct even if it slow).
+
+In this contrived example you would need:
+
+* Lots and lots of unit tests for the mathematical equations. 
+* Some integration tests for the CSV reading and JSON writing
+* No UI tests because there is no UI.
+
+Here is the test pyramid for this project
+
+
+#### Example - Payment Management
+
+You are adding a new application that will be inserted into an existing system of applications. The application is a payment gateway that procesess payment information
+for an external system. It should keep a log of all transactions to an external DB, it should communicate to external payment providers (e.g. Paypal, Stripe, WorldPay) and
+it should also send payment details to another system that prepares invoices.
+
+In this contrived example you would need
+
+* Almost no unit tests because there is no business logic
+* Lots and lots of integration tests for the external communications, the db storage, the invoice system
+* No UI Tests because there is a no UI
+
+#### Example - Website creator
+
+You are working on this brand new startup that will revolutionize the way people create websites, by offering a one-of-a-kind way to create web application from 
+within the browser. The application is a graphical designer with a toolbox of all the possible elements that can be added on a web page, a library of premade templates
+and the ability to get new templates from a marketplace. The designer works in a very friendly way by allowing you drag and drop components on the page, resize them,
+edit their properties and change their colours and appearance.
+
+In this contrived example you would need
+
+* Almost no unit tests because there is no business logic
+* Some integration tests for the marketplace
+* Lots and lots of UI tests that make sure the user experience is as advertise.
+
+I used some extreme examples to illustrate the point that you need to understand what your application needs and focus only on the tests
+that give you value. I have personally seen "payment management" application with no integration tests and "website creator" applications with no UI tests.
+
+There are several articles on the web (I am not going to link them) that talk about a specific amount on integration/unit/UI tests that you need and don't need. All
+these articles are based on assumptions that may not be true in your case.
+
+
+
+
+
 
 
 

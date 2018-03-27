@@ -14,7 +14,7 @@
    viewBox="0 0 210 297"
    version="1.1"
    id="svg8"
-   sodipodi:docname="integration-tests-break.svg"
+   sodipodi:docname="both-tests-break.svg"
    inkscape:export-filename="C:\workspace\kkapelon.github.io\assets\testing-anti-patterns\integration-tests-break.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
@@ -195,7 +195,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
      inkscape:cx="338.83582"
-     inkscape:cy="858.99696"
+     inkscape:cy="916.13982"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -223,18 +223,18 @@
      id="layer1">
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="3.2127993"
-       y="11.816965"
+       style="font-style:normal;font-weight:normal;font-size:7.60072184px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.19001804"
+       x="3.5055263"
+       y="9.5508795"
        id="text866"><tspan
          sodipodi:role="line"
          id="tspan864"
-         x="3.2127993"
-         y="11.816965"
-         style="stroke-width:0.26458332">Integration tests result</tspan></text>
+         x="3.5055263"
+         y="9.5508795"
+         style="stroke-width:0.19001804">Integration tests result</tspan></text>
     <g
        id="g1029"
-       transform="translate(4.724699,-4.1577381)">
+       transform="matrix(0.71817846,0,0,0.71817846,4.5913401,-1.9218081)">
       <rect
          y="27.219494"
          x="1.5119095"
@@ -256,7 +256,7 @@
     </g>
     <g
        id="g1034"
-       transform="translate(5.1026751,-2.8348214)">
+       transform="matrix(0.71817846,0,0,0.71817846,4.8627944,-0.97171784)">
       <rect
          y="42.527527"
          x="1.1339333"
@@ -278,7 +278,7 @@
     </g>
     <g
        id="g1039"
-       transform="translate(6.4930392,-5.575158)">
+       transform="matrix(0.71817846,0,0,0.71817846,5.8613239,-2.9397686)">
       <rect
          y="62.087795"
          x="-0.25643077"
@@ -300,7 +300,7 @@
     </g>
     <g
        id="g1044"
-       transform="translate(6.8035714,-4.1577381)">
+       transform="matrix(0.71817846,0,0,0.71817846,6.0843415,-1.9218081)">
       <rect
          y="77.679314"
          x="-0.56696296"
@@ -319,6 +319,171 @@
            x="1.9260546"
            id="tspan864-2-2-5"
            sodipodi:role="line">Customer checks order history</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.60072184px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.19001804"
+       x="111.27747"
+       y="10.084518"
+       id="text866-7"><tspan
+         sodipodi:role="line"
+         id="tspan864-7"
+         x="111.27747"
+         y="10.084518"
+         style="stroke-width:0.19001804">Unit tests result</tspan></text>
+    <g
+       id="g1003"
+       transform="translate(-0.75595856,-2.8555592e-5)">
+      <rect
+         y="18.160286"
+         x="113.44911"
+         height="8.9579935"
+         width="72.47831"
+         id="rect817-3-4"
+         style="fill:#59da5a;fill-opacity:1;stroke:#000000;stroke-width:0.3799164;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         id="text866-0-8-96"
+         y="23.897409"
+         x="127.93825"
+         style="font-style:normal;font-weight:normal;font-size:7.60072184px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.19001804"
+         xml:space="preserve"><tspan
+           style="font-size:4.56043339px;stroke-width:0.19001804"
+           y="23.897409"
+           x="127.93825"
+           id="tspan864-2-2-04"
+           sodipodi:role="line">Basket Weight Test</tspan></text>
+    </g>
+    <g
+       id="g995"
+       transform="translate(-0.7559433,0.90285046)">
+      <rect
+         y="30.104275"
+         x="113.4491"
+         height="9.2294464"
+         width="68.135048"
+         id="rect817-1-8"
+         style="fill:#da6f59;fill-opacity:1;stroke:#000000;stroke-width:0.3799164;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         id="text866-0-8-9-9"
+         y="35.977127"
+         x="123.24367"
+         style="font-style:normal;font-weight:normal;font-size:7.60072184px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.19001804"
+         xml:space="preserve"><tspan
+           style="font-size:4.56043339px;stroke-width:0.19001804"
+           y="35.977127"
+           x="123.24367"
+           id="tspan864-2-2-0-0"
+           sodipodi:role="line">Special Discount Test</tspan></text>
+    </g>
+    <g
+       id="g987"
+       transform="translate(0,2.1304441)">
+      <rect
+         y="41.994999"
+         x="112.69315"
+         height="9.2294493"
+         width="87.679756"
+         id="rect817-4"
+         style="fill:#59da5a;fill-opacity:1;stroke:#000000;stroke-width:0.3799164;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         id="text866-0-8-8-3"
+         y="48.309864"
+         x="121.7074"
+         style="font-style:normal;font-weight:normal;font-size:7.60072184px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.19001804"
+         xml:space="preserve"><tspan
+           style="font-size:4.56043339px;stroke-width:0.19001804"
+           y="48.309864"
+           x="121.7074"
+           id="tspan864-2-2-5-4"
+           sodipodi:role="line">Product Recommendation Test</tspan></text>
+    </g>
+    <g
+       id="g1008"
+       transform="translate(-0.37797546,3.0333237)">
+      <rect
+         y="54.210449"
+         x="113.07113"
+         height="8.9579935"
+         width="73.835579"
+         id="rect817-0-6"
+         style="fill:#59da5a;fill-opacity:1;stroke:#000000;stroke-width:0.3799164;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         id="text866-0-8-2-3"
+         y="60.389587"
+         x="120.26482"
+         style="font-style:normal;font-weight:normal;font-size:7.60072184px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.19001804"
+         xml:space="preserve"><tspan
+           style="font-size:4.56043339px;stroke-width:0.19001804"
+           y="60.389587"
+           x="120.26482"
+           id="tspan864-2-2-1-6"
+           sodipodi:role="line">Credit card validation test</tspan></text>
+    </g>
+    <g
+       id="g1013"
+       transform="translate(-0.44561005,3.2214301)">
+      <rect
+         y="66.869217"
+         x="113.13876"
+         height="8.9579935"
+         width="73.835579"
+         id="rect817-0-6-7"
+         style="fill:#59da5a;fill-opacity:1;stroke:#000000;stroke-width:0.3799164;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         id="text866-0-8-2-3-4"
+         y="73.048355"
+         x="130.86732"
+         style="font-style:normal;font-weight:normal;font-size:7.60072184px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.19001804"
+         xml:space="preserve"><tspan
+           style="font-size:4.56043339px;stroke-width:0.19001804"
+           y="73.048355"
+           x="130.86732"
+           id="tspan864-2-2-1-6-4"
+           sodipodi:role="line">Promo Code Test</tspan></text>
+    </g>
+    <g
+       id="g1018"
+       transform="translate(-0.44561005,1.1382429)">
+      <rect
+         y="81.799278"
+         x="113.13876"
+         height="8.9579935"
+         width="73.835579"
+         id="rect817-0-6-8"
+         style="fill:#59da5a;fill-opacity:1;stroke:#000000;stroke-width:0.3799164;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         id="text866-0-8-2-3-0"
+         y="87.978416"
+         x="134.63168"
+         style="font-style:normal;font-weight:normal;font-size:7.60072184px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.19001804"
+         xml:space="preserve"><tspan
+           style="font-size:4.56043339px;stroke-width:0.19001804"
+           y="87.978416"
+           x="134.63168"
+           id="tspan864-2-2-1-6-43"
+           sodipodi:role="line">Wish List Test</tspan></text>
+    </g>
+    <g
+       id="g1023"
+       transform="translate(-0.44561005,1.9619864e-6)">
+      <rect
+         y="95.784393"
+         x="113.13876"
+         height="8.9579935"
+         width="73.835579"
+         id="rect817-0-6-8-8"
+         style="fill:#59da5a;fill-opacity:1;stroke:#000000;stroke-width:0.3799164;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         id="text866-0-8-2-3-0-4"
+         y="101.96353"
+         x="127.23434"
+         style="font-style:normal;font-weight:normal;font-size:7.60072184px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.19001804"
+         xml:space="preserve"><tspan
+           style="font-size:4.56043339px;stroke-width:0.19001804"
+           y="101.96353"
+           x="127.23434"
+           id="tspan864-2-2-1-6-43-8"
+           sodipodi:role="line">VAT Calculation Test</tspan></text>
     </g>
   </g>
 </svg>
