@@ -21,7 +21,7 @@ Unfortunately, testing terminology has not reached a common consensus yet. If yo
 If you have never encountered the testing pyramid before, I would urge you to become familiar with it first before going on. Some good starting points are:
 
  * [The forgotten layer of the test automation pyramid](https://www.mountaingoatsoftware.com/blog/the-forgotten-layer-of-the-test-automation-pyramid) (Mike Cohn 2009)
- * [The Test Pyramid](https://www.mountaingoatsoftware.com/blog/the-forgotten-layer-of-the-test-automation-pyramid) (Martin Fowler 2012)
+ * [The Test Pyramid](https://martinfowler.com/bliki/TestPyramid.html) (Martin Fowler 2012)
  * [Google Testing blog ](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html) (Google 2015)
 
  The testing pyramid deserves a whole discussion on its own, especially on the topic of the amount of tests needed for each category. For the current article I am just referencing the pyramid in order to define the two lowest test categories. Notice that in this article User Interface Tests (the top part of the pyramid) are *not* mentioned (mainly for brevity reasons and because UI tests come with their own specific antipatterns). 
@@ -221,13 +221,14 @@ If you only have integration tests, you waste developer time and company money.
 
 Now that we have seen why we need both kinds of tests (unit *and* integration), we need to decide on *how many* tests we need from each category.
 
-There is no hard and fast rule here, it depends on your application. The imporant point here is that you need to spend some time. The test pyramid is only a suggestion on the amount
-of tests that you should create. It assumes that you are writing a commercial web application, but that is not always the case. Let's see some examples
+There is no hard and fast rule here, it depends on your application. The imporant point is that you need to spend some time to understand what type of tests
+add the most value to *your* application. The test pyramid is only a suggestion on the amount
+of tests that you should create. It assumes that you are writing a commercial web application, but that is not always the case. Let's see some examples:
 
 
 #### Example - Linux command line utility
 
-Your application is a command line utility. It reads one special format of a file (let's say a CSV) and export another format (let's say JSON) after doing some transformation.
+Your application is a command line utility. It reads one special format of a file (let's say a CSV) and exports another format (let's say JSON) after doing some transformations.
 The application is self-contained, does not communicate with any other system or use the network. The transformations are complex mathematical processes that are critical for
 the correct functionality of the application (it should always be correct even if it slow).
 
@@ -237,13 +238,17 @@ In this contrived example you would need:
 * Some integration tests for the CSV reading and JSON writing
 * No UI tests because there is no UI.
 
-Here is the test pyramid for this project
+Here is the breakdown of tests for this project:
+
+![Test pyramid example](../../assets/testing-anti-patterns/pyramid1.png)
+
+Unit tests dominate in this example and the shape is **not** a pyramid.
 
 
 #### Example - Payment Management
 
-You are adding a new application that will be inserted into an existing system of applications. The application is a payment gateway that procesess payment information
-for an external system. It should keep a log of all transactions to an external DB, it should communicate to external payment providers (e.g. Paypal, Stripe, WorldPay) and
+You are adding a new application that will be inserted into an existing big collection of enterprise systems. The application is a payment gateway that processes payment information
+for an external system. This new application should keep a log of all transactions to an external DB, it should communicate with external payment providers (e.g. Paypal, Stripe, WorldPay) and
 it should also send payment details to another system that prepares invoices.
 
 In this contrived example you would need
@@ -252,24 +257,42 @@ In this contrived example you would need
 * Lots and lots of integration tests for the external communications, the db storage, the invoice system
 * No UI Tests because there is a no UI
 
+Here is the breakdown of tests for this project:
+
+![Test pyramid example](../../assets/testing-anti-patterns/pyramid2.png)
+
+Integrations tests dominate in this example and the shape is **not** a pyramid.
+
 #### Example - Website creator
 
-You are working on this brand new startup that will revolutionize the way people create websites, by offering a one-of-a-kind way to create web application from 
-within the browser. The application is a graphical designer with a toolbox of all the possible elements that can be added on a web page, a library of premade templates
-and the ability to get new templates from a marketplace. The designer works in a very friendly way by allowing you drag and drop components on the page, resize them,
+You are working on this brand new startup that will revolutionize the way people create websites, by offering a one-of-a-kind way to create web applications from 
+within the browser. 
+
+The application is a graphical designer with a toolbox of all the possible HTML elements that can be added on a web page along with  library of premade templates. There is also
+the ability to get new templates from a marketplace. The website creator works in a very friendly way by allowing you to drag and drop components on the page, resize them,
 edit their properties and change their colours and appearance.
 
 In this contrived example you would need
 
 * Almost no unit tests because there is no business logic
 * Some integration tests for the marketplace
-* Lots and lots of UI tests that make sure the user experience is as advertise.
+* Lots and lots of UI tests that make sure the user experience is as advertised
+
+Here is the breakdown of tests for this project:
+
+![Test pyramid example](../../assets/testing-anti-patterns/pyramid3.png)
+
+UI tests dominate here and the shape is **not** a pyramid.
 
 I used some extreme examples to illustrate the point that you need to understand what your application needs and focus only on the tests
-that give you value. I have personally seen "payment management" application with no integration tests and "website creator" applications with no UI tests.
+that give you value. I have personally seen "payment management" applications with no integration tests and "website creator" applications with no UI tests.
 
-There are several articles on the web (I am not going to link them) that talk about a specific amount on integration/unit/UI tests that you need and don't need. All
-these articles are based on assumptions that may not be true in your case.
+There are several articles on the web (I am not going to link them) that talk about a specific amount on integration/unit/UI tests that you need or don't need. All
+these articles are based on assumptions that may *not* be true in your case.
+
+### Anti-Pattern 4 - Testing the wrong functionality
+
+I promised in the begining of this article that I will not speak about a particular programming language.
 
 
 
