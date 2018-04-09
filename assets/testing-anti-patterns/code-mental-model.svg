@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   sodipodi:docname="code-mental-model.svg"
+   inkscape:export-filename="C:\workspace\kkapelon.github.io\assets\testing-anti-patterns\code-mental-model.png"
+   inkscape:export-xdpi="86.054985"
+   inkscape:export-ydpi="86.054985">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.5674954"
+     inkscape:cx="396.85039"
+     inkscape:cy="871.64563"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="fill:#4468b7;fill-opacity:1;stroke:#0c0c0c;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path819"
+       cx="101.56242"
+       cy="70.355446"
+       r="58.532024" />
+    <circle
+       style="fill:#ee8c34;fill-opacity:1;stroke:#0c0c0c;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path817"
+       r="29.666914"
+       cy="70.355446"
+       cx="101.56242" />
+    <circle
+       style="fill:#dc3918;fill-opacity:1;stroke:#0c0c0c;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path815"
+       cx="101.56242"
+       cy="70.355446"
+       r="16.704346" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="89.346115"
+       y="72.985779"
+       id="text823"><tspan
+         sodipodi:role="line"
+         id="tspan821"
+         x="89.346115"
+         y="72.985779"
+         style="font-size:7.05555534px;stroke-width:0.26458332">Critical</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="93.380325"
+       y="95.052376"
+       id="text823-3"><tspan
+         sodipodi:role="line"
+         id="tspan821-0"
+         x="93.380325"
+         y="95.052376"
+         style="font-size:7.05555534px;stroke-width:0.26458332">Core</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="98.744301"
+       y="115.54678"
+       id="text845"><tspan
+         sodipodi:role="line"
+         id="tspan843"
+         x="98.744301"
+         y="119.91654"
+         style="stroke-width:0.26458332"></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="91.342545"
+       y="113.05129"
+       id="text823-3-5"><tspan
+         sodipodi:role="line"
+         id="tspan821-0-0"
+         x="91.342545"
+         y="113.05129"
+         style="font-size:7.05555534px;stroke-width:0.26458332">Other</tspan></text>
+  </g>
+</svg>

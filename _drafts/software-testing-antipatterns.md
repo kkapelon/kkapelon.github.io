@@ -285,12 +285,77 @@ Here is the breakdown of tests for this project:
 UI tests dominate here and the shape is **not** a pyramid.
 
 I used some extreme examples to illustrate the point that you need to understand what your application needs and focus only on the tests
-that give you value. I have personally seen "payment management" applications with no integration tests and "website creator" applications with no UI tests.
+that give you value. I have personally seen "payment management" applications with no integration tests and "website creator" applications with no UI test.
 
 There are several articles on the web (I am not going to link them) that talk about a specific amount on integration/unit/UI tests that you need or don't need. All
 these articles are based on assumptions that may *not* be true in your case.
 
 ### Anti-Pattern 4 - Testing the wrong functionality
+
+In the previous sections we have outlined the types and amount of tests you need to have for your application. The next logical step is to explain what functionality 
+you actually need to test.
+
+In theory, getting 100% code coverage in an application is the ultimate goal. In practice this goal is not only difficult to achieve but also it doesn't guarantee a bug free application.
+
+There are some cases where indeed it is possible to test *all* functionality of your application. If you start on a green-field project, if you work in a small team that is well
+behaved and takes into account the effort required for tests, if it perfectly fine to write new tests for all new functionality you add (because the existing code already has tests).
+
+But not all developers are lucky like this. In most cases you inherit an existing application that has a minimal amount of tests (or even none!). If you are part of a big and established company, working with legacy code is mostly the rule rather than the exception. 
+
+Ideally you would have enough development time to write tests for both new and existing code for a legacy application. This is a romantic idea that will probably be rejected
+by the average project manager who is mostly interested on adding new features rather then testing/refactoring. You have to pick your battles and find a fine balance between adding new functionality (as requested by the business) and expanding the existing test suite.
+
+So what do you test? Where do you focus your efforts? Several times I have seen developers wasting valuable testing time by writing "unit tests" that add little or no value to the overall stability of the application. The canonical example of useless testing is trivial tests that verify the application data model.
+
+Code coverage is analyzed in detail in its own anti-pattern section. In the present section however we will talk about code "severity" and how it relates to your tests. 
+
+If you ask any developer to show you the source code of any application, he/she will probably open an IDE or code repository browser and show you the invididual folders.
+
+![Source code physical model](../../assets/testing-anti-patterns/source-code-physical.png)
+
+This representation is the physical model of the code. It defines the folders in the filesystem that contain the source code. While this hierachy of folders is great for working with the code itself, unfortunately it doesn't define the importance of each code folder. A flat list of code folders implies that all code components contained in them are of equal importance. 
+
+This is not true as different code components have a different impact in the overall functionality of the application. As a quick example let's say that you are writing an eshop application and two bugs appear in production:
+
+1. Customers cannot check-out their basket halting all sales
+1. Customers get wrong recommendations when they browse products.
+
+Even though both bugs should be fixed, it is obvious that the first one has higher priority. Therefore if you inherit an eshop application with zero tests, you should write new tests the directly validate the check-out functionality rather than the recommendation engine. So even though the recomendation engine and the check-out process might exist on sibling folders in the filesystem, their importance is different when it comes to testing.
+
+To generalize this example, if you work for some time in any medium/large application you will soon need to think about code using a different representation - the mental model.
+
+![Source code mental model](../../assets/testing-anti-patterns/code-mental-model.png)
+
+I am showing here 3 layers of code, but depending on the size of your application it might have more. These are:
+
+1. Critical code - This is the code that breaks often, gets most of new features and has a big impact on application users
+1. Core code - This is the code that breaks sometimes, get few new features and has medium impact on the application users
+1. Other code - This is code that rarely changes, rarely gets new features and has minimul impact on application users.
+
+
+This mental mode should be your guiding principle whenever you write a new unit test. Ask yourself if the functionality you are writing tests for now belongs to the *critical* or *core* categories.
+If yes, then write a unit test. If no, then maybe your development time should better be spent elseware (e.g. in another bug).
+
+The concept of having code with different severity categories is also great when you need to answer the age old question of how much code coverage is enough for an application. To answer this question you need to either know the severity layers of the application or ask somebody that does. Once you have this information at hand the answer is obvious:
+
+Try to write tests that work towards 100% coverage **of critical code**. If you have already done this, then try to write tests that work towards 100% **of core code**.
+
+The important thing to notice here is that the critical code in an application is always a small subset of the overall code. So if in an application critical code is let's say 20% of
+the overall code, then getting just 20% overall code coverage is a good first step for reducing bugs in production. 
+
+In summary, write unit and integration tests for code that
+
+* breaks often
+* changes often
+* is critical to the business
+
+If you have the time luxury to further expand the test suite, make sure that you understand the diminishing returns before wasting time on test with little or no value.
+
+
+
+
+
+### Anti-Pattern 5 - Testing internal implementation
 
 I promised in the begining of this article that I will not speak about a particular programming language.
 
