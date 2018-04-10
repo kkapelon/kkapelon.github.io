@@ -317,7 +317,7 @@ This representation is the physical model of the code. It defines the folders in
 
 This is not true as different code components have a different impact in the overall functionality of the application. As a quick example let's say that you are writing an eshop application and two bugs appear in production:
 
-1. Customers cannot check-out their basket halting all sales
+1. Customers cannot check-out their cart halting all sales
 1. Customers get wrong recommendations when they browse products.
 
 Even though both bugs should be fixed, it is obvious that the first one has higher priority. Therefore if you inherit an eshop application with zero tests, you should write new tests the directly validate the check-out functionality rather than the recommendation engine. So even though the recomendation engine and the check-out process might exist on sibling folders in the filesystem, their importance is different when it comes to testing.
@@ -349,7 +349,7 @@ In summary, write unit and integration tests for code that
 * changes often
 * is critical to the business
 
-If you have the time luxury to further expand the test suite, make sure that you understand the diminishing returns before wasting time on test with little or no value.
+If you have the time luxury to further expand the test suite, make sure that you understand the diminishing returns before wasting time on tests with little or no value.
 
 
 
@@ -357,7 +357,90 @@ If you have the time luxury to further expand the test suite, make sure that you
 
 ### Anti-Pattern 5 - Testing internal implementation
 
-I promised in the begining of this article that I will not speak about a particular programming language.
+More tests are always a good thing. Right? 
+
+Wrong! You also need to make sure that the tests are actually structured in a correct way. Having tests that are written in the wrong manner is bad in two ways. 
+
+* They waste precious development time the first time they are written
+* They waste even more time when they need to be refactored (when a new feature is added)
+
+Strictly speaking, test code is like any other type of code. You will need to refactor it as some point in order to improve it in a gradual way. But if you find yourself routinely
+changing existing tests just to make them pass when a new feature is added then *your tests are are not testing what they should be testing*
+
+I have seen several companies that started new projects and thinking that they will get it right it this time, they started writing a big number of tests to cover the functionality
+of the application. After a while, a new feature got added and several existing tests needed to change in order to make them pass again. Soon the amount of effort spent fixing
+the existing tests was actually larger than the time needed to implement the feature itself.
+
+In such situations, several developers just accept defeat. They declare software tests a waste of time and abandon completely the existing test suite in order to focus fully on new features.
+In some extreme scenarios some changes might even be held back because of the amount of tests that break.
+Unfortunately, you need some basic testing experience to understand which tests are written in the "wrong" way. 
+
+Having to change a big number of existing tests when a new feature is introduced shows the *symptom*. The actual problem is that tests were instructed to verify internal implementation which is
+always a recipe for disaster. There are several software testing resources online that attempt to explain this concept, but very few of them show some solid examples.
+
+
+I promised in the begining of this article that I will not speak about a particular programming language and I intend to keep that promise. In this section the illustrations
+show the data structure of your favourite programming language. Think of them as structs/objects/classes that contain fields/values. 
+
+Let's say that the customer object in an e-shop application is the following.
+
+![Tight coupling of tests](../../assets/testing-anti-patterns/coupled-testing.png)
+
+The customer type has only two values where `0` means "guest user" and `1` means "registered user". Developers look at the object and write 10 unit tests that verify various cases of guests users and 10 cases of registered user. And when I say "verify" I mean that tests **are looking at this particular field in this particular object**.
+
+Time passes by and business decides that a new customer type with value `2` is needed for affiliates. Developers add 10 more tests that deal with affiliates. Finally another type of user called "premium customer"
+is added and developers add 10 more tests. 
+
+At this point, we have 40 tests in 4 categories that all look at this particular field.
+(These numbers are imaginary. This contrived example exists only for demonstration purposes. In a real project you might have 10 interconnected fields within 6 nested objects and 200 tests).
+
+![Tight coupling of tests example](../../assets/testing-anti-patterns/coupled-testing-example.png)
+
+If you are a seasoned developer you can always imagine what happens next. New requirements come that say:
+
+1. For registered users, their email should also be stored
+1. For affiliate users, their company should also be stored
+1. Premium users can now gather reward points.
+
+The customer object now changes as below:
+
+
+
+![Tight coupling of tests broken](../../assets/testing-anti-patterns/coupled-testing-broken.png)
+
+You now have 4 objects connected with foreign keys and all 40 tests are instantly broken because the field they were checking no longer exists. 
+
+*Of course in this trivial example 
+one could simply keep the existing field to not break backwards compatibility with tests*. In a real application this is not always possible. Sometimes backwards compatibility might essentially
+mean that you need to keep both old and new code (before/after the new feature) resulting in a huge bloat. Also notice that having to keep old code around just to make unit tests pass is a huge anti-pattern on its own.
+
+In a real application when this happens, developers ask from management some extra time to fix the tests. Project managers then declare that unit testing is a waste of time because they seem to hinder new features. The whole team then abandons the test suite by quickly disabling the failing tests.
+
+The big problem here is not testing, but instead the way the tests were constructed. Instead of testing internal implementation they should instead expected behaviour. In our simple example
+instead of testing directly the internal structure of the customer they should instead check the exact business requirement of each case. Here is how these same tests should be handled instead.
+
+![Tests that test behaviour](../../assets/testing-anti-patterns/coupled-testing-fixed.png)
+
+
+The tests do not really care about the internal structure of the customer object. They only care about its interactions with other objects/methods/functions. The other objects/method/functions should be mocked when needed
+on a case to case basis. Notice that each type of tests directly maps to a business need rather than a technical implementation (which is always a good practice.)
+
+If the internal implementation of the *Customer* object changes, the verification code of the tests remains the same. The only thing that might change is the setup code for each test, which should be centralized in a single helper function called `createSampleCustomer()` or something similar (more on this in [AntiPattern 9](AntiPattern 9))
+
+Of course in theory it is possible for the verified objects themselves to change. In practice it is not realistic for changes to happen at `loginAsGuest()` *and* `register()` *and* `showAffiliateSales()` *and* `getPremiumDiscount()` **at the same time**. In a realistic scenario you would have to refactor 10 tests instead of 40.
+
+
+In summary, if you find yourself continuously fixing existing tests as you add new features, it means that your tests are tighlty coupled to internal implementation.
+
+
+
+
+
+
+
+
+
+
 
 
 
