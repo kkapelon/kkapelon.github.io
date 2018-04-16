@@ -329,7 +329,7 @@ To generalize this example, if you work for some time in any medium/large applic
 I am showing here 3 layers of code, but depending on the size of your application it might have more. These are:
 
 1. Critical code - This is the code that breaks often, gets most of new features and has a big impact on application users
-1. Core code - This is the code that breaks sometimes, get few new features and has medium impact on the application users
+1. Core code - This is the code that breaks sometimes, gets few new features and has medium impact on the application users
 1. Other code - This is code that rarely changes, rarely gets new features and has minimul impact on application users.
 
 
@@ -382,7 +382,7 @@ always a recipe for disaster. There are several software testing resources onlin
 I promised in the begining of this article that I will not speak about a particular programming language and I intend to keep that promise. In this section the illustrations
 show the data structure of your favourite programming language. Think of them as structs/objects/classes that contain fields/values. 
 
-Let's say that the customer object in an e-shop application is the following.
+Let's say that the customer object in an e-shop application is the following:
 
 ![Tight coupling of tests](../../assets/testing-anti-patterns/coupled-testing.png)
 
@@ -431,6 +431,40 @@ Of course in theory it is possible for the verified objects themselves to change
 
 
 In summary, if you find yourself continuously fixing existing tests as you add new features, it means that your tests are tighlty coupled to internal implementation.
+
+### Anti-Pattern 6 - Paying excessive attention to test coverage
+
+Code coverage is a favourite metric among software stakeholders. [Endless discussions](https://softwareengineering.stackexchange.com/questions/1380/how-much-code-coverage-is-enough) [have](https://martinfowler.com/bliki/TestCoverage.html) [happened](https://testing.googleblog.com/2010/07/code-coverage-goal-80-and-no-less.html) (and will continue to happen) among developers and project managers on the amount of code coverage a project needs.
+
+The reason why everybody likes to talk about code coverage is because it is a metric that is easy to understand and quantify. There are several easily accessible tools that output this metric for most programming languages and test frameworks. 
+
+*Let me tell you a little secret:* Code coverage is completely useless as a metric. I am not going to even give you a number on how much code coverage your project needs. This is a trap question. You can have a project with 100% code coverage that still has bugs and problems. The real metrics
+that you should monitor are the well-known CTM. 
+
+##### The Codepipes Testing Metrics (CTM)
+
+Here is their definition if you have never seen them before:
+
+
+|  Metric Name  | Description | Ideal value | Usual value | Problematic value |
+| -------------      |-------------| -----   |       -----|    -----|
+| PDWT | % of Developers writing tests        |   100%      |  20%-70%    |   Anything less than 100% |
+| PBCNT | % of bugs that create new tests          |   100%       |  0%-5%    |   Anything less than 100% |
+| PTVB | % of tests that verify behaviour       |   100%       |  10%   |   Anything less than 100% |
+| PTD | % of tests that are deterministic       |   100%       |  50%-80%    |   Anything less than 100% |
+
+
+
+**PDWT** (Percent of Developers who Write Tests) is probably the most imporant metric of all. There is no point in talking about software testing anti-patterns if you have zero tests in the first place. All developers in the team should write tests. A new feature should be declared *done* only when it is accompanied by one or more tests. 
+
+**PBCNT** (Percent of Bugs that Create New tests). Every bug that slips into production is a great excuse for writing a new software test that verifies the respective fix. A bug that appears in production should only appear once. If your project suffers from bugs that appear multiple times in production even after their original "fix", then your team will really benefit from this metric. More details on this topic in [Antipattern X].
+
+**PTVB** (Percent of Tests that Verify Behaviour and not implementation). Tightly coupled tests are a huge time sink when the main code is refactored. This topic was already discussed in [Antipattern X].
+
+**PTD** (Percent of Tests that are Determistic to total tests). Tests should only fail when something is wrong with the business code. Having tests that fail intermittently for no apparent reason is a huge problem that is discussed in [Antipattern X].
+
+
+
 
 
 
