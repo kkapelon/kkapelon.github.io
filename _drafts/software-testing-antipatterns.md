@@ -438,7 +438,7 @@ Code coverage is a favourite metric among software stakeholders. [Endless discus
 
 The reason why everybody likes to talk about code coverage is because it is a metric that is easy to understand and quantify. There are several easily accessible tools that output this metric for most programming languages and test frameworks. 
 
-*Let me tell you a little secret:* Code coverage is completely useless as a metric. I am not going to even give you a number on how much code coverage your project needs. This is a trap question. You can have a project with 100% code coverage that still has bugs and problems. The real metrics
+*Let me tell you a little secret:* Code coverage is completely useless as a metric. There is no "correct" code coverage number. This is a trap question. You can have a project with 100% code coverage that still has bugs and problems. The real metrics
 that you should monitor are the well-known CTM. 
 
 ##### The Codepipes Testing Metrics (CTM)
@@ -462,6 +462,32 @@ Here is their definition if you have never seen them before:
 **PTVB** (Percent of Tests that Verify Behaviour and not implementation). Tightly coupled tests are a huge time sink when the main code is refactored. This topic was already discussed in [Antipattern X].
 
 **PTD** (Percent of Tests that are Determistic to total tests). Tests should only fail when something is wrong with the business code. Having tests that fail intermittently for no apparent reason is a huge problem that is discussed in [Antipattern X].
+
+If after reading about these metrics, you still insist on setting a hard number as a goal for code coverage, I will give you the number **20%**. This number should be used as a rule of thumb and it is based on the [Pareto principle](https://en.wikipedia.org/wiki/Pareto_principle). 20% of your code is causing 80% of your bugs, so if you really want to start writing tests you could do well by starting with that code first. This advice also ties well with Anti-pattern X where I suggest that you should write tests for your critical code first.
+
+A certain anti-pattern is achieving 100% code coverage. Achieving 100% code coverage sounds good in theory but almost always is a waste of time:
+
+* you have wasted a lost of effort as getting from 80% to 100% is much more difficult than getting from 0% to 20%
+* Increasing code coverage has diminishing returns 
+
+In any non trivial application there are certain scenarios that needs complex unit tests in order to trigger. The effort required to write these tests will usually
+be more than the risk involved if these particular scenarios ever fail in production (if ever). 
+
+If you have worked with any big application you should know by now
+that after reaching 70% or 80% code coverage, it is getting very hard to write useful tests for the code that is still untested.
+
+![Code Coverage Effort](../../assets/testing-anti-patterns/code-coverage-effort.png)
+
+On a similar note, as we already saw in the section for Antipattern X, there are some code paths that never actually fail in production, and therefore writing tests for them is not recommended.
+The time spent on getting them covered should be better spent on actual features.
+
+![Code Coverage Value](../../assets/testing-anti-patterns/code-coverage-value.jpg)
+
+
+Projects that need a specific code coverage percentage as a delivery requirement usually force developers to test trivial code in order or write tests that just verify the underlying
+programming language. This is a huge waste of time and as a developer you have the duty to complain to management who has such unreasonable demands.
+
+In summary, code coveage is a metric that should **not** be used as a representation for quality of a software project. 
 
 
 
