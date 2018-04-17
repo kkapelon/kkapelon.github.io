@@ -50,7 +50,7 @@ As a basic rule of thumb if
 
 …then it is an integration test and not a unit test. 
 
- With the naming out of the way, we can dive into the list. The order of anti-patterns roughly follows their appearance in the the wild. Frequent problems are gathered in the top positions. 
+ With the naming out of the way, we can dive into the list. The order of anti-patterns roughly follows their appearance in the wild. Frequent problems are gathered in the top positions. 
 
 ### Software Testing Anti-Pattern List
 
@@ -488,6 +488,24 @@ Projects that need a specific code coverage percentage as a delivery requirement
 programming language. This is a huge waste of time and as a developer you have the duty to complain to management who has such unreasonable demands.
 
 In summary, code coveage is a metric that should **not** be used as a representation for quality of a software project. 
+
+
+
+### Anti-Pattern 14 - Giving testing a bad reputation out of ignorance
+
+Even though I mention this as the last anti-pattern, this is the one that forced me to write this article. I am always dissappointed when I find people at conferences and meetups who
+"proudly" proclaim that *all tests are a waste of time* and that their application works just fine without any testing at all. A subset of them might be against a specific type of testing (usually either unit
+or integration)  like we have seen in anti-patterns 1 or 2
+
+When I find people like this, it is my hobby to probe them with questions and understand their reasons behind hating tests. And always, it boils down to anti-patterns. They previously
+worked in companies where tests were slow (Anti pattern X), or needed constant refactoring (Antipattern X). They have been "burned" by unreasonable requests for 100% code coverage (Anti-pattern X) or TDD zealots (Antipattern X) that tried to impose to the whole team their own twisted image of what TDD means.
+
+If you are one of those people I truly feel for you. Bad experiences of testing in the past should not clutter your judgement when it comes to testing your next greenfield project. Try to look objectively at your team and your project and see if any of the anti-patterns apply to you. If yes, then you are simply testing in the wrong way and no amount of tests will make your application
+better. Sad but true.
+
+It is one thing for your team to suffer from bad testing habbits, and another to mentor junior developers declaring that "testing is a waste of time". Please don't do the latter. There are companies
+out there that don't suffer from **any** of the anti-patterns mentioned in this article. Try to find them!
+
 
 
 
