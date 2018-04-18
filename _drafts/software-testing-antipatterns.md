@@ -487,9 +487,77 @@ The time spent on getting them covered should be better spent on actual features
 Projects that need a specific code coverage percentage as a delivery requirement usually force developers to test trivial code in order or write tests that just verify the underlying
 programming language. This is a huge waste of time and as a developer you have the duty to complain to management who has such unreasonable demands.
 
-In summary, code coveage is a metric that should **not** be used as a representation for quality of a software project. 
+In summary, code coverage is a metric that should **not** be used as a representation for quality of a software project. 
 
 
+### Anti-Pattern 12 - Treating TDD as a religion
+
+TDD stands for [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) and like all methodologies before it, it is a good idea on paper until consultants try to convince a company that following TDD blindly is the only way forward. At the time or writing this trend is slowly dieing but I decided to mention it here for completeness (as the enterprise world is especially suffering from this anti-pattern). 
+
+Broadly speaking when it comes to software tests:
+
+1. you can write tests *before* the respective implementation code
+1. you can write tests *at the same time* as the implementation code
+1. you can write tests *after* the implementation code
+1. you can write 0 tests (i.e. never) for the implementation code
+
+One of the core tenets of TDD is always following option 1 (writing tests before the implementation code). Writing tests before the code is a good general practice but is certainly not always the *best* practice. 
+
+Writing tests before the implementation code implies that you are certain about your final API, which may or may not be the case. Maybe you have a clear specificiation document in front of you and thus know the exact signatures of the code methods that need to be implemented. But in other cases you might want to just experiment on something, do a quick spike and work **towards** a solution instead of a solution itself.
+
+For a more practical example, it would be immature for a startup to follow blindly TDD. If you work in a startup company you might write code that will change so fast that TDD will not be a big help. You might even throw away code until you get it "right". Writing tests *after* the implementation code, is a perfectly valid strategy in that case.
+
+Writing no tests at all (option 4) is also a valid strategy. As we have seen in anti-pattern X there is code that never needs testing. Writing software tests for trivial code because this is the correct way to "do TDD" will get you nowhere.
+
+The obsession of TDD zealots on writing tests first no matter the case, has been a huge detriment to the [mental health of sane developers](https://softwareengineering.stackexchange.com/questions/98485/tdd-negative-experience). This obsession is already documented in various places so hopefully I don't need to say anything more on the topic.
+
+At this point I would like to admit that several times I have personally implemented code like this:
+
+1. Implementing the main feature first
+1. Writing the test afterwards
+1. Running the test to see it succeed
+1. Commenting out critical parts of the feature code
+1. Running the test to see it fail
+1. Uncommenting feature code to its original state
+1. Running the test to see it succeed again
+1. Commiting the code
+
+In summary, TDD is a good idea but you don't have to follow it all the time. If you work in a fortune 500 company, surrounded by business analysts and getting clear specs on what you need to implement, then TDD *might* be helpful. 
+
+On the other hand if you are just playing with a new framework at your house during the weekend and want to understand how it works, then feel free to **not** follow TDD.
+
+### Anti-Pattern 13 - Writing tests without reading documentation first
+
+A professional developer is one who knows the tools of the trade. You might need to spend extra time at the beginning of a project to learn about the technologies you are going to use. Web frameworks
+are coming out all the time and it always pays off to know all the capabilities that can be employed in order to write effective and concise code.
+
+You should treat software tests with the same respect. Because several developers treat tests as something secondary (see also Anti-pattern X) they never sit down to actully learn what their testing framework can do. Copy-pasting testing code from other projects and examples might seem to work at first glance, but this is not the way a professional should behave.
+
+Unfortunately this pattern happens all too often. People are writing several "helper functions" and "utilities" without realizing that their testing framework already offers
+this function either in a built-in manner or with the help of external modules.
+
+These utilities make the tests hard to understand (especially for junior developers) as they are filled with in-house code that is non transferable to other projects/companies. Several times
+I have replaced "smart in-house testing solutions" with standard off-the-self libraries that do the same thing in a standardized manner.
+
+You should spend some time to learn what your testing framework can do. For example try to find how it can work with:
+
+* parameterized tests
+* mocks and stubs
+* test setup and teardown
+* test categorization
+* conditional running of tests
+
+If you are also working on the stereotypical web application you should do some minimal research to understand what are the best practices regarding
+
+* test data creators
+* HTTP client libraries
+* HTTP mock servers
+* mutation/fuzzy testing
+* Db cleanup/rollback 
+* load testing and so on
+
+There is no need to re-invent the wheel. The sentence applies to testing code as well. Maybe there are some corner cases where your main application is indeed a snowflake and needs
+some in-house utility for the core code. But I can bet that your unit and integration tests are special themselves and thus writing custom testing utilities is a questionable practice.
 
 ### Anti-Pattern 14 - Giving testing a bad reputation out of ignorance
 
