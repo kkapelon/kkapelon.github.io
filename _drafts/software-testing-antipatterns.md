@@ -64,7 +64,6 @@ As a basic rule of thumb if
 1. Having flaky or slow tests
 1. Running tests manually
 1. Treating test code as a second class citizen
-1. Ignoring tests
 1. Not converting production bugs to tests
 1. Treating TDD as a religion
 1. Writing tests without reading documentation first
@@ -490,6 +489,27 @@ programming language. This is a huge waste of time and as a developer you have t
 In summary, code coverage is a metric that should **not** be used as a representation for quality of a software project. 
 
 
+### Anti-Pattern 10 - Not converting production bugs to tests
+
+One of the goals of testing is to catch regressions. As we have seen in antipattern X, most applications have a "critical" code part where the majority of bugs appear. When you fix a bug you need to make sure that it doesn't happen again. One of the best ways to enforce this is to write a test for the fix (either unit or integration or both).
+
+Bugs that slip into production are perfect candidates for writing software tests
+
+* they show a lack of testing in that area as the bug has already passed into production
+* if you write a test for these bugs the test will be very valuable as it guards future releases of the software
+
+I am always amazed when I see teams (that otherwise have a sound testing strategy) that don't write a test for bug that was found in production. They correct the code and fix the bug straight way. For some strange reason a lot of developers assume that writing tests is only valuable when you are adding a new feature only.
+
+This could not be further from the truth. I would even argue that software tests that stem from actual bugs are more valuable than tests which are added as part of new development. After all you never know how often a new feature will break in production (maybe it belongs to non-critical code that will never break). The respective unit test is good to have but its value is questionable.
+
+On the other hand the software test that you write for a real bug is super valuable. Not only it verifies that your fix is correct, but also ensures that your fix will always be active even if refactorings happen in the same area.
+
+If you join a legacy project that has no tests this is also the most obvious way to start getting value from software testing. Rather than attempting to guess which code needs tests, you should pay attention to the existing bugs and try to cover them with tests. After a while your tests will have covered the critical part of the code, since by definition all tests have verified things that break often. One of my suggested metrics embodies the recording of this effort.
+
+The only case where it is acceptable to **not** write tests is when bugs that you find in production are unrelated to code and instead stem from the environment itself. A misconfiguration to a load balancer for example is not something that can be solved with a unit test.
+
+In summary, if you are unsure on what code you need to test next, look at the bugs that slip into production. 
+
 ### Anti-Pattern 12 - Treating TDD as a religion
 
 TDD stands for [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) and like all methodologies before it, it is a good idea on paper until consultants try to convince a company that following TDD blindly is the only way forward. At the time or writing this trend is slowly dieing but I decided to mention it here for completeness (as the enterprise world is especially suffering from this anti-pattern). 
@@ -509,7 +529,7 @@ For a more practical example, it would be immature for a startup to follow blind
 
 Writing no tests at all (option 4) is also a valid strategy. As we have seen in anti-pattern X there is code that never needs testing. Writing software tests for trivial code because this is the correct way to "do TDD" will get you nowhere.
 
-The obsession of TDD zealots on writing tests first no matter the case, has been a huge detriment to the [mental health of sane developers](https://softwareengineering.stackexchange.com/questions/98485/tdd-negative-experience). This obsession is already documented in various places so hopefully I don't need to say anything more on the topic.
+The obsession of TDD zealots on writing tests first no matter the case, has been a huge detriment to the [mental health of sane developers](https://softwareengineering.stackexchange.com/questions/98485/tdd-negative-experience). This obsession is already documented in various places so hopefully I don't need to say anything more on the topic (search for "TDD is crap/stupid/dead").
 
 At this point I would like to admit that several times I have personally implemented code like this:
 
@@ -536,7 +556,7 @@ You should treat software tests with the same respect. Because several developer
 Unfortunately this pattern happens all too often. People are writing several "helper functions" and "utilities" without realizing that their testing framework already offers
 this function either in a built-in manner or with the help of external modules.
 
-These utilities make the tests hard to understand (especially for junior developers) as they are filled with in-house code that is non transferable to other projects/companies. Several times
+These utilities make the tests hard to understand (especially for junior developers) as they are filled with in-house knowledge that is non transferable to other projects/companies. Several times
 I have replaced "smart in-house testing solutions" with standard off-the-self libraries that do the same thing in a standardized manner.
 
 You should spend some time to learn what your testing framework can do. For example try to find how it can work with:
@@ -553,11 +573,11 @@ If you are also working on the stereotypical web application you should do some 
 * HTTP client libraries
 * HTTP mock servers
 * mutation/fuzzy testing
-* Db cleanup/rollback 
+* DB cleanup/rollback 
 * load testing and so on
 
 There is no need to re-invent the wheel. The sentence applies to testing code as well. Maybe there are some corner cases where your main application is indeed a snowflake and needs
-some in-house utility for the core code. But I can bet that your unit and integration tests are special themselves and thus writing custom testing utilities is a questionable practice.
+some in-house utility for the core code. But I can bet that your unit and integration tests are not special themselves and thus writing custom testing utilities is a questionable practice.
 
 ### Anti-Pattern 14 - Giving testing a bad reputation out of ignorance
 
@@ -568,7 +588,9 @@ or integration)  like we have seen in anti-patterns 1 or 2
 When I find people like this, it is my hobby to probe them with questions and understand their reasons behind hating tests. And always, it boils down to anti-patterns. They previously
 worked in companies where tests were slow (Anti pattern X), or needed constant refactoring (Antipattern X). They have been "burned" by unreasonable requests for 100% code coverage (Anti-pattern X) or TDD zealots (Antipattern X) that tried to impose to the whole team their own twisted image of what TDD means.
 
-If you are one of those people I truly feel for you. Bad experiences of testing in the past should not clutter your judgement when it comes to testing your next greenfield project. Try to look objectively at your team and your project and see if any of the anti-patterns apply to you. If yes, then you are simply testing in the wrong way and no amount of tests will make your application
+If you are one of those people I truly feel for you. I know how hard it is to work in a company that has bad habits.
+
+Bad experiences of testing in the past should not clutter your judgement when it comes to testing your next greenfield project. Try to look objectively at your team and your project and see if any of the anti-patterns apply to you. If yes, then you are simply testing in the wrong way and no amount of tests will make your application
 better. Sad but true.
 
 It is one thing for your team to suffer from bad testing habbits, and another to mentor junior developers declaring that "testing is a waste of time". Please don't do the latter. There are companies
