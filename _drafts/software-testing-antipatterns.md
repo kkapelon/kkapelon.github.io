@@ -488,6 +488,35 @@ programming language. This is a huge waste of time and as a developer you have t
 
 In summary, code coverage is a metric that should **not** be used as a representation for quality of a software project. 
 
+### Anti-Pattern 9 - Treating test code as a second class citizen
+
+If you are a seasoned developer, you will spend always some time to structure new code in your mind before implementing it. There are several philosophies regarding code design and some of them are so significant that have their own Wikipedia entry. Some examples are:
+
+* [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) 
+* [KISS](https://en.wikipedia.org/wiki/KISS_principle)
+* [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design))
+
+The first one is arguably the most important one as it forces you to have a single source of truth for code that is reused accross multiple features. Depending on your own programming
+language you may also have access to several other best practices and recommended design patterns. You might even have special guidelines that are specific to your team.
+
+Yet, for some unknown reason several developers do not apply the same principles to the code that holds the software tests. I have seen projects which have well designed feature code, but suffer from tests with huge code duplication, hardcoded variables, copy-paste segments and several other inefficiencies that would be considered inexcusable if found on the main code.
+
+Treating test code as a second class citizen makes no sense, because in the long run all code needs maintanance. Tests will need to be updated and refactored in the future. Their variables
+and structure will need to change. If you write tests without thinking about their design you are creating additional technical debt that will be added to the one already present in the main code.
+
+Try to design your tests with the same attention that you give to the feature code. All common refactoring techiniques should be used on tests as well. As a starting point
+
+* All test creation code should be centralized. All tests should create test data in the same manner
+* Complex verification segments should be extracted in a common domain specific library
+* Mocks and stubs that are used too many times should not be copied-pasted.
+* Test initialization code should shared between similar tests.
+
+If you employ tools for static analysis, source formatting or code quality then configure them to run on test code too.
+
+In summary, design your tests with the same detail that you design the main feature code.
+
+
+
 
 ### Anti-Pattern 10 - Not converting production bugs to tests
 
