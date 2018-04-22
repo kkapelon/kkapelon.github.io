@@ -205,7 +205,7 @@ test will be fixed as well.
 
 Having unit tests break *before* or *with* integration tests is a much more painless process when you need to locate a bug.
 
-##### Quick summary of why you need integration tests
+##### Quick summary of why you need unit tests
 
 This is the longest section of this article, but I consider it very important. In summary while *in theory* you could only have integration tests, *in practice*
 
