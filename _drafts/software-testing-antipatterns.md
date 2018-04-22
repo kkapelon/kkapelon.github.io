@@ -491,6 +491,29 @@ In summary, code coverage is a metric that should **not** be used as a represent
 
 ### Anti-Pattern 7 - Having flaky or slow tests
 
+This particular anti-pattern has [already](https://martinfowler.com/articles/nonDeterminism.html) [been](https://testing.googleblog.com/2016/05/flaky-tests-at-google-and-how-we.html) [documented](https://testing.googleblog.com/2017/04/where-do-our-flaky-tests-come-from.html) [heavily](https://semaphoreci.com/community/tutorials/how-to-deal-with-and-eliminate-flaky-tests) so I am just including it here for completeness.
+
+Since software tests act as an early warning against regressions, they should always work in a reliable way. A failing test should be a cause of concern
+and the person(s) that triggered the respective the build should investigate why the test failed.
+
+This approach can only work with tests that fail in a deterministic manner. A tests that sometimes fails and sometimes passes (without any code changes in between) is unreliable and undermines the whole testing suite. The negative effects are two fold
+
+* Developers do not trust tests anymore and soon ignore them
+* Even when non-flaky tests actually fail, it is hard to detect them in a sea of flaky tests
+
+A failing error test should be easily recognizable by everybody in your team as it changes the status of the whole build. On the other hand if you have flaky tests it is hard to understand if failures are new or just the existing flaky tests.
+
+![Flaky tests](../../assets/testing-anti-patterns/flaky-tests.png)
+
+Even a small number of flaky tests in enough to destroy the credibility of rest of test suite. If you have 5 flaky tests for example, run the build and get 3 failures it is not immediatelly evident if everything is fine (because the failures were coming from the flaky tests) or if you just introduced 3 regressions.
+
+A similar problem is having tests that are really really slow. Developers need a quick feedback on the result of each commit (also discussed in the next section) so slow tests will eventually be ignored or even not run at all. 
+
+In practice flaky and slow tests are almost always integration tests and/or UI tests. As we go up in the testing pyramid, the propabilities of flaky tests greatly increasing. Tests that deal with browser events are notoriously hard to get right all the time. Flakiness in integration tests can come from many factors but the usual suspect is the test environment and its requirements.
+
+The primary defense against flaky and slow tests is to isolate them in their own test suite (assuming that they are not fixable). You can easily find more abudant resources on how to fix flaky tests for your favourite programming language by searching online so there is no point in me including them here again.
+
+In summary, you should have a reliable test suite (even if it is a subset of the whole test suite) that is rock solid. A test that fails in this suite means that something is really really wrong with the code and any failure means that the code must not be promoted to production.
 
 
 ### Anti-Pattern 8 - Running tests manually
@@ -499,7 +522,7 @@ Depending on your organization you might actually have several types of tests in
 
 Ideally all your tests should run automatically without any human intervention. If that is not possible at the very least all tests that deal with correctness of code (i.e. unit and integration tests) **must** run in an automatic manner. This way developers get feedback on the code in the most timely manner.It is very easy to fix a feature when the code is fresh in your mind and you haven't switched context yet to an unrelated content.
 
-IMAGE here
+![Test feedback loop tests](../../assets/testing-anti-patterns/test-feedback.png)
 
 In the past the most lengthy step of the software lifecyle was the deployment of the application. With the move into cloud infrastructure where machines can be created on demand (either in the form of VMs or containers) the time to provision a new machine  has been reduced to minutes or seconds. This paradigm shift has caught a lot of companies by surprise as they were not ready to handle daily or even hourly deployments. Most of the existing practices were centered around lengthy release cycles. Waiting for a specific time in the release to "pass QA" with manual approval is one of those obsolete practices that is no longer applicable if a company wants to deploy as fast as possible.
 
@@ -509,7 +532,7 @@ A lot of companies *think* that they practice continous delivery and/or deployme
 
 Unfortunately, while most companies have correctly realized that deployments should be automated, because using humans for them is error prone and slow, I still see companies where launching the tests is a semi-manual process. And when I say semi-manual I mean that even though the test suite itself might be automated, there are human tasks for house-keeping such as preparing the test environment or cleaning up the test data after the tests have. That is an anti-pattern because it is not true automation. All aspects of testing should be automated.
 
-Image here.
+![Automated tests](../../assets/testing-anti-patterns/automated-tests.png)
 
 Having access to VMs or containers means that it is very easy to create test environment on demand. Creating a test environment on the fly for an individual pull request should be a standard practice within your organization. This means that each new feature is tested individually on its own. A problematic feature (i.e. that causes tests to fail) should not block the release of the rest of the features that need to be deployed at the same time.
 
