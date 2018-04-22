@@ -236,7 +236,7 @@ In this contrived example you would need:
 
 * Lots and lots of unit tests for the mathematical equations. 
 * Some integration tests for the CSV reading and JSON writing
-* No UI tests because there is no UI.
+* No GUI tests because there is no GUI.
 
 Here is the breakdown of tests for this project:
 
