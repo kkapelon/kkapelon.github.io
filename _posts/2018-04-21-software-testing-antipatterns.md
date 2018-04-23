@@ -361,10 +361,10 @@ Wrong! You also need to make sure that the tests are actually structured in a co
 * They waste precious development time the first time they are written
 * They waste even more time when they need to be refactored (when a new feature is added)
 
-Strictly speaking, [test code is like any other type of code](#anti-pattern-9---treating-test-code-as-a-second-class-citizen). You will need to refactor it as some point in order to improve it in a gradual way. But if you find yourself routinely
+Strictly speaking, [test code is like any other type of code](#anti-pattern-9---treating-test-code-as-a-second-class-citizen). You will need to refactor it at some point in order to improve it in a gradual way. But if you find yourself routinely
 changing existing tests just to make them pass when a new feature is added then *your tests are not testing what they should be testing*.
 
-I have seen several companies that started new projects and thinking that they will get it right it this time, they started writing a *big* number of tests to cover the functionality
+I have seen several companies that started new projects and thinking that they will get it right this time, they started writing a *big* number of tests to cover the functionality
 of the application. After a while, a new feature got added and several existing tests needed to change in order to make them pass again. Then another new feature was added and *more* tests needed to be updated. Soon the amount of effort spent refactoring/fixing
 the existing tests was actually larger than the time needed to implement the feature itself.
 
@@ -526,9 +526,9 @@ Ideally all your tests should run automatically without any human intervention. 
 
 In the past the most lengthy step of the software lifecycle was the deployment of the application. With the move into cloud infrastructure where machines can be created on demand (either in the form of VMs or containers) the time to provision a new machine  has been reduced to minutes or seconds. This paradigm shift has caught a lot of companies by surprise as they were not ready to handle daily or even hourly deployments. Most of the existing practices were centered around lengthy release cycles. Waiting for a specific time in the release to "pass QA" with manual approval is one of those obsolete practices that is no longer applicable if a company wants to deploy as fast as possible.
 
-Deploying as fast is possible implies that you trust each deployment. Trusting an automatic deployment requires a high degree of confidence in the code that gets deployed. While there are several ways of getting this confidence, the first line of defense should be your software tests. However, having a test suite that can catch regressions quickly is only half part of the equation. The other half is running the tests automatically (possibly after every commit).
+Deploying as fast as possible implies that you trust each deployment. Trusting an automatic deployment requires a high degree of confidence in the code that gets deployed. While there are several ways of getting this confidence, the first line of defense should be your software tests. However, having a test suite that can catch regressions quickly is only half part of the equation. The other half is running the tests automatically (possibly after every commit).
 
-A lot of companies *think* that they practice continuous delivery and/or deployment. In reality the don't. Practicing true CI/CD means that *at any given point in time* there is a version of the code that is ready to be deployed. This means that the candidate release for deployment the candidate release is *already* tested. Therefore having a package version of an application "ready" which has not really "passed QA" is not true CI/CD.
+A lot of companies *think* that they practice continuous delivery and/or deployment. In reality they don't. Practicing true CI/CD means that *at any given point in time* there is a version of the code that is ready to be deployed. This means that the candidate release for deployment the candidate release is *already* tested. Therefore having a package version of an application "ready" which has not really "passed QA" is not true CI/CD.
 
 Unfortunately, while most companies have correctly realized that deployments should be automated, because using humans for them is error prone and slow, I still see companies where launching the tests is a semi-manual process. And when I say semi-manual I mean that even though the test suite itself might be automated, there are human tasks for house-keeping such as preparing the test environment or cleaning up the test data after the tests have finished. That is an anti-pattern because it is not true automation. **All** aspects of testing should be automated.
 
@@ -566,9 +566,9 @@ Try to design your tests with the same attention that you give to the feature co
 * All test creation code should be centralized. All tests should create test data in the same manner
 * Complex verification segments should be extracted in a common domain specific library
 * Mocks and stubs that are used too many times should not be copied-pasted.
-* Test initialization code should shared between similar tests.
+* Test initialization code should be shared between similar tests.
 
-If you employ tools for static analysis, source formatting or code quality then configure them to run on test code too.
+If you employ tools for static analysis, source formatting or code quality then configure them to run on test code, too.
 
 In summary, design your tests with the same detail that you design the main feature code.
 
@@ -584,7 +584,7 @@ Bugs that slip into production are perfect candidates for writing software tests
 * they show a lack of testing in that area as the bug has already passed into production
 * if you write a test for these bugs the test will be very valuable as it guards future releases of the software
 
-I am always amazed when I see teams (that otherwise have a sound testing strategy) that don't write a test for a bug that was found *in production*. They correct the code and fix the bug straight way. For some strange reason a lot of developers assume that writing tests is only valuable when you are adding a new feature only.
+I am always amazed when I see teams (that otherwise have a sound testing strategy) that don't write a test for a bug that was found *in production*. They correct the code and fix the bug straight away. For some strange reason a lot of developers assume that writing tests is only valuable when you are adding a new feature only.
 
 This could not be further from the truth. I would even argue that software tests that stem from actual bugs are more valuable than tests which are added as part of new development. After all you never know how often a new feature will break in production (maybe it belongs to non-critical code that will never break). The respective software test is good to have but its value is questionable.
 
@@ -643,7 +643,7 @@ Unfortunately this pattern happens all too often. People are writing several "he
 this function either in a built-in manner or with the help of external modules.
 
 These utilities make the tests hard to understand (especially for junior developers) as they are filled with in-house knowledge that is non transferable to other projects/companies. Several times
-I have replaced "smart in-house testing solutions" with standard off-the-self libraries that do the same thing in a standardized manner.
+I have replaced "smart in-house testing solutions" with standard off-the-shelf libraries that do the same thing in a standardized manner.
 
 You should spend some time to learn what your testing framework can do. For example try to find how it can work with:
 
