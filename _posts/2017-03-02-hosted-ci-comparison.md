@@ -12,6 +12,15 @@ category: hosted-ci-comparison
 | April 2017      | Oracle buys [Wercker](#wercker)  |
 | March 2017      | First version  |
 
+### This article is very old now
+
+Technology moves very fast. Most of the companies mentioned in the article have changed
+their products in a significant manner. Please do not use this guide for major decisions.
+
+I was going to update the guide, but since I now work for one of the companies (Codefresh)
+it is a bit difficult to stay biased.
+
+
 ### A brief comparison of hosted Continuous Integration services
 
 I was a happy user of [SnapCI](https://snap-ci.com/). I really liked the way pipelines worked and how easy was
