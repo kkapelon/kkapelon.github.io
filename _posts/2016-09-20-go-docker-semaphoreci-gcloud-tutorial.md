@@ -15,7 +15,7 @@ We will package our application using Docker in order to make the final deployme
 For this tutorial we will need
 
 * A [Docker](https://www.docker.com) installation
-* An account for [Semaphore CI](semaphoreci.com) (free registration required)
+* An account for [Semaphore CI](https://semaphoreci.com) (free registration required)
 * An account for [Google cloud](https://cloud.google.com/) (free registration required)
 * Our favourite text editor and command line terminal to edit all related files
 
