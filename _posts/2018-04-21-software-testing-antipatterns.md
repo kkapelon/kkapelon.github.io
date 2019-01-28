@@ -210,7 +210,7 @@ Having unit tests break *before* or *with* integration tests is a much more pain
 This is the longest section of this article, but I consider it very important. In summary while *in theory* you could only have integration tests, *in practice*
 
 1. Unit tests are easier to maintain 
-1. Unit tests can easily replicate corner cases and not-so-frequent scenario
+1. Unit tests can easily replicate corner cases and not-so-frequent scenarios
 1. Unit tests run much faster than integration tests
 1. Broken unit tests are easier to fix than broken integration tests
 
@@ -528,7 +528,7 @@ In the past the most lengthy step of the software lifecycle was the deployment o
 
 Deploying as fast as possible implies that you trust each deployment. Trusting an automatic deployment requires a high degree of confidence in the code that gets deployed. While there are several ways of getting this confidence, the first line of defense should be your software tests. However, having a test suite that can catch regressions quickly is only half part of the equation. The other half is running the tests automatically (possibly after every commit).
 
-A lot of companies *think* that they practice continuous delivery and/or deployment. In reality they don't. Practicing true CI/CD means that *at any given point in time* there is a version of the code that is ready to be deployed. This means that the candidate release for deployment the candidate release is *already* tested. Therefore having a package version of an application "ready" which has not really "passed QA" is not true CI/CD.
+A lot of companies *think* that they practice continuous delivery and/or deployment. In reality they don't. Practicing true CI/CD means that *at any given point in time* there is a version of the code that is ready to be deployed. This means that the candidate release for deployment is *already* tested. Therefore having a package version of an application "ready" which has not really "passed QA" is not true CI/CD.
 
 Unfortunately, while most companies have correctly realized that deployments should be automated, because using humans for them is error prone and slow, I still see companies where launching the tests is a semi-manual process. And when I say semi-manual I mean that even though the test suite itself might be automated, there are human tasks for house-keeping such as preparing the test environment or cleaning up the test data after the tests have finished. That is an anti-pattern because it is not true automation. **All** aspects of testing should be automated.
 
