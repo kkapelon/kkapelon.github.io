@@ -5,7 +5,8 @@ category: hosted-ci-comparison
 ---
 
 | Version history | Changes       | 
-| -------------   |:--------|  
+| -------------   |:--------| 
+| January 2019      | [Idera](https://www.idera.com/)  buys [TravisCI](#travis) |
 | February 2018      | [Cloudbees](https://www.cloudbees.com/)  buys [Codeship](#codeship) |
 | September 2017      | [Puppet](https://puppet.com/)  buys [Distelli](#distelli) |
 | July 2017      | [Codeship](#codeship)  redesigned their UI |
@@ -679,6 +680,8 @@ than the ones you have in GitHub. By default you get 30 minutes of connection ti
 | **Final Verdict**    | I can recommend SolanoCI for both Maven and Gradle projects.  Especially for large and complex code-bases SolanoCI seem to offer everything you might need|
 
 ### Travis
+
+**Update January 2019**: Idera [bought TravisCI](https://blog.travis-ci.com/2019-01-23-travis-ci-joins-idera-inc) so my review might soon be obsolete.
 
 [Travis](https://travis-ci.org/) is the service that has become synonymous with hosted CI. It is also the service
 that started [this annoying trend](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/) of requiring yml files for a build.
