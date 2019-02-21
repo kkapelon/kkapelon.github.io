@@ -6,6 +6,7 @@ category: hosted-ci-comparison
 
 | Version history | Changes       | 
 | -------------   |:--------| 
+| February 2019      | [JFrog](https://jfrog.com/)  buys [Shippable](#shippable) |
 | January 2019      | [Idera](https://www.idera.com/)  buys [TravisCI](#travis) |
 | February 2018      | [Cloudbees](https://www.cloudbees.com/)  buys [Codeship](#codeship) |
 | September 2017      | [Puppet](https://puppet.com/)  buys [Distelli](#distelli) |
@@ -566,6 +567,8 @@ If Gradle cache support was activated by default I would recommend it without an
 
 
 ### Shippable
+
+**Update February 2019**: JFrog [bought Shippable](https://jfrog.com/blog/weve-acquired-shippable-to-complete-devops-pipeline-automation-from-code-to-production/) so my review might soon be obsolete.
 
 [Shippable](https://app.shippable.com/) is an American company based in Seattle. They also have a [content-rich blog](http://blog.shippable.com/) with topics such
 as microservices, Docker, Continuous delivery etc.
