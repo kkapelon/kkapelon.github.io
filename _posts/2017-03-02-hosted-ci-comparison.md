@@ -43,7 +43,7 @@ At the time of writing I am aware of the following companies that offer hosted C
 If I miss anything [let me know](http://codepipes.com/contact.html).
 
 
-* [Buddy Works](#buddyworks)
+* [Buddy](#buddy)
 * [CircleCI](#circleci) 
 * [Codefresh](#codefresh) 
 * [Codeship](#codeship) 
@@ -85,16 +85,16 @@ For my tests I used 4 sample projects:
 Companies are presented in alphabetical order.
 So let’s begin!
 
-### BuddyWorks
+### Buddy
 
-[BuddyWorks](https://buddy.works/) (not to be confused with [Buddy](https://buddy.com/)) is a brand new American company launched in 2015 and based in Cheyenne. Unlike other CI products
+[Buddy](https://buddy.works/) (not to be confused with [Buddy](https://buddy.com/)) is a brand new CI company launched in 2015 and based in Poland. Unlike other CI products
 they based their whole architecture on Docker right from the beginning.
 
-BuddyWorks supports both GitHub and Bitbucket. It is also the only product that supports Gitlab as well as its
+Buddy supports both GitHub and Bitbucket. It is also the only product that supports Gitlab as well as its
 own GIT platform. Buddy offers [one repository for free](https://buddy.works/guides/first-steps-with-git) which is perfect for demos and tutorials.
 
 Adding my Bitbucket and GitHub projects was a trivial process. There isn't any form of build system autodetection but
-this is not a big issue as BuddyWorks provides a great UI experience for choosing your build steps and creating pipelines.
+this is not a big issue as Buddy provides a great UI experience for choosing your build steps and creating pipelines.
 
  ![BuddyWork actions](../../assets/ci-comparison/buddyworks/setup-environment.png)
 
@@ -112,9 +112,9 @@ this is not a big issue as BuddyWorks provides a great UI experience for choosin
  ![BuddyWork services](../../assets/ci-comparison/buddyworks/pipeline-setup.png)
 
  You can also choose your own docker image as your build environment so you are not really restricted by the actions
- already provided by BuddyWorks.
+ already provided by Buddy.
 
- The killer feature of BuddyWorks however is the way you can build pipelines. You pick pipeline actions from the GUI in a Lego-like function. You can drag-n-drop actions to change their order and also add extra on-failure actions.
+ The killer feature of Buddy however is the way you can build pipelines. You pick pipeline actions from the GUI in a Lego-like function. You can drag-n-drop actions to change their order and also add extra on-failure actions.
 
 ![BuddyWork pipelines](../../assets/ci-comparison/buddyworks/pipeline-settings.png)
 
@@ -130,18 +130,18 @@ both projects and pipelines into folders/tags. This makes handling a big number 
 
 ![BuddyWork dashboard](../../assets/ci-comparison/buddyworks/dashboard.png)
 
-BuddyWorks allows you to view your workspace and download it as a zip file (exactly like Jenkins). Code files
-are presented with syntax highlighting and you can even run git blame against them, making BuddyWorks a lightweight
+Buddy allows you to view your workspace and download it as a zip file (exactly like Jenkins). Code files
+are presented with syntax highlighting and you can even run git blame against them, making Buddy a lightweight
 code viewing tool.
 
-In summary, BuddyWorks is a very well rounded solution. It has the easiest way of creating pipelines in a Lego-like manner
+In summary, Buddy is a very well rounded solution. It has the easiest way of creating pipelines in a Lego-like manner
 and the UX is unparalleled.
 
-If you work at BuddyWorks and are reading this, know that you have really nailed pipeline creation. As a finishing touch you could add auto-detection
+If you work at Buddy and are reading this, know that you have really nailed pipeline creation. As a finishing touch you could add auto-detection
 of the build system (i.e. setup a Maven action automatically if a pom.xml file is found). Other than that,
-I would recommend that you look at the name clash between BuddyWorks and [Buddy](https://buddy.com/).
+I would recommend that you look at the name clash between Buddy and [Buddy](https://buddy.com/).
 
-| Website    | [BuddyWorks](https://buddy.works/) |
+| Website    | [Buddy](https://buddy.works/) |
 | Pricing    | [Details](https://buddy.works/#pricing) |
 | Documentation    | Documentation covers the [basics](https://buddy.works/knowledge/deployments). It could really use more advanced examples of pipelines|
 | User Interface| Nice animations and well thought UX. Could really use the full width of the screen  |
@@ -150,7 +150,7 @@ I would recommend that you look at the name clash between BuddyWorks and [Buddy]
 | Extra features    |  [Team controls](https://buddy.works/knowledge/collaboration). [Code commit parsing](https://buddy.works/knowledge/deployments/how-use-commit-commands). [On premise version](https://buddy.works/buddy-go) |
 | Disadvantages    | No auto-detection of build system|
 | Killer feature    | Very flexible build environment. Lego-like creation of pipelines|
-| **Final Verdict**    | I can highly recommended BuddyWorks for both Gradle and Maven projects. The pipeline support is the ideal tool for both experienced (yml) and novice users (GUI actions) alike. |
+| **Final Verdict**    | I can highly recommended Buddy for both Gradle and Maven projects. The pipeline support is the ideal tool for both experienced (yml) and novice users (GUI actions) alike. |
 
 
 
@@ -234,7 +234,7 @@ compose).
 
 ![Codefresh builds](../../assets/ci-comparison/codefresh/builds.png)
 
-The more interesting approach however is to use a [yml file](https://docs.codefresh.io/docs/spring-mvc-jdbc-template). This works in a similar manner with BuddyWorks and Wercker as you can define multiple steps that either run a script, run a command using a Docker image or create a Docker image. This capability can only be done with the yml file and no complimentary GUI is offered (unlike BuddyWorks).
+The more interesting approach however is to use a [yml file](https://docs.codefresh.io/docs/spring-mvc-jdbc-template). This works in a similar manner with Buddy and Wercker as you can define multiple steps that either run a script, run a command using a Docker image or create a Docker image. This capability can only be done with the yml file and no complimentary GUI is offered (unlike Buddy).
 
 The killer features of Codefresh are that it allows you to view/manage the Docker images that you have created without
 requiring an external Docker registry and it even offers test environments to launch your Docker images!
@@ -361,7 +361,7 @@ I really wanted to spend some time with Codeship Pro but  I stumbled again upon 
 first build" message and I did not want to add any more dummy commits to my projects just so that Codeship can pick the changes.
 
 If you work at Codeship and are reading this, your product needs some design changes. You
-should either support Gradle cache or even better make the cache mechanism configurable (like [Buddy Works](#buddyworks)). Not all Java projects use Maven. Add a _build now_
+should either support Gradle cache or even better make the cache mechanism configurable (like [Buddy](#buddy)). Not all Java projects use Maven. Add a _build now_
 button to all screens
 (this is a no brainer). Your ssh feature is killer and
 you should advertise it more.
@@ -575,7 +575,7 @@ as microservices, Docker, Continuous delivery etc.
 
 Shippable does not support any kind of autodetection of your project. In fact it will just refuse to
 run if you don't have a custom configuration file in your project. I have already written [why
-I consider this a bad practice](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/). This file should be optional (see CircleCI and BuddyWorks for examples).
+I consider this a bad practice](https://zeroturnaround.com/rebellabs/9-features-you-need-to-demand-from-a-hosted-continuous-integration-service/). This file should be optional (see CircleCI and Buddy for examples).
 
 ![Shippable error](../../assets/ci-comparison/shippable/yml-required.png)
 
@@ -632,7 +632,7 @@ Like Codeship, Shippable is an imbalanced product. The UI is great, the features
 | Extra features    | Test coverage, Test reports, Build pipelines|
 | Disadvantages    | No cache for Maven or Gradle. UI is unusable. The yml file is very complex |
 | Killer feature    | Test coverage for your tests ([Jacoco](http://www.eclemma.org/jacoco/))|
-| **Final Verdict**    | I cannot recommend Shippable until the performance problems are fixed. The yml file should become optional like CircleCI/BuddyWorks. Cache should be enabled at least for Maven. |
+| **Final Verdict**    | I cannot recommend Shippable until the performance problems are fixed. The yml file should become optional like CircleCI/Buddy. Cache should be enabled at least for Maven. |
 
 ### SolanoLabs
 
@@ -669,7 +669,7 @@ than the ones you have in GitHub. By default you get 30 minutes of connection ti
  Overall I was very happy with SolanoLabs. It works as it should and judging by its documentation it seems to offer
  anything you might need. Some features are by request (e.g. Docker) and Pipelines are still in Beta so this could
  be a disadvantage if you need to use them. I did not try Pipelines but they seem to be defined in the YML file
- so if you prefer a graphical way you should look at Distelli or BuddyWorks.
+ so if you prefer a graphical way you should look at Distelli or Buddy.
 
 | Website    | [SolanoLabs](https://www.solanolabs.com) |
 | Pricing    | [Details](https://www.solanolabs.com/#pricing) |
@@ -849,7 +849,7 @@ It feels like a solid product, but the competition is much better in regards to 
 Also notice that Wercker does **NOT** support running Docker commands as part of your build
 and this is [actually](http://devcenter.wercker.com/docs/faq/can-i-build-dockerfiles)  by [design](http://devcenter.wercker.com/docs/faq/can-i-run-docker-commands). 
 
-If you work at Wercker and read this, please see how easy configuration can be done with other services (e.g. CircleCI and/or BuddyWorks).
+If you work at Wercker and read this, please see how easy configuration can be done with other services (e.g. CircleCI and/or Buddy).
 
 
 | Website    | [Wercker](http://www.wercker.com/) |
@@ -861,7 +861,7 @@ If you work at Wercker and read this, please see how easy configuration can be d
 | Extra features    | A [CLI](http://devcenter.wercker.com/docs/cli) for local builds. [Team control](http://devcenter.wercker.com/docs/organizations/people-and-teams). An [API](http://devcenter.wercker.com/docs/api). [Pipelines](http://devcenter.wercker.com/docs/pipelines)|
 | Disadvantages    | Requires a yml file with picky format and unclear documentation  |
 | Killer feature    | Open source CLI that builds locally|
-| **Final Verdict**    | While Wercker could work ok for Java projects, I do not truly recommend it as there are several other products with much easier configuration (e.g. BuddyWorks and CircleCI). |
+| **Final Verdict**    | While Wercker could work ok for Java projects, I do not truly recommend it as there are several other products with much easier configuration (e.g. Buddy and CircleCI). |
 
 ### Conclusion
 
@@ -869,7 +869,7 @@ After all is said and done here is the comparison chart you have been waiting fo
 
 | Company                          | Clean UI       | Configuration | Cache | Docker support| Pipelines | Local builds | SSH | Recommended |
 | -------------                    |:--------|  ------ |  ------ | ------ |------  | ------ | ------ |------ |
-| [Buddy Works](#buddyworks)       | Yes     |yml/GUI | Yes | Yes|  Yes | No |  No| Yes|
+| [Buddy](#buddy)       | Yes     |yml/GUI | Yes | Yes|  Yes | No |  No| Yes|
 | [CircleCI](#circleci)            | Yes  |yml/GUI | Partial| Partial | No | No | Yes | Yes|
 | [Codefresh](#codefresh)          | Yes  |yml/dockerfile | No  | Yes  | No | Yes (Docker)  | No | Maybe |
 | [Codeship](#codeship)            | Yes | yml/GUI | Partial | Pending | No | Pending | Yes  | Maybe |
@@ -928,7 +928,7 @@ A pipeline is any arbitrary sequence of steps as defined [in the continuous deli
 after your compilation phase. This is certainly a start, but complex pipelines cannot be created with such as simple model.
 Pipelines should also be able to fan out (parallel steps) and then merge back in.
 
-Distelli and BuddyWorks have the most comprehensive pipeline support. Wercker also offers pipelines in a much more complex manner. SolanoLabs has proper [Pipeline support as a beta feature](http://docs.solanolabs.com/Beta/build-pipelines/).
+Distelli and Buddy have the most comprehensive pipeline support. Wercker also offers pipelines in a much more complex manner. SolanoLabs has proper [Pipeline support as a beta feature](http://docs.solanolabs.com/Beta/build-pipelines/).
 
 ##### Local builds
 
@@ -956,7 +956,7 @@ table than this I am happy to include it here.
 
 | Company                          | Free for Open Source projects  | Free version |    Pricing starts at |
 | -------------                    |:--------|   ------ |  ------ |  
-| [Buddy Works](#buddyworks)       | No     | 1 project | $49/month (25 projects 1 executor)| 
+| [Buddy](#buddys)       | No     | 1 project | $49/month (25 projects 1 executor)| 
 | [CircleCI](#circleci)            | Yes (with limitations)  | 1500 minutes/1 executor | $50/month (2 executors) | 
 | [Codefresh](#codefresh)          | Yes (with limitations)  |1 executor/environment | $99/month (3 executors) |
 | [Codeship](#codeship)            | Yes (no limits) | 1 builder/100 builds | $49/month (Basic) or $75/month (Pro version) |
