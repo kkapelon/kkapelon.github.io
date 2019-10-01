@@ -730,7 +730,7 @@ This test runs correctly because Spock can indeed mix matchers and real argument
 
 ![Spock with partial matchers](../../assets/spock-vs-junit/spock-partial-matchers.png)
 
-I consider this a big advantage of Spock over Mockito. The ability to define exactly what you want to ignore is an important pillar of strict tests. I hope that Mockito can overcome this limitation in the future, but until that happens, Spock can help you to refine your tests with the exact arguments that you want.
+I consider this a big advantage of Spock over Mockito. The ability to define exactly what you want to ignore is an important pillar of strict tests. There is a a workaround with Mockito by using `eq()` matchers to expect a certain argument, but with Spock the code is much more clear and direct.
 
 Spock has several other capabilities when it comes to mocking and stubbing, but these deserve a full article on their own.
 As always, more details can found in the [Spock documentation](http://spockframework.org/spock/docs/1.0/interaction_based_testing.html) pages.
