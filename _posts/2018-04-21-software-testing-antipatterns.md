@@ -598,7 +598,7 @@ In summary, if you are unsure on what code you need to test next, look at the bu
 
 ### Anti-Pattern 11 - Treating TDD as a religion
 
-TDD stands for [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) and like all methodologies before it, it is a good idea on paper until consultants try to convince a company that following TDD blindly is the only way forward. At the time or writing this trend is slowly dying but I decided to mention it here for completeness (as the enterprise world is especially suffering from this anti-pattern). 
+TDD stands for [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) and like all methodologies before it, it is a good idea on paper until consultants try to convince a company that following TDD blindly is the only way forward. At the time of writing this trend is slowly dying but I decided to mention it here for completeness (as the enterprise world is especially suffering from this anti-pattern). 
 
 Broadly speaking when it comes to software tests:
 
