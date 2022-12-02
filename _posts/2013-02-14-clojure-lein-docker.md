@@ -74,10 +74,10 @@ These features are not particular to Clojure, but rather to functional programmi
 
 ```clojure
 (defn send-html-response
- &quot;Html response&quot;
+ "Html response"
  [client-socket status title body]
- (let [html (str &quot;&lt;HTML&gt;&lt;HEAD&gt;&lt;TITLE&gt;&quot; title &quot;&lt;/TITLE&gt;&lt;/HEAD&gt;&lt;BODY&gt;&quot; body &quot;&lt;/BODY&gt;&lt;/HTML&gt;&quot;)]
-  (send-http-response client-socket status &quot;text/html&quot; (.getBytes html &quot;UTF-8&quot;))
+ (let [html (str "<HTML><HEAD><TITLE>" title "</TITLE></HEAD><BODY>" body "</BODY></HTML>")]
+  (send-http-response client-socket status "text/html" (.getBytes html "UTF-8"))
  ))
  ```
 
@@ -150,6 +150,52 @@ Clojure also provides other constructs specifically for concurrency, such as [at
 ### Order of methods matters
 
 One thing that I noticed is that the order of methods inside the source file is critical. Functions must be defined before they are first used. Alternatively, you can use the [declare special form](https://clojuredocs.org/clojure.core/declare) to use a function before its actual definition. This reminded me of the C/C++ way of doing things, with header files and function declarations.
+
+## Creating a Docker container for Clojure
+
+The application is ready to be executed. This can be done very simply with `lein run`. This command however requires that you jave a full Java/Clojure development environment.
+We can instead package the application to a Docker container.
+
+We use [multi-stage builds](https://docs.docker.com/build/building/multi-stage/) to create a minimal image with just the final executable and not the whole development environment. Here is the [Dockerfile](https://github.com/kkapelon/clojure-http-server/blob/master/Dockerfile):
+
+```dockerfile
+FROM clojure:lein-2.9.1 AS LEIN_TOOL_CHAIN
+COPY . /tmp/app-src/
+WORKDIR /tmp/app-src/
+RUN lein uberjar
+
+FROM eclipse-temurin:11-jre-alpine
+
+EXPOSE 8080
+
+RUN apk add --no-cache ca-certificates bash
+
+RUN mkdir /app
+
+COPY index.html /app
+COPY --from=LEIN_TOOL_CHAIN /tmp/app-src/target/uberjar/clojure-http-server.jar /app/clojure-http-server.jar
+
+WORKDIR /app
+
+CMD ["java","-Djava.security.egd=file:/dev/./urandom","-jar","./clojure-http-server.jar"]
+```
+
+The build does the following 
+
+1. Starts from a Docker image that contains Clojure and Lein
+1. Creates an executable jar that holds the application
+1. Discards the Clojure image and starts from a new one that has only the JRE
+1. Copies the created Jar file to the new image
+1. Runs it
+
+The gains in size are very important. The Clojure development image is about 650 MB while the JRE Alpine image is about 150 MB
+
+The resulting image can be executed like any other Docker image:
+
+```shell
+docker build . -t my-app
+docker run -p 8080:8080 my-app
+```
 
 ### Conclusion
 
