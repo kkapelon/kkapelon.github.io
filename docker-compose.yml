@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 services:
   site:
     command: jekyll serve --incremental
@@ -8,4 +8,3 @@ services:
       - ./vendor/bundle:/usr/local/bundle
     ports:
       - 4000:4000
-
