@@ -4,7 +4,7 @@ title: Using Spock to test Groovy AND Java applications
 category: testing
 ---
 
-### Introduction
+## Introduction
 
 When it comes to Java, most developers either use [JUnit](https://junit.org/) or [TestNG](http://testng.org/doc/index.html). JUnit is the established de-facto solution, while TestNG attempts to offer additional features needed for Enterprise applications.
 
@@ -17,7 +17,7 @@ For this post, I took some time to play around with another testing framework ca
 Spock is stable and solid (it has been around since 2008), even if at the time of this writing, it has not even reached its 1.0 release. But it has some interesting features that you might find beneficial for testing your Java & Groovy apps, like how Spock can perform both assertion checking (like JUnit) and Mocking (like Mockito) at the same time. 
 So, now you have two libraries in one! How cool is that?
 
-### Getting Started with Installing Spock
+## Getting Started with Installing Spock
 
 Unfortunately, the reference documentation for Spock is not yet ready. So the Getting started page [in the old Wiki](https://code.google.com/archive/p/spock/) is not up-to-date, since most of the effort is going to the [new Documentation](https://spockframework.org/spock/docs/2.3/index.html).
 
@@ -36,7 +36,7 @@ There is a [Groovy plugin on the Eclipse MarketPlace](https://github.com/groovy/
 
 However, if you’re working on a  big Enterprise application, the Maven way is recommended since it’s also important to run Spock-powered unit tests as part of the build process (i.e. Jenkins).
 
-### Testing Groovy code with Spock
+## Testing Groovy code with Spock
 
 So let’s assume that you already have a simple class in Groovy called `Adder` and you want to write a unit test for this class. Here is the `Adder.groovy` code:
 
@@ -80,7 +80,7 @@ To run this example you just right-click on the AdderTest.groovy file and select
 
 Ok, so this example wasn’t very exciting. But as I wrote in the introduction, we are more interested in testing Java code with Spock and comparing it with JUnit/Mockito than looking at how it works with Groovy code. So let’s check that out.
 
-### Using Spock instead of JUnit for testing Java code
+## Using Spock instead of JUnit for testing Java code
 
 In the previous section, you have seen a bit of the Spock/Groovy syntax. Notice however that Groovy is a language that runs on the JVM and provides excellent compatibility with existing Java code. If you are interested in Groovy itself see the feature post on [The Adventurous Developer’s Guide to JVM languages – Groovy](http://zeroturnaround.com/labs/the-adventurous-developers-guide-to-jvm-languages-groovy/).
 
@@ -225,7 +225,7 @@ class MyUrlValidatorTest extends spock.lang.Specification{
 
 As with the JUnit unit test, this code is very flexible since adding a new URL is a single line change. But the difference with using Spock, however, is that you get much more readable and efficient code, giving only what is needed by the business logic without all the ugly setup: the JUnit test has 56 lines of code while the Groovy one is only 25!
 
-### Using Spock instead of Mockito for mocking Java code
+## Using Spock instead of Mockito for mocking Java code
 
 Another very convenient feature of Spock is that it contains its own built-in mocking library.
 
@@ -278,7 +278,7 @@ Again, notice that the labels with English are like descriptions. They create a 
 
 For more information on Mocking with Spock (including how to setup mock answers, more argument matchers, method matchers and spy objects) see the [official documentation](https://spockframework.org/spock/docs/2.3/interaction_based_testing.html).
 
-### Conclusion
+## Conclusion
 
 In this post we discovered that Spock, which is a testing framework for Groovy, can also be used for Java code and brings about a combined benefit of both testing and mocking abilities in a single package. I see this as providing a complete solution for your unit and integration tests.
 

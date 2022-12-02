@@ -4,7 +4,7 @@ title: Multi stage Docker container for a Clojure/Lein application
 category: containers
 ---
 
-### Introduction
+## Introduction
 
 With this post, we round off this series on JVM languages. In the future, we hope to get around to other interesting programming tongues that we missed this time. The last one we checked out was [Fantom](https://fantom.org/), a bit of a move away from the traditional JVM languages, and in that spirit we will talk now about [Clojure](https://clojure.org/), a Lisp-like programming language that runs on the JVM.
 
@@ -16,7 +16,7 @@ Version 1.0 appeared in 2009 and the name is a pun on C (C#), L (Lisp) and J (Ja
 
 As with the other post, I ported from Java a simple file-based HTTP server that you can download on [Github](https://github.com/kkapelon/clojure-http-server).
 
-### Starting Clojure development with Leiningen
+## Starting Clojure development with Leiningen
 
 After starting reading the Clojure documentation, I decided to setup my development environment using [Leiningen](http://leiningen.org/) which is a Maven like tool for Clojure. Leiningen (or Lein for short) can perform most tasks for Clojure that you would expect from Maven such as:
 
@@ -36,7 +36,7 @@ So I did the following in order to get the project skeleton:
 $ lein new clojure-http-server
 ```
 
-### Looking at IDE support
+## Looking at IDE support
 
 After I got the basic project structure in place, it was time to start editing code. As a long-time Eclipse user, the first thing I did was to search for an Eclipse plugin that handled Clojure. This would offer me syntax highlighting and code completion in my familiar workspace. That’s how I found the Eclipse plugin for Clojure called [CounterClockWise](https://github.com/ccw-ide/ccw/wiki/GoogleCodeHome). So I installed the plugin and created a new Clojure project in Eclipse.
 
@@ -50,7 +50,7 @@ In the end I decided to develop in Clojure the hard way using just Lein from the
 
 I did not find a built-in Clojure mode in Vim (an external plugin file exists), so I just used the Lisp mode which worked well for my needs.
 
-### The Read Eval Print Loop (REPL)
+## The Read Eval Print Loop (REPL)
 
 Like most Functional languages, Clojure offers a command line shell where you can directly execute Clojure statements. This shell is very handy for development since it allows you not only to test small code snippets but also to run only parts of the program during development.
 
@@ -58,7 +58,7 @@ This is nothing new for developers who have already used languages like Python o
 
 ![Clojure REPL](../../assets/clojure-lein-docker/clojure-repl.png)
 
-### Functional programming – a different way of thinking
+## Functional programming – a different way of thinking
 
 Clojure is a functional language very similar to Lisp or Scheme. The functional paradigm is very different for those who are accustomed to the Java way of OOP and working with side effects all the time.
 
@@ -81,7 +81,7 @@ These features are not particular to Clojure, but rather to functional programmi
  ))
  ```
 
-### Java Interoperability
+## Java Interoperability
 
 Clojure offers excellent interoperability with Java libraries. In fact, for some basic classes Clojure does not even provide its own abstractions, instead you are expected to use the Java classes directly. In this HTTP server example, I borrow classes such as Readers and Writers from Java:
 
@@ -134,7 +134,7 @@ For this reason I used the [Split function of Clojure](https://clojuredocs.org/c
 [...]
 ```
 
-### Concurrency
+## Concurrency
 
 Clojure was designed with [concurrency](https://clojure.org/about/concurrent_programming) in mind from the beginning and not as an afterthought. It is very easy to write multi-threaded applications in Clojure since all functions implement by default the [Runnable](https://docs.oracle.com/javase/6/docs/api/java/lang/Runnable.html) and [Callable](https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/Callable.html) interfaces from Java allowing any method to run into a different thread on its own.
 
@@ -147,7 +147,7 @@ Clojure also provides other constructs specifically for concurrency, such as [at
 (.start (new Thread (fn [] (respond-to-client client-socket)))))
 ```
 
-### Order of methods matters
+## Order of methods matters
 
 One thing that I noticed is that the order of methods inside the source file is critical. Functions must be defined before they are first used. Alternatively, you can use the [declare special form](https://clojuredocs.org/clojure.core/declare) to use a function before its actual definition. This reminded me of the C/C++ way of doing things, with header files and function declarations.
 
@@ -197,7 +197,7 @@ docker build . -t my-app
 docker run -p 8080:8080 my-app
 ```
 
-### Conclusion
+## Conclusion
 
 Clojure offers a great platform for those looking for a functional language running on the JVM. Developers with experience in Lisp/Scheme will feel right at home. However Java developers will not only face a new syntax but also a new paradigm.
 
