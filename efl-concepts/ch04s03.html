@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Edje as an IDL</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="ch04.html" title="Chapter 4. Understanding the Edje Layout Engine" /><link rel="prev" href="ch04s02.html" title="Edje as Animation/Effects Library" /><link rel="next" href="ch04s04.html" title="Edje as Logic and Appearance separator" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Edje as an IDL</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s02.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Understanding the Edje Layout Engine</th><td width="20%" align="right"> <a accesskey="n" href="ch04s04.html">Next</a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2535941"></a>Edje as an IDL</h2></div></div></div><p>
+Almost all C code that we have shown so far is imaginary. It doesn't show any of the API the EFL provide. This is intentional of course. This way you can concentrate on the high level
+concepts instead of being  puzzled with why and how the API works. But this does not apply to the Edje "code".
+</p><p>
+All 3 examples of Edje snippets already mentioned are actual Edje code. You cannot simply copy-paste them for your tests because some infrastructure blocks are missing. 
+All code however is exactly as you would write it <span class="emphasis"><em>inside</em></span> your programs. If you think that the listings are a bit abstract, its because Edje is abstract, not
+because we have removed some important code in any way.
+</p><p>
+With that in mind, you can see that with Edje you <span class="emphasis"><em>describe</em></span> your graphical interface. Your code says <span class="emphasis"><em>what</em></span> your interface looks like, and 
+<span class="emphasis"><em>what</em></span> it is doing once loaded but not <span class="emphasis"><em>how</em></span> it does it. This part of complexity is handled by Edje. As you saw in the previous section you
+can forget about timers and manual moving and sizing of interface elements. Edje works for you by abstracting all this low level code. You can keep coding the application logic
+rather than the application canvas.
+</p><p>
+In this sense Edje works as an Interface Description Language (IDL). <sup>[<a id="id2535996" href="#ftn.id2535996">1</a>]</sup>
+The concept is not entirely new. The Mozilla foundation uses XUL for describing the interface of Mozilla and Mozilla-based applications. Microsoft also introduced XAML shortly after XUL
+appeared on the scene. Both XUL and XAML are XML based (notice the X pattern). Edje is not XML of course.
+</p><p>
+The similarity ends there. Edje can do things that XUL and XAML were never meant to do. If this analogy helps you understand what Edje is all about, that is fine. But you will be mistaken
+if you decide that Edje is the EFL answer to XUL and/or XAML. The architectures also differ a lot in how the interface definition fits into the final program.
+</p><p>
+Edje code goes into a normal text file with the <span class="emphasis"><em>.edc</em></span> extension. The name stands for Edge Collections.
+We mentioned that Edje code looks like C but it is not C. You can search the gory details of Edje syntax in the technical documents already released about Edje. We will
+not focus on the syntax of Edje files. We
+will deal however with what types of blocks (starting and ending with <span class="emphasis"><em>{}</em></span>) can be included in an Edje file. These are the elements that you
+can <span class="emphasis"><em>collect</em></span> in an Edje file (hence the name).
+	</p><div class="table"><a id="id2536039"></a><p class="title"><b>Table 4.1. Top Level Edje blocks</b></p><table summary="Top Level Edje blocks" border="1"><colgroup><col /><col /></colgroup><thead><tr><th align="left">Block type</th><th align="left">Description</th></tr></thead><tbody><tr><td align="left">Images</td><td align="left">Image files that will be used in the interface</td></tr><tr><td align="left">Fonts</td><td align="left">Font definitions for text and textblock objects</td></tr><tr><td align="left">Data items</td><td align="left">Simple data entries in key value pairs</td></tr><tr><td align="left">Text styles</td><td align="left">Styles definitions for text and textblock objects</td></tr><tr><td align="left">Color classes</td><td align="left">Color definitions to be shared by objects</td></tr><tr><td align="left">Collections</td><td align="left">The description of the interface</td></tr></tbody></table></div><p>
+From the name you can assume that the Collections block is the most important one. All Edje code that you have seen so far belongs to the collections block. 
+The <span class="emphasis"><em>parts</em></span> and <span class="emphasis"><em>program</em></span> blocks already demonstrated are all child blocks inside the collection one. This is why
+we said before that some infrastructure is missing from the Edje code we have presented so far. All Edje code listings shown do not stand on their own, but must
+be included in a collection block (or to be more precise in a parts block, inside a groups block, inside the collections block). You can look up the source code
+or the Edje book to find the exact hierarchy of blocks inside the collections one. The other blocks (images, fonts, e.t.c ) have a simpler (flat) hierarchy.
+</p><p>
+Your typical Edje experience will probably go like this:
+</p><p>
+When you start playing with Edje and want to discover its abilities you will mainly use rectangles. So your first <span class="emphasis"><em>.edc</em></span>
+files will just contain the collections block. You will play a bit with animations and transitions and then decide that you want to include
+image resources in your interface. This is where the Images block comes in.
+</p><p>Rectangles and images are fine for graphics but your application will sooner or later need some text. If you have lots of Text objects
+you will be tired of defining the font manually for each one. So you will use the Fonts block to define a font once and use it everywhere. As your application
+grows you will also be tired of defining colors for each element in the collections block so you will create some common definitions in the Colors block.
+</p><p>
+Once you start using TextBlocks for lots of text (and not just single lines) you will appreciate the usage of the Style blocks which you will construct by yourself
+or borrow from other EFL applications (this is open source after all). Finally once you start playing with moving some of the interface properties from hardcoded values
+in the C code of the application, you will try to assimilate them in the Edje file in the Data Items block. The framerate of the Edje animations could be for example
+in the Edje file itself rather than in the C code as shown before (more on this separation on the next chapter).
+</p><p>
+To finish this chapter we will mention the fact that not all Edje functionality has been revealed. Apart from the blocks shown in the table which imply
+a static interface, Edje Collection files can also contain scripts that make everything a bit more dynamic. Scripts are written in Embryo (another EFL library).
+But since someone must first learn (X)HTML and then JavaScript, we will not say anything about Embryo in this document. Try to become familiar with just Edje right now.
+Just keep an open mind and remember that there is more than meets the eye. If you think that Edje files are always trivial think again. You can also open some .edc
+files from other EFL libraries or from the Enlightenment Window Manager to see what we mean.
+</p><div class="footnotes"><br /><hr width="100" align="left" /><div class="footnote"><p><sup>[<a id="ftn.id2535996" href="#id2535996">1</a>] </sup>Do not confuse this term with Interface Definition Languages commonly found in distributed architectures and RPC platforms.</p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Edje as Animation/Effects Library </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Edje as Logic and Appearance separator</td></tr></table></div></body></html>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 3. Understanding the Evas Canvas</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="prev" href="ch02s02.html" title="Brief description of each EFL library" /><link rel="next" href="ch03s02.html" title="&#10;What &quot;State-aware&quot; Means&#10;" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 3. Understanding the Evas Canvas</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s02.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch03s02.html">Next</a></td></tr></table><hr /></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="id2481866"></a>Chapter 3. Understanding the Evas Canvas</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="ch03.html#id2495420">
+What "Image-based" Means
+</a></span></dt><dt><span class="section"><a href="ch03s02.html">
+What "State-aware" Means
+</a></span></dt><dt><span class="section"><a href="ch03s03.html">
+Available Programming Facilities
+</a></span></dt></dl></div><p>
+By now you should know that Evas is a canvas. But what makes it different from
+the other solutions that already exist?  Each mature toolkit provides its own
+Canvas widget which if used correctly can really give the edge to your
+application. Let's see a quick summary of Evas features versus the traditional
+solutions.
+</p><div class="table"><a id="id2481885"></a><p class="title"><b>Table 3.1. Evas versus the competition</b></p><table summary="Evas versus the competition" border="1"><colgroup><col /><col /></colgroup><thead><tr><th align="left">Your Canvas widget</th><th align="left">The Evas Canvas</th></tr></thead><tbody><tr><td align="left">An extra widget of the toolkit</td><td align="left">The base of the toolkit (EWL/ETK)</td></tr><tr><td align="left">Part of an Application</td><td align="left"><span class="emphasis"><em>THE</em></span> application itself</td></tr><tr><td align="left">Shape/Vector based</td><td align="left">Image based</td></tr><tr><td align="left">State un-aware</td><td align="left">State aware</td></tr><tr><td align="left">X11 back-end</td><td align="left">X11, framebuffer, Xrender, OpenGL back-end</td></tr><tr><td align="left">Desktop usage</td><td align="left">Desktop/Embedded usage</td></tr></tbody></table></div><p>
+While most users will perceive Evas-based applications as impressive applications with low requirements for computer
+resources, for developers things are different. The way you program Evas is a refreshing change from what you
+have seen before. Most of the points presented on the table are fairly easy to understand.
+</p><p>
+The last point regarding the speed of Evas is the easiest to recognize once you start programming with EFL. 
+Graphic routines are highly optimized and carefully profiled (even for the software back-end) so that Evas
+really feels fast for users. If you ever hated Canvas widgets for their lack of speed, problematic scrolling,
+and low-quality resizing, Evas might be just what you are looking for.
+</p><p>
+We devote two separate sections on the key features that we think make Evas truly evolutionary.
+</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2495420"></a>
+What "Image-based" Means
+</h2></div></div></div><p>
+Since computers became capable of displaying graphics, pixel-based images
+comprise the bulk of visual output presented on user screens. Images stored in
+pixels take a lot of space to store, but are rather easy and fast to load and
+display. The pixel information is stored on a big 2D array (in the simplest
+case) and displaying graphics means simply copying the colour values
+from file to screen (not exactly but you get the idea).
+</p><p>
+Apart from the problem with storage space, pixel-based graphics suffer also
+from fixed quality and resolution dependence. If the user has a big screen,
+graphics will look small, while in the opposite case graphics will look
+really cramped since the screen estate is constrained. This problem is
+especially evident with application icons which can not be easily resized
+and keep their sharpness. Current solutions are forced to include
+different sizes of icons for 3 or 4 possible resolutions in order to
+accommodate for different uses. This not only increases disk space
+requirements but also adds complexity to loading and locating the
+appropriate icon file. Well known is the fact that wallpapers for common
+desktop environments come in different sizes. But what happens if you use
+1600x1200 resolution and your favourite wallpaper comes in 1024x768?
+</p><p>
+The software platforms are slowly but steadily moving to vector graphics.
+Vector graphics are destined to replace pixel-based graphics in many fields.
+Files which contain vector-based graphics do not store any pixel information at
+all. They rather contain a <span class="emphasis"><em>mathematical representation</em></span> of
+an image. When the file is displayed the computer plots the mathematical
+function in real time on screen, and the user sees an image which is actually
+the result of rendered graphics.
+</p><p>
+The big advantage of vector graphics is the fact that they are truly resolution
+independent. Because the graphical representation is computed in real-time for
+each display, graphics will look the same (and always sharp) no matter the
+canvas they are rendered on. If you have 1600x1200 display your image will be
+rendered with these coordinates while if you have 1024x768 graphics will again
+be recomputed to adapt to the new resolution. Both open-source desktop
+environments support vector-based icons (stored in the svg format) which
+showcase that icon resizing can result in big, sharp icons with no loss of
+quality.
+</p><p>
+On the downside of course, this real-time rendering puts a load on the computer
+processor, since it has to calculate the result of the function each time the
+image is displayed. A pixel-based image will be loaded in a fraction of time
+that the same image will be displayed if stored in vector format. The vector-based file will
+be significantly smaller though, than the pixel-based one since only the math behind the image is stored
+rather than all the pixels.
+</p><p>
+Vector-based graphics will never be used for digital photos of course since these need pixels for information.
+Computer interfaces on the other size are a natural candidate for vector graphics. Being resolution
+independent is a big plus for applications. And since processors get faster each year, the rendering overhead
+will slowly disappear.
+</p><p>
+This is is the reason why many Canvas widgets are vector based. They implement
+a complex mathematical layout engine (can be even postscript) which allows the
+programmer to display complex graphics with anti-aliasing, sharp edges and
+curved lines all in a rectangular window which is resolution agnostic. This might
+be perfect for mathematical and plotting applications (or even for custom
+widgets) but not for complete interfaces. This kind of canvas
+widgets can also not be used on embedded systems which have limited processing
+capacity and vector graphics will be inherently slow. The next figure outlines
+the shortcomings.
+</p><div class="figure"><a id="id2495523"></a><p class="title"><b>Figure 3.1. Workflow in your favourite Canvas widget</b></p><div><img src="img/Canvas.png" alt="Workflow in your favourite Canvas widget" /></div></div><p>
+Evas takes a completely different approach. While most Canvas widgets can also
+display pixel-based images as an extra feature, Evas is actually targeted on
+them. The Evas primitive list is rather short. Text, rectangles, lines, polygons,
+and images are the most basic primitives.  You won't find arcs, circles,
+arrows, bezier curves, or any other traditional Canvas methods if you search
+the Evas documentation. To create an Evas based interface you store all
+elements in normal pixel-based files (e.g. in PNG format) and have Evas
+load and resize them when the interface is activated. The interface
+elements themselves can be processed with Gimp as normal images or even be
+created as vectors in Inkscape and later converted to pixels and
+distributed as a theme.
+</p><p>
+This means that graphics are no longer a job of the programmer but become a job of the Gimp artist/Guru where
+they belong. Evas does not suffer from complex layout mathematical languages and therefore can be used on
+embedded systems too. Evas graphics are not resolution independent, but since Evas has rather sophisticated
+resizing algorithms (as imlib2) for most cases graphics will maintain their quality. The following
+figure shows the main idea.
+</p><div class="figure"><a id="id2495563"></a><p class="title"><b>Figure 3.2. Workflow in Evas.</b></p><div><img src="img/Evas.png" alt="Workflow in Evas." /></div></div><p>
+So will Evas boost your applications? If your canvas is going to plot complex mathematic functions for 
+a scientific application then Evas won't help you much. But if you intend to create a beautiful application
+with interface elements scrolling around the screen, windows sliding in and out, and crazy animations composed
+of many picture frames, then Evas will certainly come to rescue you.
+</p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s02.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch03s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Brief description of each EFL library </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 
+What "State-aware" Means
+</td></tr></table></div></body></html>

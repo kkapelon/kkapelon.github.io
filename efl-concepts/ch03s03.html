@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>
+Available Programming Facilities
+</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="ch03.html" title="Chapter 3. Understanding the Evas Canvas" /><link rel="prev" href="ch03s02.html" title="&#10;What &quot;State-aware&quot; Means&#10;" /><link rel="next" href="ch04.html" title="Chapter 4. Understanding the Edje Layout Engine" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">
+Available Programming Facilities
+</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s02.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Understanding the Evas Canvas</th><td width="20%" align="right"> <a accesskey="n" href="ch04.html">Next</a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2495878"></a>
+Available Programming Facilities
+</h2></div></div></div><p>
+Now that you are familiar with the Evas development model, it is time to delve a bit deeper. This section
+outlines the general capabilities of Evas. It helps you understand what is available and what is not. Since Evas
+is not released officially yet, the complete details are a moving target. 
+</p><p>
+The following table lists the Evas primitives at the disposal of the programmer.
+These are offered in the form of "Evas Objects" in the code.
+</p><div class="table"><a id="id2495898"></a><p class="title"><b>Table 3.2. Evas primitives</b></p><table summary="Evas primitives" border="1"><colgroup><col /><col /></colgroup><thead><tr><th align="left">Primitive</th><th align="left">Short description</th></tr></thead><tbody><tr><td align="left">Rect</td><td align="left">Typical rectangle; useful for clipping too</td></tr><tr><td align="left">Image</td><td align="left">The most common Evas object</td></tr><tr><td align="left">Text</td><td align="left">Text object; one line only</td></tr><tr><td align="left">TextBlock</td><td align="left">Multi-line text object</td></tr><tr><td align="left">Line</td><td align="left">Line object with start and end points</td></tr><tr><td align="left">Polygon</td><td align="left">General-purpose shape</td></tr><tr><td align="left">Gradient</td><td align="left">Linear, radial, rectangular, etc.</td></tr></tbody></table></div><p>
+Many times you may have found yourself writing several lines of code in order to accomplish something,
+only to find out that your library already implements it. Avoiding this is easy. Reading beforehand
+what a library offers, rather than just diving into the code as soon as possible is the obvious solution.
+For example, Evas implements some basic data structures, so writing an Evas-only application does not
+mean that you will have to implement them yourself.
+</p><div class="glosslist"><dl><dt>Clipping functions</dt><dd><p>
+Clipping means showing only the parts of an object that are contained (constrained) by a second object.
+Currently Evas supports clipping only <span class="emphasis"><em>to</em></span> Rectangles.
+</p></dd><dt>Object data functions</dt><dd><p>
+You can attach and retrieve any type of data to an Evas primitive. Storage is performed
+on a key-data pair fashion. 
+</p></dd><dt>Different display layers</dt><dd><p>
+Objects can have different Z-ordering. The layer number is not fixed. Transparency works as
+expected. That is, creating a transparent object on the upper layer will make objects on
+the lower level layer visible. Evas makes transparent interfaces really easy, and more importantly
+fast.
+</p></dd><dt>Pointer functions</dt><dd><p>
+Evas allows you to detect if the (mouse) pointer is within the Canvas, and what are its coordinates.
+You can even get the state of mouse buttons (if they are pressed or not). You can also
+translate from screen to Canvas coordinates and vice-versa.
+</p></dd><dt>Object finder functions</dt><dd><p>
+Since Evas knows the state of its objects as already explained, it gives you access to 
+a lot of functions for retrieving currently drawn objects. You can search object by name, coordinates,
+and pointer position. You can even get a list of objects which are contained in a specific
+rectangular area of the Canvas.
+</p></dd><dt>Simple Data Structures</dt><dd><p>
+For your own convenience Evas comes with some useful Data Structures. Currently a hash-table implementation
+and a linked-list one are offered. Even if you use your own or exploit external third-party libraries, 
+you should at least learn the linked List API. This is because all Evas functions which
+deal with collections of objects, strings, etc. actually return an Evas List.
+</p></dd><dt>Callback binding functions</dt><dd><p>
+Since Evas is a Canvas, it also offers the usual callback binding facilities. These are employed
+in order to respond to several external events including resizing and moving the canvas, using the mouse, or
+typing on the keyboard.
+</p></dd><dt>Evas Smart objects</dt><dd><p>
+Evas allows you to create you own <span class="emphasis"><em>Evas objects</em></span> and have them implement
+the same API used for built-in objects too. Naturally, this is a great way to group several different
+primitives to form more complex objects without the need of custom glue and wrapper code. Not to 
+be confused with the EFL Smart library.
+</p></dd><dt>Evas Engine functions</dt><dd><p>
+Most programmers will use the X11 back-end in general. Evas runs on other devices too.
+The framebuffer is another good candidate found on embedded systems (which do not run an X server).
+</p></dd><dt>Text effects and style</dt><dd><p>
+The Text object of Evas is not as limited as you might think. Evas includes some built-in styles, which
+will make text appear on screen a little more appealing. Shadows, outlines, and glows including 
+combinations among them are already there.
+</p></dd></dl></div><p>
+As always, you should look into the code if you want to know everything that Evas offers.
+Not all features are documented yet and some of course are more experimental than others.
+</p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">
+What "State-aware" Means
+ </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 4. Understanding the Edje Layout Engine</td></tr></table></div></body></html>

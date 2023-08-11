@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 5. Understanding the Ecore Infrastructure Library</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="prev" href="ch04s07.html" title="Choosing Edje over Evas" /><link rel="next" href="ch05s02.html" title="Programming Facilities" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 5. Understanding the Ecore Infrastructure Library</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s07.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch05s02.html">Next</a></td></tr></table><hr /></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="id2537402"></a>Chapter 5. Understanding the Ecore Infrastructure Library</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="ch05.html#id2537417">Using Ecore in your programs</a></span></dt><dt><span class="section"><a href="ch05s02.html">Programming Facilities</a></span></dt><dt><span class="section"><a href="ch05s03.html">Configuration with Ecore</a></span></dt><dt><span class="section"><a href="ch05s04.html">The Event Loop</a></span></dt></dl></div><p>
+Ecore is the glue that holds all the EFL libraries together. You can use most EFL libraries by themselves but Ecore gives you
+the plumbing you need to make them work all together in an elegant way. It also gives you additional programming constructs that will
+make EFL development a little easier.
+</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2537417"></a>Using Ecore in your programs</h2></div></div></div><p>
+Unlike Evas and Edje, Ecore is a non-GUI library. Although it deals with graphics in a sense (abstracting some X functions for example) you can perfectly
+program a command line application in Ecore. Ecore is the foundation of the EFL family implementing job handling, networking functions, timers, configuration management, IPC, and
+several other aspects of an application that you would have to write yourself if your program used only Evas/Edje.
+</p><p>
+You might think that Ecore is to EFL what Glib is to GTK+. This is only partially true. While Glib is the non-GUI part of GTK+ which is even used by non-GTK+ apps, in practice
+all GTK+ applications <span class="emphasis"><em>depend</em></span> on Glib. Ecore in contrast, is an add-on library that <span class="emphasis"><em>boosts</em></span> your EFL application. It should be clear
+from the previous chapters that you can use <span class="emphasis"><em>only</em></span> Evas for an application.
+</p><p>
+As with Evas engines all different modules of Ecore (IPC, Jobs, X abstraction e.t.c.) come in different libraries in your system so you can selectively choose what you want
+to link with your application. If your system does not employ the DBUS daemon for example you can leave out the ecore_dbus module during linking. For a console application
+you can leave out the ecore_x module and so on.
+</p><p>
+The next section briefly covers the Ecore capabilities.
+</p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s07.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch05s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Choosing Edje over Evas </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Programming Facilities</td></tr></table></div></body></html>

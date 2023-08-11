@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>The Event Loop</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="ch05.html" title="Chapter 5. Understanding the Ecore Infrastructure Library" /><link rel="prev" href="ch05s03.html" title="Configuration with Ecore" /><link rel="next" href="ch06.html" title="Chapter 6. End matter" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">The Event Loop</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s03.html">Prev</a> </td><th width="60%" align="center">Chapter 5. Understanding the Ecore Infrastructure Library</th><td width="20%" align="right"> <a accesskey="n" href="ch06.html">Next</a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2538038"></a>The Event Loop</h2></div></div></div><p>
+You might be surprised to read that Ecore provides IPC and networking abstractions but not any kind of thread API. Thread support seems to be important these
+days and most support libraries (as Ecore in the case of EFL) usually offer some sort of wrapper around UNIX threads. The fact is that Ecore takes a completely
+different approach when it comes to "parallelism". Rather than employing threads, Ecore focuses instead on a powerful event loop mechanism. If you know everything about
+thread versus event based programming feel free to skip ahead.
+</p><p>
+Console programs are straightforward to program when it comes to parallelism. The application is in control, while the user just waits the execution to finish. Interaction
+happens either before the application starts (command line arguments) or only at rare cases during runtime. In the latter case the application stops working and asks the user
+for required input. With GUI applications the situation is reversed. The user is now in control and the application must respond to user actions (which come in the form of events).
+Since a GUI application must continue working and updating its window even when the user has assigned some work to it, a form of parallelism is needed. The GUI application
+must do at least two things at once (GUI in the foreground, processing in the background).
+</p><p>
+Threads come in the rescue for this kind of problem. One thread is managing the GUI and one or more are processing in the background. The concept is well known but also
+well known is the fact that thread programming is difficult. When threads have to share common resources the programmer must be extra careful to avoid racing conditions and use
+locking to avoid corruption of data. Without getting into details, we should just say that a badly written threaded application has bad performance in the best case (because of
+locks) and serious problems in the worst (deadlocks which result in application freezing). Threads need also special libraries for implementation and special 
+debugging support from the run-time system.
+</p><p>
+An alternative approach for this is event driven programming. Here all pending actions (jobs to do) are queued in a single "list". The running application looks at this queue, selects one 
+job to serve, then comes back, selects another one and so on. There is only one control flow at a time which simplifies programming (no locks/racing conditions). If you have
+ever used the <code class="function">poll()</code> or <code class="function">select()</code> UNIX system calls which act on file descriptors you are already familiar with event handling.
+Of course even driven programming has its drawbacks too. The performance is not always optimal if the queue is too large (compared with using threads). Threads also
+have gained great momentum with the coming of multiprocessors (where a thread can be served by another CPU in a truly parallel way).
+The following table compares the two different approaches.
+</p><div class="table"><a id="id2538115"></a><p class="title"><b>Table 5.2. Threads vs Event based programming</b></p><table summary="Threads vs Event based programming" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th align="left"> </th><th align="left">Threads</th><th align="left">Events</th></tr></thead><tbody><tr><td align="left">Programming effort</td><td align="left">High</td><td align="left">Low</td></tr><tr><td align="left">Locks needed</td><td align="left">Yes</td><td align="left">No</td></tr><tr><td align="left">Possible Deadlocks</td><td align="left">Yes</td><td align="left">No</td></tr><tr><td align="left">Debugging</td><td align="left">Hard/Impossible</td><td align="left">Easy/Trivial</td></tr><tr><td align="left">Good for</td><td align="left">Many independent workloads</td><td align="left">A few intermixed workloads</td></tr><tr><td align="left">Bad for</td><td align="left">Too many shared resources</td><td align="left">Too many workloads</td></tr><tr><td align="left">Ideal in</td><td align="left">Multi processor/core systems</td><td align="left">Single processor/core systems</td></tr></tbody></table></div><p>
+Ecore chooses the Event-driven approach. Notice than in the case of uniprocessor systems, since only one control flow is active at a time, you never have true parallelism
+no matter the approach you choose. It is just a matter of convenience. 
+</p><p>
+The Ecore event loop already deals away with a lot of events. You do <span class="emphasis"><em>not</em></span> need to write event handlers for several window actions such as moving/resizing/exposing.
+You do not even need to decide when to repaint your main window (previously shown in the Evas chapter). In general if your application is simple enough you do not need
+to deal with events at all. Just draw your items in Evas/Edje and everything is done automatically for you behind the scenes. When the interface changes (values updated, UI elements
+added/removed) the application will manage everything by itself.
+</p><p>
+So why do we devote a separate section on the Event loop in Ecore? For the simple reason that you have some capabilities not easily found in other toolkits. The first
+is that you can add manually jobs in the event loop of the application. These will be served by Ecore in a best effort manner. This means that they will be served
+eventually by the application but you cannot predict when exactly.
+</p><p>
+The second capability (which is more interesting) is that you are able to decide what your program does when idle. That is, you can specify a callback function
+for situations where your application waits for I/O or user input. The callback function will be run using whatever CPU percentage is available to the application.
+Taking this idea a bit further, Ecore additionally allows to define what happens when the application <span class="emphasis"><em>enters</em></span> and <span class="emphasis"><em>exits</em></span> the idle
+state. In result, you can program a really complex EFL application without using any threads at all and delegate all processing into "idler" functions. This gives
+EFL programmer great flexibility.
+</p><p>
+If you still believe that threads are essential, you might not know that your X-Server is a <span class="emphasis"><em>single</em></span> user-level process (no ties with the kernel OS) 
+which handles all on screen drawing via Events. If a whole implementation of the X architecture is possible with events then certainly your application can refrain
+from using threads too. 
+</p><p>
+Closing this section, we need to note that if you need to run a function at a specific interval during run-time you are always free to use the traditional
+timers which are offered by Ecore.
+</p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Configuration with Ecore </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 6. End matter</td></tr></table></div></body></html>

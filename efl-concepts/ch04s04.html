@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Edje as Logic and Appearance separator</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="ch04.html" title="Chapter 4. Understanding the Edje Layout Engine" /><link rel="prev" href="ch04s03.html" title="Edje as an IDL" /><link rel="next" href="ch04s05.html" title="Edje as a Theming Framework" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Edje as Logic and Appearance separator</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s03.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Understanding the Edje Layout Engine</th><td width="20%" align="right"> <a accesskey="n" href="ch04s05.html">Next</a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2536228"></a>Edje as Logic and Appearance separator</h2></div></div></div><p>
+So after reading the previous chapter you have a (mostly blurred) idea of the contents of an .edc file. This file describes your graphical user interface in Edje. It may contain
+relative positions of objects, some simple animations and maybe some images. But what do you do when you write it?
+</p><p>
+If you are an experienced programmer you will probably visualize two workflows for .edc files. The static and the dynamic one.
+</p><p>
+The static approach is the most trivial one. You assume that Edje code segments are just special macros (in C). You include in your C code the "Edje.h" header file
+which contains the implementation of these macros and you compile your program normally as any other C application. This results into a big executable which includes
+everything. Both the user interface and the application logic are in one file. See the following figure.
+</p><div class="figure"><a id="id2536258"></a><p class="title"><b>Figure 4.6. Building the UI statically in the application.</b></p><div><img src="img/static.png" alt="Building the UI statically in the application." /></div></div><p>
+This approach clearly helps the developer. Instead of writing lots of C code for Evas she can quickly describe what she want to do in Edje, and be more
+productive because of abstraction. For a user however things remain unchanged. A single executable is the whole application. Nothing can be changed without
+the source code. The great benefits of this approach are of course simplicity (no extra tools, just macros and the compiler) and speed (everything is compiled
+in the end).
+</p><p>
+The dynamic approach would be to separate the graphical representation of the application from the actual functionality<sup>[<a id="id2536286" href="#ftn.id2536286">2</a>]</sup>. So you distribute two files for your application.
+The binary executable which is the code and the text .edc file which describes the interface. The application binary runs and dynamically during <span class="emphasis"><em>runtime</em></span>
+it loads the graphical user interface described in the .edc file. This idea already exists for applications but the text file is mostly written in XML so that it
+is more human readable.
+</p><p>
+The dynamic approach has a clear advantage regarding flexibility. The user can change the text file representing the graphics of the application and after
+she runs it for a second time the application adapts to the changes. No recompiling is necessary. See the following figure. A lot of theme frameworks also depend on this technique.
+The obvious drawback of this is lack of speed. The binary file of the application must contain a text parser for reading the text file which has the 
+application appearance. In the case of XML a full featured XML parser needs to be included. There are separate libraries in the Open Source community which implement
+XML parsers and thus free the programmer from this burden, but the fact remains that this is added complexity with controversial benefits. It is also clear
+that while this approach is more convenient for the user, it means more effort for the programmer in order to accomplish the required flexibility.
+</p><div class="figure"><a id="id2536324"></a><p class="title"><b>Figure 4.7. Loading the UI dynamically in the application.</b></p><div><img src="img/dynamic.png" alt="Loading the UI dynamically in the application." /></div></div><p>
+With Edje you don't have to choose between the two approaches (static, dynamic). The Edje approach is a third one which combines the best
+of both worlds and does away with the disadvantages! The following table summarizes the Edje approach:
+</p><div class="table"><a id="id2536344"></a><p class="title"><b>Table 4.2. The Edje Appearance/Logic separation</b></p><table summary="The Edje Appearance/Logic separation" border="1"><colgroup><col /><col /><col /><col /></colgroup><thead><tr><th align="left"> </th><th align="left">Static way</th><th align="left">Dynamic way</th><th align="left">Edje way</th></tr></thead><tbody><tr><td align="left">Files Distributed</td><td align="left">1 binary</td><td align="left">1 binary + 1 text</td><td align="left">2 binaries</td></tr><tr><td align="left">UI resides</td><td align="left">Inside main executable</td><td align="left">In separate text file</td><td align="left">In separate binary file</td></tr><tr><td align="left">Speed</td><td align="left">Fast</td><td align="left">Slow</td><td align="left">Fast</td></tr><tr><td align="left">UI code</td><td align="left">compiled (built-in)</td><td align="left">text (interpreted)</td><td align="left">compiled (loaded)</td></tr><tr><td align="left">UI is determined</td><td align="left">During compile time</td><td align="left">During run time</td><td align="left">During run time</td></tr><tr><td align="left">UI Flexibility</td><td align="left">No</td><td align="left">Yes</td><td align="left">Yes</td></tr></tbody></table></div><p>
+In Edje the .edc text file is <span class="emphasis"><em>compiled</em></span> into a .edj file
+via the <span class="application">edje_cc</span> compiler which is offered along the
+Edje framework. The resulting .edj which is binary is loaded during run-time
+into the main executable resulting into the final application which is
+presented to the user. See the following figure. You should see now why the solution
+combines the advantages of both approaches. You have a binary file with your UI
+(fast) that is added dynamically (flexibly) into your application. We are not
+aware of any other technology in the Open source world which does the same
+thing.
+</p><div class="figure"><a id="id2536501"></a><p class="title"><b>Figure 4.8. Separation of GUI and code in Edje.</b></p><div><img src="img/edje.png" alt="Separation of GUI and code in Edje." /></div></div><p>
+You may think that the figures presented so far at too high level and do not actually explain <span class="emphasis"><em>how</em></span>
+all this is accomplished. A great number of programmers want to get down and dirty with code to really understand a concept.
+Rather than presenting long code listings with an Edje application we will describe things a bit more concisely.
+So let's say that you have been enlightened with Edje and want to write your next application with it. What do you actually
+do?
+</p><p>
+First you write your .edc file which contains the User interface. Then you write the C code of your application.
+The C code would only contain initialization of a Canvas and nothing more (more on this later). When
+the UI is initialized you designate the name of the .edj (compiled Edje UI) that is to be loaded. This should
+be something like <code class="function">edje_file_load("my_UI.edj")</code>. The name of the function does not really matter.
+Currently Edje is just a normal Canvas Object. You create and put it in a Canvas like any other object. The name of the 
+associated .edj file is a property of the Edje object.
+</p><p>
+Next you rename your UI text file to my_UI.edc. You compile it with <span class="application">edje_cc</span> and the resulting
+file is a binary one named my_UI.edj. The end user installs the binary and the .edj file (probably somewhere in /usr/share).
+When the application runs it dynamically loads the my_UI.edj file and draws itself of screen. If another my_UI.edj
+file replaces the previous one, the application will use this instead (themes anyone?).
+</p><p>
+It is rather simple actually. The only thing left to explain is how communication is handled between the UI placed
+into Edje and the C code of the application. No mystery here. If you already know to how to use GTK+ callbacks
+or QT Signals/Slots you are already set.
+</p><p>
+In the programs part of an .edc file you can define apart from animation (as shown previously) signals
+that are emitted from the User Interface in Edje back to the main C code of your application in response to user events. In your .edc file
+you would include in the programs block code like this:
+</p><p>
+</p><div class="example"><a id="id2536580"></a><p class="title"><b>Example 4.5. Sending a signal from Edje to C code.</b></p><pre class="programlisting">
+program 
+{ 
+	name, "user_clicked_button"; 
+	signal, "mouse,down,*"; 
+	source, "ok_button"; 
+	action, SIGNAL_EMIT "finished" "ok"; 
+} 
+</pre></div><p>
+</p><p>
+This should be easy to understand. The asterisk in the <code class="varname">signal</code> like denotes <span class="emphasis"><em>any</em></span> mouse button. So
+this program would run when the user clicks (mouse down) on the source component (named "ok_button).
+The <code class="varname">finished</code> and <code class="varname">ok</code> parameters are additional options which are passed back to C code.
+Since an OK button has only one function (usually) these extra options are not needed but are just shown here for educational purposes.
+</p><p>
+That is all that you have to do in the .edc file of your application. To decide what happens when these signals are emitted
+you write in the C code function callbacks which register which signals they want to listen to. As you might expect we will not show
+any API for this but you can rest assured that is just normal C code and nothing extraordinary. The Edje API provides you
+also with functions which can change the Edje User Interface programmatically. Thus, you are given the ability to respond to 
+Edje signals with changes in the Edje object itself.<sup>[<a id="id2536630" href="#ftn.id2536630">3</a>]</sup>
+</p><p>
+So in the end you have an application binary full of functionality (C
+functions) and an .edj file which contains the User Interface.
+These two communicate dynamically while the application runs. A media player
+as a full example is described in the Edje book. You should consult it if you
+want to see in detail how a media player would work the Edje way. All
+the functionality for music files (load, play, stop, pause) are in C
+code, while everything that is graphical (stop, play buttons e.t.c) are
+in the Edje object.
+
+</p><p>
+After reading this section you may probably think that Edje would be a good framework for themes. You are right of course! Edje
+was built with theming in mind and we devote a separate section for this Edje ability.
+</p><div class="footnotes"><br /><hr width="100" align="left" /><div class="footnote"><p><sup>[<a id="ftn.id2536286" href="#id2536286">2</a>] </sup>You should be already familiar with this concept
+if you have ever done web programming where XHTML/CSS and Server Side Code are all contained in different files</p></div><div class="footnote"><p><sup>[<a id="ftn.id2536630" href="#id2536630">3</a>] </sup>Not to be confused with introspection</p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Edje as an IDL </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Edje as a Theming Framework</td></tr></table></div></body></html>

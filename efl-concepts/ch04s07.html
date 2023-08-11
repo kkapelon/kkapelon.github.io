@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Choosing Edje over Evas</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="ch04.html" title="Chapter 4. Understanding the Edje Layout Engine" /><link rel="prev" href="ch04s06.html" title="Using Edje to preview your GUIs" /><link rel="next" href="ch05.html" title="Chapter 5. Understanding the Ecore Infrastructure Library" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Choosing Edje over Evas</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s06.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Understanding the Edje Layout Engine</th><td width="20%" align="right"> <a accesskey="n" href="ch05.html">Next</a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2537099"></a>Choosing Edje over Evas</h2></div></div></div><p>
+We will finish our discussion on Edje with a more advanced section. Using Edje is clearly a breath of fresh air in the case
+of themes and animation, but is it always the best tool for the job?
+</p><p>
+Everything that can be done in Edje can also be done in Evas. Edje is actually
+using the Evas Canvas for graphics, the EET library for .edj files and the
+Embryo scripting language for its effects. Edje helps the programmer to be more
+productive with all the facilities it provides. But that does not prevent the
+programmer from writing an Evas-only application using only C. Evas is a
+powerful Canvas on its own as was discussed before.
+</p><p>
+Edje is an abstraction over Evas that saves the programmer from writing the same code all the time (relative coordinates, themes e.t.c). This
+abstraction of course comes at a price. Some of the flexibility that Evas provides is lost in the Edje abstraction layer. This may sound strange since
+in all the previous sections we tried to stress the importance of Edje and the revolutionary features it brings to the table. We still believe this.
+There is however a (small) percentage of people who will find Edje a bit limited and will stick to C code and Evas or even C code and their favourite Canvas
+widget. They will prefer to deal with low level graphic code in order to get the maximum flexibility that not even Edje can provide.
+</p><p>
+The last sentence of the previous paragraph needs some explanation. Let's say that you want to create a custom Canvas object. What do you do with Edje? Edje
+will not manage this object since it does not know anything about it. You are forced to revert to pure Evas code. Does this mean that you have to 
+leave the benefits of Edje behind? Not at all. The final concept of Edje that we will examine is Edje swallowing.
+</p><p>
+Everything we have said so far about Edje, refers to using a single Edje object for your application. The C code contains only functionality
+but not graphics. Your whole interface is the Edje object which fills the entire application window and everything that is GUI specific is
+described in the .edc file.
+</p><p>
+If you have a really tricky application which creates multiple canvas objects on the fly (their number is not known beforehand) and moves them around
+in positions calculated mathematically (dynamically) you are of course welcome to leave Edje and use only Evas instead. You can do whatever you
+want keeping in mind that everything will be implemented in C code. But this is the extreme case. Most cases you will want to keep Edje around
+and shift some (but not all) graphic code back into C where more flexibility is possible and you can calculate several things dynamically.
+</p><p>
+This can easily happen in two steps. First you split your single Edje object into multiple. Multiple Edje collections can be implemented by making use
+of the groups block in the .edc file. You keep one Edje collection for your main interface and several small ones for graphic parts which behave in a more dynamic way.
+Then in the main Edje collection you create your parts as before but instead of using a predefined Edje part (TEXT,RECTANGLE, IMAGE e.t.c) you mark it instead with type = SWALLOW.
+Then you compile your .edc file normally.
+</p><p>
+The SWALLOW Edje object is not a specific object. Instead it defines a
+container which can be programmed dynamically in C code regarding its contents.
+You can fill it with another Edje collection loaded from the same .edj file,
+another Edje collection loaded from another .edj file or even a custom Evas
+object created dynamically in C. Once the SWALLOW object is filled Edje
+will modify its geometry according to how the application resizes or moves.
+The technique is illustrated in next figure:
+
+</p><div class="figure"><a id="id2537192"></a><p class="title"><b>Figure 4.13. Swallowing an object programmed in C into a UI described in Edje.</b></p><div><img src="img/swallow.png" alt="Swallowing an object programmed in C into a UI described in Edje." /></div></div><p>
+The result is a mixed approach. You lose some Edje benefits. Themers cannot change swallowed parts of your interface since they are not inside the .edc file. You cannot
+use the Edje previewer to see how the interface works since these parts are created during runtime (in the case of C code). Changing anything for these parts requires manual
+changing of the source code.
+</p><p>
+On the other hand you have perfect flexibility. You keep Edje around for most parts of your interface and you employ sophisticated C code for specific parts which are powerful
+as pure Evas code would be. The choice is your to make. You can have as many SWALLOW parts as you want. The next table outlines all possible approaches.
+</p><div class="table"><a id="id2537224"></a><p class="title"><b>Table 4.4. Edje vs Evas</b></p><table summary="Edje vs Evas" border="1"><colgroup><col /><col /><col /><col /></colgroup><thead><tr><th align="left"> </th><th align="left">Pure Evas</th><th align="left">Pure Edje</th><th align="left">Edje and Evas</th></tr></thead><tbody><tr><td align="left">UI Complexity in</td><td align="left">Evas (.c)</td><td align="left">Edje (.edc)</td><td align="left">Both</td></tr><tr><td align="left">Edje objects</td><td align="left">None</td><td align="left">One</td><td align="left">Many</td></tr><tr><td align="left">Dynamic UI morphing</td><td align="left">Maximum</td><td align="left">Limited</td><td align="left">Available</td></tr><tr><td align="left">Swallowed Edje parts</td><td align="left">Not possible</td><td align="left">None</td><td align="left">One or more</td></tr><tr><td align="left">UI and code separation</td><td align="left">None</td><td align="left">High</td><td align="left">Medium</td></tr><tr><td align="left">Programming effort</td><td align="left">High</td><td align="left">Low</td><td align="left">Medium</td></tr><tr><td align="left">Theme support</td><td align="left">None</td><td align="left">Extensive</td><td align="left">Partial</td></tr></tbody></table></div><p>
+To fully grasp Edje you need of course to write some applications that actually
+use it. We could spend more time about Edje, its relationship with Evas or even
+Embryo but by now you should have realized the power that Edje gives you. Evas
+may be the base of all EFL libraries. Evas may be a powerful Canvas. Evas may
+be fast and optimized. But in the end Edje is the leverage you need in order to
+completely do away with low level Canvas code and build powerful graphic
+applications.  Before Edje programmers were faced with a hard decision. Either
+use a limited toolkit for rapid prototyping of a WIMP<sup>[<a id="id2537388" href="#ftn.id2537388">4</a>]</sup> application or a powerful but low level Canvas for
+custom graphics. Edje is right in the middle giving you the power that
+you need without forcing you one way or another. You can still use only
+Evas or only EWL/ETK for the two extremes, but you also keep the best
+of both worlds with Edje. 
+</p><div class="footnotes"><br /><hr width="100" align="left" /><div class="footnote"><p><sup>[<a id="ftn.id2537388" href="#id2537388">4</a>] </sup>Windows,
+Icons, Menus, Pointers (that is 99% of applications)
+</p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Using Edje to preview your GUIs </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 5. Understanding the Ecore Infrastructure Library</td></tr></table></div></body></html>

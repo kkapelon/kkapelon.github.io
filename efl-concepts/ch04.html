@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 4. Understanding the Edje Layout Engine</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="prev" href="ch03s03.html" title="&#10;Available Programming Facilities&#10;" /><link rel="next" href="ch04s02.html" title="Edje as Animation/Effects Library" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 4. Understanding the Edje Layout Engine</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s03.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch04s02.html">Next</a></td></tr></table><hr /></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="id2535233"></a>Chapter 4. Understanding the Edje Layout Engine</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="ch04.html#id2535310">Edje as a Layout engine</a></span></dt><dt><span class="section"><a href="ch04s02.html">Edje as Animation/Effects Library</a></span></dt><dt><span class="section"><a href="ch04s03.html">Edje as an IDL</a></span></dt><dt><span class="section"><a href="ch04s04.html">Edje as Logic and Appearance separator</a></span></dt><dt><span class="section"><a href="ch04s05.html">Edje as a Theming Framework</a></span></dt><dt><span class="section"><a href="ch04s06.html">Using Edje to preview your GUIs</a></span></dt><dt><span class="section"><a href="ch04s07.html">Choosing Edje over Evas</a></span></dt></dl></div><p>
+The Edje Library is a complex and intimidating beast at first sight. It is hard to
+understand the full potential of this library, let alone describe what it does
+in simple terms. In a nutshell Edje is what really showcases what Evas can do,
+and allows the programmer to create live, animated and playful user
+interfaces. It is perfectly normal for you, to read this chapter and think
+that you still do not grasp all the capabilities of Edje.
+</p><p>
+Edje has multiple roles, and depending on the application it might seem that Edje
+is a complex library with multiple purposes, that can confuse the programmer who
+comes in contact with EFL for the first time. As time passes (and the EFL libraries
+are finally released!) more and more Edje applications will appear that will
+show what Edje can really do.
+</p><p>
+So depending on who you ask and what application you are using, Edje
+can be:
+</p><div class="itemizedlist"><ul type="bullet" compact="compact"><li style="list-style-type: disc"><p>A layout engine. </p></li><li style="list-style-type: disc"><p>An animation/effects graphic library.</p></li><li style="list-style-type: disc"><p>An Interface Description Language.</p></li><li style="list-style-type: disc"><p>A logic/appearance separation library.</p></li><li style="list-style-type: disc"><p>A theming framework.</p></li><li style="list-style-type: disc"><p>A GUI previewer (think glade).</p></li><li style="list-style-type: disc"><p>An abstraction over Evas</p></li></ul></div><p>
+All the above are different aspects of Edje. You can view Edje as 
+many things, but the fact is that it remains the same library no matter how you
+look at it. It just happens that Edje is clearly something more than a trivial
+EFL library. We will explore each role of Edje in turn.
+</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2535310"></a>Edje as a Layout engine</h2></div></div></div><p>
+Most applications are built so that when started, they automatically request
+a specific size from the window manager. This size is usually the one that the application
+programmer has chosen so that the application fully utilizes the given screen space. Most
+of these times the user never actually changes the size of an application window. If the application
+is the sort of utility which will be used for a brief period of time the user might not even move
+the application to a better position leaving it to where the window manager has placed it. But what happens
+if the user resizes the window or even fully maximizes it?
+</p><p>
+If you are really unlucky the application won't even resize since it is a dialog. How many times have you
+tried to grab a window from its borders only to realize that you cannot change its size? If you are equally unlucky
+the application window will resize but the window contents will stay the same. This happens because the 
+elite programmer of the application never bothered with application resizing in the first place. Go bug him/her
+about this.
+</p><p>
+In most cases however, the application window will resize smartly. Assuming
+that the application is document based, its content area along with the status
+bar and the toolbar will be notified of the new coordinates and change their
+layouts to match the new size. Notice anything strange here? Of course not since
+99% percent of applications resize this way.
+</p><p>
+The problem stems from the fact that all GUI toolkits are coordinate-based. The buttons and text
+have fixed sizes. So although the document area will actually increase the toolbar and status bar
+will not. Empty space will be wasted in several parts of the window. See the following figure:
+</p><div class="figure"><a id="id2535357"></a><p class="title"><b>Figure 4.1. Space wasted after resizing.</b></p><div><img src="img/resize.png" alt="Space wasted after resizing." /></div></div><p>
+Toolkit programmers know this and have provided application developers will several facilities
+in order to control where this extra space goes. The buzzwords are containers/boxes/glue space/autofill/constraints
+e.t.c. Most developers either don't use these and just hardcode their user interface, or even if they use them
+they are never actually happy about the behavior of the application after resizing.
+</p><p>
+The truth is that all these methods are complex to use and understand. In any case the fact that not all
+elements of an application resize evenly when its window is maximized is problematic. Your latest application
+might look cool on your 19" LCD monitor with 1600x1200, but it looks ugly at your friends 17" LCD at 1024x768
+and unusable at your aunt's 15" CRT and 800x600.
+</p><p>
+Edje allows you (if you want it of course) to give relative coordinates to
+<span class="emphasis"><em>all</em></span> your interface elements. You can create a truly
+resolution independent application. You use Edje to
+<span class="emphasis"><em>describe</em></span> the relative size and location of parts in your
+application. Each time the application window is resized all its elements will
+be also resized proportionally. 
+</p><p>
+For each interface element you only need to describe its upper left and bottom right corner as it will
+appear in the application window. The figure below shows this.
+Let's say that your application is a "scroller" one which will show some content and will allow the user to
+go up and down by clicking arrows that reside on the sides of the window. You quickly draw two arrow images
+(one up and one down) in Inkscape and export them as .png images. Then you decide that you want each arrow
+to take 10% of bottom or top screen space.
+</p><div class="figure"><a id="id2535416"></a><p class="title"><b>Figure 4.2. Relative positioning in Edje.</b></p><div><img src="img/coords.png" alt="Relative positioning in Edje." /></div></div><p>
+To tell Edje where a <span class="emphasis"><em>part</em></span> of your interface resides you describe the relative coordinates
+of the top-left and bottom-right corners of the area it occupies on screen. Coordinates are normalized using the
+window size of your application (that is why they are called relative). So top-left corner of the whole window
+has x=0.0 and y=0.0 while bottom-right corner is at x=1.0 and y=1.0. Negative
+and greater than 1.0 values are actually valid ones. These describe elements
+outside of the viewable window and are well suited for animations (explained
+later). Next figure shows the relative coordinates of our example according to this approach.
+</p><div class="figure"><a id="id2535445"></a><p class="title"><b>Figure 4.3. An example of relative positioning in Edje.</b></p><div><img src="img/relative.png" alt="An example of relative positioning in Edje." /></div></div><p>
+This visual representation of the window content would be translated in Edje
+with the following code.
+</p><p>
+</p><div class="example"><a id="id2535464"></a><p class="title"><b>Example 4.1. Relative coordinates in Edje</b></p><pre class="programlisting">
+part
+{
+	name, "up_button";
+	type, IMAGE;
+	description
+	{
+		state, "default" 0.0;
+		rel1
+		{
+			relative, 0.0 0.0;
+			offset, 0 0;
+		}
+		rel2
+		{
+			relative, 1.0 0.1;
+			offset, 0 0;
+		}
+		image
+		{
+			normal, "up.png";
+		}
+	}
+}
+part
+{
+	name, "down_button";
+	type, IMAGE;
+	description
+	{
+		state, "default" 0.0;
+		rel1
+		{
+			relative, 0.0 0.9;
+			offset, 0 0;
+		}
+		rel2
+		{
+			relative, 1.0 1.0;
+			offset, 0 0;
+		}
+		image
+		{
+			normal, "down.png";
+		}
+	}
+}
+</pre></div><p>
+</p><p>
+The key point here is that the <code class="varname">rel1</code> block corresponds to the top-left corner
+of something while the <code class="varname">rel2</code> is the bottom-right one. Take a moment to compare
+this code with the image presented before. You should fully understand how the text describes the 
+interface and what do the float values (0.0 0.1 0.9 and 1.0) mean. Ignore the <code class="varname">offset</code>
+lines. The <code class="varname">name</code> and <code class="varname">type</code> keywords are self explaining.
+</p><p>
+So what have we accomplished so far? Without writing a single C function we have a fully dynamic interface.
+Check the figure below. No matter how the user resizes the window, the interface will automatically "adapt" to its new 
+size. Window coordinates? Screen coordinates? World coordinates? translation between them? No code for them at
+all needs to be written by the programmer. It is already in Edje (or rather Evas).
+</p><div class="figure"><a id="id2535520"></a><p class="title"><b>Figure 4.4. Adapting automatically to a new window size.</b></p><div><img src="img/example.png" alt="Adapting automatically to a new window size." /></div></div><p>
+Of course a lot of people will probably step up and shout that this should only
+work if our graphics were vector based. This would make scaling images a
+lossless procedure and would always produce perfect quality visuals for the
+interface. If you read the Evas chapter you will already know what to answer to
+them. Evas/Edje has really sophisticated image resizing algorithms, so in most
+cases (provided that your image resources are reasonably sized) the loss in
+quality will never be evident to the end-user. And unlike vector graphics the Edje
+implementation is really fast. 
+</p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s03.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch04s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">
+Available Programming Facilities
+ </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Edje as Animation/Effects Library</td></tr></table></div></body></html>

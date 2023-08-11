@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Using Edje to preview your GUIs</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="ch04.html" title="Chapter 4. Understanding the Edje Layout Engine" /><link rel="prev" href="ch04s05.html" title="Edje as a Theming Framework" /><link rel="next" href="ch04s07.html" title="Choosing Edje over Evas" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Using Edje to preview your GUIs</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s05.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Understanding the Edje Layout Engine</th><td width="20%" align="right"> <a accesskey="n" href="ch04s07.html">Next</a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2536988"></a>Using Edje to preview your GUIs</h2></div></div></div><p>
+Judging by the previous chapters, you should have reached the conclusion that Edje accomplishes a lot. What more could you ask from Edje? This question
+is easily answered. A GUI previewer for debugging and inspecting your Edje (.edj) themes.
+</p><p>
+You might have come across with Glade or QT Designer/Builder. These tools allow you to create your interface in a natural way by dragging components onto your application
+and setting their properties from dialogs. The only code that remains is the functionality. Such a tool would not really work with Edje, since the power of Edje is found
+in dynamic interfaces with components that move around and change their appearance. A visual GUI builder <span class="emphasis"><em>would work</em></span> for EWL/ETK, the toolkit part of
+the EFL libraries.
+</p><p>
+Edje provides you with something more straightforward. A way to preview .edj
+files. Without writing a single C line of code in an executable you can launch
+the <span class="application">edje</span> executable passing as argument the name of
+an .edj file. You will get an instant preview of the interface. See the figure below.
+You can resize the interface to your liking. Clicking, dragging, and scrolling
+works as in the finished application, but of course all signals go nowhere so
+you cannot get any functionality.
+</p><div class="figure"><a id="id2537033"></a><p class="title"><b>Figure 4.11. Preview an Edje Theme.</b></p><div><img src="img/preview1.png" alt="Preview an Edje Theme." /></div></div><p>
+This preview program works really well for both themers and developers alike. Themers who have an existing application and change its theme (the .edj) file can concentrate on the
+interface and not on the application. Changing bit by bit the application theme they can preview it in a simpler way (decoupled from the application) so that they are sure that it 
+works as expected. When finished they can run the application and see how their interface works once deployed.
+</p><p>
+The Edje preview program allows one to view individual groups inside an Edje
+file. So instead of loading a really big application every time they are changing
+the theme and going to a deep level menu in order to find what they have
+changed they can instantly preview only the interface part they are interested
+in.(Provided the application programmer has split the interface into many groups). 
+</p><p>
+For developers, Edje debugging becomes easier with the Edje previewer. Apart
+from the fact that they can construct and test the interface without writing
+any C code, the Edje previewer has one additional benefit. Once you load the
+interface and start playing around with it, Edje will print on the console
+which signals are emitted while you are clicking  around.  You can see exactly
+which part of the interface receives the event and what event it actually
+handles. Then you can write your C code accordingly. That is, the Edje
+previewer tells you exactly what events you need to capture (and register
+callbacks) in order to respond to user actions. The next figure shows this:
+
+</p><div class="figure"><a id="id2537080"></a><p class="title"><b>Figure 4.12. Live signal testing in Edje.</b></p><div><img src="img/preview2.png" alt="Live signal testing in Edje." /></div></div><p>
+Nothing more needs to be said here. The Edje previewer provides you with live testing for your themes/Interfaces. 
+</p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s05.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04s07.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Edje as a Theming Framework </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Choosing Edje over Evas</td></tr></table></div></body></html>

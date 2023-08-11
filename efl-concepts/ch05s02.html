@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Programming Facilities</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="ch05.html" title="Chapter 5. Understanding the Ecore Infrastructure Library" /><link rel="prev" href="ch05.html" title="Chapter 5. Understanding the Ecore Infrastructure Library" /><link rel="next" href="ch05s03.html" title="Configuration with Ecore" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Programming Facilities</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05.html">Prev</a> </td><th width="60%" align="center">Chapter 5. Understanding the Ecore Infrastructure Library</th><td width="20%" align="right"> <a accesskey="n" href="ch05s03.html">Next</a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2537468"></a>Programming Facilities</h2></div></div></div><p>
+This section is a general list of Ecore capabilities.
+</p><div class="glosslist"><dl><dt>Job Handling</dt><dd><p>
+You can add and remove jobs (that call your functions) in the event loop of your application. The event loop
+and what ecore does with it are explained in a separate section.
+</p></dd><dt>Idle Handlers</dt><dd><p>
+You can define what your application does in its idle time. You can even define what it should do
+<span class="emphasis"><em>before entering</em></span> and <span class="emphasis"><em>after exiting</em></span> an idle state. Again this functionality
+is explained in a separate section.
+</p></dd><dt>Configuration management</dt><dd><p>
+Ecore does away with the traditional text based UNIX configuration files. Instead it employs
+configuration keys stored in binary (powered by the Eet storage library). You can even register listeners
+that are called when configuration changes. A separate section is
+devoted to storing/loading configuration too.
+</p></dd><dt>Process Spawning functions</dt><dd><p>
+An abstraction over UNIX <code class="function">fork</code>, <code class="function">popen</code>, <code class="function">exec</code>,
+   <code class="function">getpid</code> system calls. You also have the ability to send individual UNIX signals to
+   the processes spawned this way.
+</p></dd><dt>Data structures</dt><dd><p>
+A hash table, a linked list and a tree data structure are offered. A doubly linked list is available too. Notice
+that these implementations do not require Evas to be present (as we said before Evas includes code for some simple
+data structures too).
+</p></dd><dt>File monitoring</dt><dd><p>
+You are offered the ability to monitor a file descriptor and have a callback function when there is activity on
+the file managed by this descriptor (e.g. reading/writing).
+</p></dd><dt>Searching a file in a set of directories</dt><dd><p>
+Similar to the <code class="varname">PATH</code> variable on UNIX system where an executable is searched on a predefined
+set of directories, Ecore allows you to do this for any file your application wants. Of course the directories
+contained in the search set are defined by the programmer.
+</p></dd><dt>Ecore plugins</dt><dd><p>
+Loading additional Ecore plugins during run-time. The usual <code class="function"> dlopen</code> stuff.
+</p></dd><dt>Timers</dt><dd><p>
+Programmable timers. Complete with interval changing <span class="emphasis"><em>after</em></span> the timer
+has already started.
+</p></dd><dt>Network Connections</dt><dd><p>
+An abstraction over BSD sockets. Can also use local UNIX sockets for localhost communication.
+</p></dd><dt>Framebuffer Utilities</dt><dd><p>
+Several helper functions for Framebuffer devices. Calibration stuff mostly. Backlight/Display and
+double click interval too.
+</p></dd><dt>Generic IPC</dt><dd><p>
+IPC is Inter Process Communication. An abstraction over UNIX IPC.
+</p></dd><dt>Ecore X</dt><dd><p>
+An abstraction over X. You don't need to use X specific functions to set the class/icon/title of your
+application any more. Display, windows, properties,  synchronization/flushing, pixmap, geometry functions are available
+which wrap around the respective X function.
+</p></dd><dt>Ecore dbus</dt><dd><p>
+Dbus bindings. Dbus in an emerging technology offered as a freedesktop.org standard. It is already used by Gnome
+and recently adopted by KDE. Its objective is system-wide IPC.
+</p></dd></dl></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch05s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 5. Understanding the Ecore Infrastructure Library </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Configuration with Ecore</td></tr></table></div></body></html>

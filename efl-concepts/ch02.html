@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 2. The EFL structure</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="prev" href="ch01s03.html" title="Obtaining the EFL libraries" /><link rel="next" href="ch02s02.html" title="Brief description of each EFL library" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 2. The EFL structure</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch01s03.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch02s02.html">Next</a></td></tr></table><hr /></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="id2482258"></a>Chapter 2. The EFL structure</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="ch02.html#id2482283">Organization of the Libraries</a></span></dt><dt><span class="section"><a href="ch02s02.html">Brief description of each EFL library</a></span></dt></dl></div><p>
+While most EFL libraries are under constant development, some of them are clearly more
+mature than others. Several libraries are considered stable, but that should not mean that
+they haven't got rough edges. Some libraries have even been declared obsolete (!!!) before
+the 1.0 release of the EFL. Others are constantly changing so it is hard to either use them in an application
+or even to understand their scope.
+</p><p>
+Since this is a concepts document, we will focus only on the foundation libraries that have existed
+long enough to be useful. If you really get interested in EFL development, joining the developer 
+mailing lists will keep you informed on all the latest ideas and code that at any given moment
+is central to EFL core developers.
+</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2482283"></a>Organization of the Libraries</h2></div></div></div><p>
+Several solutions which come in multiple libraries are often advertised in the 
+familiar box stack picture. Low-level libraries are shown at the bottom, while
+high-level libraries sit on top of them. This implies that the higher levels strictly
+depend on the low level ones. It also implies that most programmers would always
+program on higher levels and never actually deal with the infrastructure.
+This approach may be useful for marketing purposes, but sometimes it confuses developers
+rather than help them understand. See figure below.
+</p><div class="figure"><a id="id2482300"></a><p class="title"><b>Figure 2.1. The EFL Stack viewed by the Marketing Department.</b></p><div><img src="img/efl.png" alt="The EFL Stack viewed by the Marketing Department." /></div></div><p>
+This in not true with EFL. There is one core library which can certainly used
+by itself, the Evas canvas, and most other EFL libraries add significant value
+to Evas (Edje, Embryo, Epsilon, etc.). At the same time, low-level libraries can be
+used by themselves even in non-GUI programs (Ecore, Eet). Thus, to better
+visualize the EFL, we choose a network structure with Evas and Edje in the
+center and everything else around. The next picture shows this.
+</p><div class="figure"><a id="id2482324"></a><p class="title"><b>Figure 2.2. The EFL Stack viewed in the programmer way.</b></p><div><img src="img/network.png" alt="The EFL Stack viewed in the programmer way." /></div></div><p>
+This makes clear that the libraries do <span class="emphasis"><em>not</em></span> form a hierarchy
+tree that makes every level dependent on the lowest levels. You are not supposed
+to understand any dependencies from the lines drawn among the libraries. The only thing
+this denotes is that several libraries can be used by themselves. Application 1 even represents
+a non-GUI program. You can program console application using only the EFL infrastructure.
+</p><p>
+From the size of each module you can also understand the importance of a library and whether it is central
+to the EFL or not. The Evas canvas is clearly the heart of EFL, while the Edje layout engine is the infrastructure
+that empowers the graphical abilities of Evas. This will also give you an idea on the order that we discuss
+each library in the next chapters of this document.
+</p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch01s03.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch02s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Obtaining the EFL libraries </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Brief description of each EFL library</td></tr></table></div></body></html>

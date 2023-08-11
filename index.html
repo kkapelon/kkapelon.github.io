@@ -1,62 +1,356 @@
----
-layout: default
-title: Home
----
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="posts">
- 
-  <div class="post">
-    <h1 class="post-title">
-     Contents at a glance
-    </h1>
-    <p>I never understood why so many technical blogs organize their posts by date. Newer content isn't 
-     always better. </p><p>Searching posts by date is cumbersome when a blog has too many posts.
-    I believe that a category-based overview is much better.</p>
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Code Pipes | Technical writing for Software development</title>
+	<meta name="description" content="Kapelonis Kostis - Software Engineer - Technical Writer - Manning Author" />
+	<meta name="author" content="Kapelonis Kostis" />
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="stylesheet" type="text/css" href="css/component.css" />
+	<script src="js/modernizr.custom.js"></script>
+	<script>
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date(); a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-    <h2>Testing</h2>
+		ga('create', 'UA-59045406-1', 'auto');
+		ga('send', 'pageview');
 
-   <ul>
-  {% for post in site.categories.testing %}
-    <li>
-      <a href="{{ post.url }}">{{ post.title }}</a>
-    </li>
-  {% endfor %}
-</ul>
+	</script>
+</head>
 
-<h2>Containers</h2>
+<body>
+	<div class="container">
+		<!-- Top Navigation -->
+		<div class="codrops-top clearfix">
+			<span class="right"><span>Copyright&copy; 2010-2023 Kapelonis Kostis </span></span>
+		</div>
+		<header class="codrops-header">
+			<h1>Code Pipes <span>Those who can, do and teach!</span></h1>
+			<nav class="codrops-navigation">
+				<a class="current-tab" href="index.html">Technical Writing</a>
+				<a href="presentations.html">Presentations</a>
+				<a href="code.html">Code</a>
+				<a href="https://blog.codepipes.com/">Blog</a>
+				<a href="contact.html">Contact</a>
 
-   <ul>
-  {% for post in site.categories.containers %}
-    <li>
-      <a href="{{ post.url }}">{{ post.title }}</a>
-    </li>
-  {% endfor %}
-</ul>
+			</nav>
+		</header>
+		<section class="simple">
 
-<h2>Continuous integration</h2>
+			<h2>Collaboration with Codefresh 2018-today <a href="http://www.codefresh.io/"><img class="floater-right"
+						src="img/codefresh-logo.png" /></a></h2>
+			<p><a href="https://www.codefresh.io">Codefresh</a> is a CI/CD solution built with native Docker, Kubernetes
+				and Helm
+				support. Unlike other traditional solutions Codefresh was created from scratch with support for
+				containers (it even
+				includes a private docker registry), declarative pipelines, deployment dashboards etc.</p>
 
-   <ul>
-  {% for post in site.categories.hosted-ci-comparison %}
-    <li>
-      <a href="{{ post.url }}">{{ post.title }}</a>
-    </li>
-  {% endfor %}
-</ul>
+			<p>I am working as a developer advocate writing blog posts and documentation. Here are some samples:</p>
 
-<h2>People</h2>
+			<ul>
+				<li><a href="https://codefresh.io/containers/docker-anti-patterns/">
+						Docker anti-patterns</a></li>
+				<li><a href="https://codefresh.io/continuous-deployment/ci-cd-pipelines-microservices/">
+						CI/CD Pipelines for Microservices</a></li>
+				<li><a href="https://codefresh.io/howtos/using-docker-maven-maven-docker/">
+						Using Docker from Maven and Maven from Docker</a></li>
+				<li><a
+						href="https://codefresh.io/blog/enterprise-ci-cd-best-practices-part-1/">
+						Enterprise CI/CD Best Practices</a></li>
+				<li><a href="https://codefresh.io/blog/kubernetes-antipatterns-1/">
+						Kubernetes Deployment Antipatterns</a></li>
+				<li><a
+						href="https://codefresh.io/blog/stop-using-branches-deploying-different-gitops-environments/">
+						Stop Using Branches for Deploying to Different GitOps Environments</a></li>
+				<li><a href="https://thenewstack.io/understanding-the-difference-between-ci-and-cd/">
+						Understanding the Difference Between CI and CD</a></li>
+				<li><a href="https://codefresh.io/blog/unlimited-preview-environments/">
+						Unlimited Preview Environments with Kubernetes Namespaces</a></li>
+				<li><a href="https://codefresh.io/blog/argo-cd-preview-diff/">
+						How to Preview and Diff Your Argo CD Deployments</a></li>
+			</ul>
 
-   <ul>
-  {% for post in site.categories.people %}
-    <li>
-      <a href="{{ post.url }}">{{ post.title }}</a>
-    </li>
-  {% endfor %}
-</ul>
+			<h2>Collaboration with Armory 2017-2018 <a href="http://www.armory.io/"><img class="floater-right"
+						src="img/armory-io-logo.png" /></a></h2>
+			<p><a href="https://www.spinnaker.io">Spinnaker</a> is the newcomer in the continuous delivery arena. It was
+				open-sourced by Netflix as a multi-cloud deployment tool. Spinnaker is one of the first and only
+				applications that is built for cloud deployments from the ground up. It supports natively the blue/green
+				deployment strategy as well as canary deployments, features that until recently required special scripts
+				and glue code. Spinnaker supports all major cloud providers (Amazon, Azure, Openstack etc) and even
+				native Kubernetes integration implemented by Google itself.</p>
+
+			<p><a href="http://www.armory.io">Armory</a> is the company behind Enterprise Spinnaker support. They also
+				offer extra Spinnaker integrations on top of the basic OSS distribution, specifically tailored for large
+				companies that want to move to the cloud. I have been writing guest blog posts for Armory:</p>
 
 
-  </div>
- 
 
-  
-</div>
 
+			<ul>
+				<li><a href="http://blog.armory.io/how-spinnaker-fits-into-the-continuous-delivery-puzzle/">How
+						Spinnaker fits into the Continuous Delivery puzzle</a></li>
+				<li><a href="http://blog.armory.io/spinnaker-is-not-a-build-server-and-other-misconceptions/">Spinnaker
+						is not a Build Server (and other misconceptions)</a></li>
+
+			</ul>
+
+			<h2>Collaboration with SemaphoreCI 2016-2017 <a href="http://semaphoreci.com"><img class="floater-right"
+						src="img/semaphoreci-logo.png" /></a></h2>
+			<p><a href="http://semaphoreci.ci">SemaphoreCI</a> is a hosted continuous integration company similar to <a
+					href="https://travis-ci.org/">Travis</a>. I was already aware of them while researching my <a
+					href="http://blog.codepipes.com/hosted-ci-comparison/hosted-ci-comparison.html">mega comparison of
+					hosted CI</a> services.</p>
+
+			<p>In 2016 they read my Spock book, liked it and contacted me in order to write articles for their huge
+				library of <a href="https://semaphoreci.com/community/tutorials">testing tutorials</a>. I accepted and
+				so far I have written 4 Testing/CI tutorials for them! Three of them have been in the top ten of the
+				respective year. The <a href="http://rest-assured.io" />RestAssured</a> tutorial is one of the most
+				commented tutorials.
+
+			<p>If you are looking for a hosted CI service, I can highly recommend them. For the full details consult the
+				<a href="http://blog.codepipes.com/hosted-ci-comparison/hosted-ci-comparison.html#semaphoreci">mega
+					comparison</a> that compares SemaphoreCI with 11 competitors in the same sector.
+			</p>
+
+			<ul>
+				<li><a
+						href="https://semaphoreci.com/community/tutorials/how-to-split-junit-tests-in-a-continuous-integration-environment">How
+						to Split JUnit Tests in a Continuous Integration Environment</a> </li>
+				<li><A href="https://semaphoreci.com/community/tutorials/testing-rest-endpoints-using-rest-assured">Testing
+						REST Endpoints Using REST Assured</a>. This was in the <a
+						href="https://semaphoreci.com/community/tutorials/top-10-semaphore-community-tutorials-in-2016">top
+						10 tutorials for 2016</a> among all SemaphoreCI articles. </li>
+				<li><a href="https://semaphoreci.com/community/tutorials/stubbing-and-mocking-with-mockito-2-and-junit">Stubbing
+						and Mocking with Mockito 2 and JUnit</a>. This was one of the <a
+						href="https://semaphoreci.com/community/tutorials/top-10-semaphore-posts-in-2017">top 10
+						tutorials for 2017</a> among all SemaphoreCI articles. </li>
+				<li><a
+						href="https://semaphoreci.com/community/tutorials/stubbing-and-mocking-in-java-with-the-spock-testing-framework">Stubbing
+						and Mocking in Java with the Spock Testing Framework</a>. This was also one of the <a
+						href="https://semaphoreci.com/community/tutorials/top-10-semaphore-posts-in-2017">top 10
+						tutorials for 2017</a> among all SemaphoreCI articles. </li>
+			</ul>
+
+
+			<h2>Collaboration with Manning publications 2014-2015 <a
+					href="https://www.manning.com/books/java-testing-with-spock"><img width="238" height="300"
+						class="floater-right" src="book/java-testing-with-spock-book.jpg" /></a></h2>
+			<p>In 2014, <a href="http://www.manning.com/">Manning</a> noticed my <a
+					href="https://blog.codepipes.com/testing/spock-for-java.html">Spock article</a> and asked me to
+				write a full book on the topic. Of course I accepted! Manning is a legend of technical books and I have
+				learned a lot by their huge collection on Java topics. </p>
+
+			<p>My book is titled "Java testing with Spock". It is aimed at Java developers entrenched in JUnit, and it
+				will attempt to convince them that
+				<a href="https://spock-framework.readthedocs.org/en/latest/">Spock</a> is an one-stop-shop for all
+				testing needs. Unlike JUnit, Spock also has built-in mocking/stubbing support and favours a BDD style
+				when describing test fixtures.
+				Combined with the expressive power of Groovy (and the power assert killer feature), Spock is an
+				explosive package that can replace/augment/accompany
+				existing JUnit tests in a much more concise way
+			</p>
+
+
+			<ul>
+				<li><a href="https://www.manning.com/books/java-testing-with-spock">Java Testing with Spock at
+						Manning</a></li>
+				<li><a
+						href="https://manning-content.s3.amazonaws.com/download/e/82672af-9245-44a7-9542-a9855972700c/SampleChapter-01.pdf">Free
+						chapter 1 in PDF format</a></li>
+				<li><a
+						href="https://manning-content.s3.amazonaws.com/download/3/d90f946-9baf-46eb-859c-fb7a56608320/SampleChapter-03.pdf">Free
+						chapter 3 in PDF format</a></li>
+				<li><a href="http://www.amazon.com/Java-Testing-Spock-Konstantinos-Kapelonis/dp/1617292532">Amazon
+						US</a></li>
+				<li><a href="http://www.amazon.co.uk/Java-Testing-Spock-Konstantinos-Kapelonis/dp/1617292532">Amazon
+						UK</a></li>
+				<li><a href="https://github.com/kkapelon/java-testing-with-spock">Source code of the book</a></li>
+				<li><a href="https://forums.manning.com/forums/java-testing-with-spock">Manning Author forum for
+						feedback</a></li>
+			</ul>
+
+
+
+
+			<h2>Collaboration with ZeroTurnaround 2013 <a href="http://zeroturnaround.com/rebellabs/"><img
+						class="floater-right" src="img/zeroturnaround-logo.png" /></a></h2>
+			<p>While working for InfoQ I also covered <a href="http://zeroturnaround.com/software/jrebel/">JRebel</a>
+				and <a href="http://zeroturnaround.com/software/liverebel/">LiveRebel</a>, products of <a
+					href="http://zeroturnaround.com/">ZeroTurnaround</a>. As part of the process I interviewed <a
+					href="http://cz.linkedin.com/in/thinkingoutloud">Oliver White</a> the marketing
+				guru of the company (at the time). We talked while drinking beers, and I started writing for <a
+					href="http://zeroturnaround.com/rebellabs/">RebelLabs</a> (the community building part of
+				ZeroTurnaround). I wrote <blog posts for any topic I liked and helped with the detailed programming
+					reports.</p>
+
+					<p>I really enjoyed my time with ZeroTurnound because of the freedom I had while choosing topics and
+						writing
+						about them. After the rigid structure of InfoQ, I could finally inserts jab and puns in my
+						articles!
+						Here is a full list of my articles:</p>
+
+					<ul>
+						<li><a
+								href="http://zeroturnaround.com/rebellabs/watch-out-for-these-10-common-pitfalls-of-experienced-java-developers-architects/">10
+								common pitfalls of experienced Java developers and architects</a> (My most controversial
+							post)
+						</li>
+						<li><A href="https://blog.codepipes.com/testing/spock-for-java.html">Using
+								Spock to test Groovy AND Java applications</a> </li>
+						<li><a href="https://blog.codepipes.com/containers/clojure-lein-docker.html">The
+								Adventurous Developer’s Guide to JVM Languages – Clojure</a> </li>
+						<li><a
+								href="http://zeroturnaround.com/rebellabs/the-correct-way-to-use-integration-tests-in-your-build-process/">The
+								correct way to use integration tests in your build process</a> </li>
+						<li><a
+								href="http://zeroturnaround.com/rebellabs/how-to-mock-up-your-unit-test-environment-to-create-alternate-realities/">How
+								to mock up your Unit Test environment to create alternate realities</a> </li>
+						<li><a href="https://www.jrebel.com/blog/unit-testing-in-java">Don’t
+								Test Blindly: The Right Methods for Unit Testing Your Java Apps</a> </li>
+						<li><a
+								href="http://zeroturnaround.com/rebellabs/why-your-next-cloud-app-will-probably-suck-without-unit-testing/">Why
+								Your Next Cloud App Will Probably Suck Without Unit Testing</a> </li>
+					</ul>
+
+					<p>With the transition to the JRebel product some of my articles are not published on their blog any
+						more
+						and I have reposted them locally</p>
+
+					<h2>Collaboration with InfoQ 2011-2013 <a href="http://www.infoq.com/"><img class="floater-right"
+								src="img/infoq-logo.png" /></a></h2>
+					<p>In 2011 I started working for <a href="http://www.infoq.com/">InfoQ</a>. I already liked the site
+						as a
+						reader because of their objective writing and the no-marketing-crap attitute when covering press
+						releases. At several points in time I simply disregarded the official release of a product and
+						went
+						straight to InfoQ in order to read the actual details. The team at InfoQ are mostly programmers
+						themselves so they can see behind the marketing buzzwords and actually explain the technical
+						facets of
+						various topics. </p>
+					<p>I too specialized in product releases for Java software. Even though the news posts are not
+						lengthy,
+						writing them was always a challenge because I had to verify/research with no actual
+						documentation at
+						hand (the products were just released). I <a
+							href="http://www.infoq.com/author/Kostis-Kapelonis">wrote
+							more than 30 news posts</a> for various topics. Here is a sample selection:</p>
+					<ul>
+						<li><A href="http://www.infoq.com/news/2012/12/spring-migration">Spring Migration Analyzer: An
+								Assistant
+								For JavaEE To Spring Conversion</a> </li>
+						<li><A href="http://www.infoq.com/news/2012/11/modelmapper">ModelMapper: An Object To Object
+								Mapping
+								Library</a> </li>
+						<li><a href="http://www.infoq.com/news/2012/10/dagger">Dagger: A Dependency Injection Framework
+								For
+								Android</a> </li>
+						<li><a href="http://www.infoq.com/news/2012/06/crash-shell-1">CRaSH: An Extensible Command Line
+								Shell
+								For Monitoring A Running JVM</a> </li>
+						<li><a href="http://www.infoq.com/news/2012/06/gradle-1">An Alternative Build System: Gradle 1.0
+								Released</a> </li>
+						<li><a href="http://www.infoq.com/news/2011/12/cloudbees-releases-jenkins-enter">CloudBees
+								Releases
+								Jenkins Enterprise</a> </li>
+						<li><a href="http://www.infoq.com/news/2011/11/restfuse-1-0-0">Restfuse 1.0.0 - A Library For
+								Easy
+								REST/HTTP Integration Tests</a> </li>
+						<li><a href="http://www.infoq.com/news/2012/05/liverebel-2-0">Updating Web Applications Running
+								In
+								Production with LiveRebel 2.0</a></li>
+					</ul>
+
+					<p>I was so mindblown when researching <a
+							href="http://www.infoq.com/news/2011/10/chronon-20">Chronon</a>
+						that I ended up writing a full featured article on <a
+							href="http://www.infoq.com/articles/recording-jvm-debuggers">recording debuggers</a>.</p>
+
+					<h2>Pro Bono writing work</h2>
+					<p>I love explaining complex things with simple language. Sometimes I also think that in todays
+						internet,
+						valuable information is lost in the sea of advertisements and popups. Here is a list of writings
+						I did
+						just for fun </p>
+
+					<ul>
+						<li><a href="efl-concepts/index.html">Enlightenment Foundation Libraries Documentation</a> 2006
+							(I am
+							really proud for this guide) - <a href="resources/concepts.pdf">PDF</a> - <a
+								href="https://github.com/kkapelon/efl-concepts">SGML source</a></li>
+					</ul>
+
+					<p>Series of articles in the Greek Linux online Magazine </p>
+					<ul>
+						<li><A href="security-intro-greek/index.html">Simple PC security for Aunt Tillie</a> 2005-2007
+							(In
+							Greek)</li>
+						<li><a href="http://www.linux.gr/magaz/35/01_X-Windows.html">Guide to X-Windows</a> 2006 (In
+							Greek)</li>
+						<li><a href="http://www.linux.gr/magaz/34/02_texinfo.html">GNU Texinfo tutorial</a> 2002 (In
+							Greek)</li>
+						<li><a href="http://www.linux.gr/magaz/31/05_blender_intro.html">Blender 3D Introduction</a>
+							2001 (In
+							Greek)</li>
+					</ul>
+
+					<p>Really old commentary in <a href="http://osnews.com">Operating System News</a> </p>
+					<ul>
+						<li><a href="http://www.osnews.com/story/24734/">The Rise (And Fall?) of Application Stores</a>
+							2011.
+						</li>
+						<li><a href="http://www.osnews.com/story/24421/">Enlightenment Libraries Reach 1.0</a> 2011</li>
+						<li><a href="http://www.osnews.com/story/16372/">Moving Away From WIMP Interfaces One Step at a
+								Time</a>
+							2006</li>
+						<li><a href="http://www.osnews.com/story/13974/">The desktop is changing but to what?</a> 2006
+						</li>
+						<li><a href="http://www.osnews.com/story/9021/">Regarding High Level Computing</a> 2004</li>
+					</ul>
+
+					<h2>Academic work</h2>
+					<p><strong>Tagged Procedure Calls (TPC): Efficient
+							runtime support for task-based parallelism on
+							the Cell Processor (2010)</strong> was a paper I co-authored as part of my work in <a
+							href="http://www.ics.forth.gr/">FORTH-ICS</a>. It uses the <a
+							href="http://en.wikipedia.org/wiki/Cell_(microprocessor)">Cell processor</a> of the <a
+							href="http://en.wikipedia.org/wiki/PlayStation_3_technical_specifications">Playstation 3</a>
+						as a
+						core platform for parallel C code. I wrote bare metal code for this project (truly exciting
+						stuff!).
+						Read it in <a href="resources/Tagged-Procedure-Calls-Cell-2010.pdf">PDF format</a></p>
+
+					<p><strong>Translating formal proofs into English (2004)</strong> was my postgraduate thesis in the
+						<a href="http://www.swansea.ac.uk/">University of Swansea</a>. Implemented in <a
+							href="http://en.wikipedia.org/wiki/Scheme_%28programming_language%29">Scheme</a>
+						it was a module of the <a href="http://www.mathematik.uni-muenchen.de/~logik/minlog/">Minlog
+							interactive
+							proof system</a>. It used as input mathematical proofs and it produced a human-language
+						explanation
+						of the proof. This is the
+						time I learned about functional programming (an eye-opener experience). Read it in <a
+							href="resources/Translating-formal-proofs-into-English-2004.pdf">PDF format</a>
+					</p>
+
+					<p><strong>Compact Flash Linux Block driver (2003)</strong> was my dimploma thesis in the <a
+							href="http://www.csd.uoc.gr/en/">University of Crete</a>. It explains the implementation of
+						a block
+						device driver for the 2.4.x Linux kernel. The driver is for a <a
+							href="http://en.wikipedia.org/wiki/CompactFlash">compact flash</a> disk reader soldered in
+						an <a href="http://www.dilnetpc.com/">embedded Linux board</a>. Read it in <a
+							href="resources/Compact-Flash-Linux-Block-driver-2003.pdf">PDF format</a></p>
+
+
+		</section>
+	</div><!-- /container -->
+</body>
+
+</html>

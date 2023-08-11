@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Brief description of each EFL library</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="ch02.html" title="Chapter 2. The EFL structure" /><link rel="prev" href="ch02.html" title="Chapter 2. The EFL structure" /><link rel="next" href="ch03.html" title="Chapter 3. Understanding the Evas Canvas" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Brief description of each EFL library</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02.html">Prev</a> </td><th width="60%" align="center">Chapter 2. The EFL structure</th><td width="20%" align="right"> <a accesskey="n" href="ch03.html">Next</a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2481726"></a>Brief description of each EFL library</h2></div></div></div><p>
+Before we explain what each library offers in more detail and what new ideas it brings
+to development, here is a small list with a brief description of each one. Notice that this is not a final list.
+The 1.0 release of EFL may (and probably will) contain a few more.
+</p><div class="glosslist"><dl><dt>The Evas canvas</dt><dd><p>
+Evas is a powerful canvas. While most developers have used the Canvas widget
+of their favourite X11 toolkit, Evas is taking the canvas idea a huge step forward. It actually
+keeps track of what is rendered on screen. Unlike the usual canvas widget, Evas knows
+that you created a rectangle at a specific point on screen and it knows how to move it or 
+resize it without having to rely on external data structures. Evas objects are essentially
+"draw and forget" objects. No need for the programmer to keep state. No need for the programmer
+to deal with redrawing and repainting. All this is gone. Evas is also highly optimized and can even
+run in embedded systems with constrained memory and low power processors. Apart from the X11 back-end,
+it also runs on OpenGL, Xrender, and frame-buffer devices.
+</p></dd><dt>The Edje Layout Engine</dt><dd><p>
+The Edje Layout Engine is a breakthrough (in the humble opinion of the unbiased author of this document!).
+It can not be compared with another preexisting library (at least in the open source field) because it is simply unique.
+Edje allows you to describe a graphical user interface without writing a single line of C code. You describe
+what your interface looks like and <span class="emphasis"><em>how</em></span> you want it to appear and act on screen. Edje then
+takes the tough job to translate all this into low level code and bundle everything in a single theme file.
+This theme file is distributed along with the executable of your application which contains the functionality of
+the application. Your application is essentially split into two parts. A graphical part which knows nothing
+about C code and the functionality which knows nothing about GUI. This split makes the code development and
+theme creation really easy compared with current solutions. It also allows you (the developer) to easily
+change the functionality back-end with out touching the GUI and vice-versa. You can ship to your users
+a new theme for the same app, or upgrade just the functionality without changing the GUI. Users can also
+create new themes without getting in contact with C code.
+</p></dd><dt>The Ecore glue library</dt><dd><p>
+Ecore is a library which provides all the low-level stuff of your application. You can compare it with Glib from
+GTK+. It contains data structures, IPC mechanisms, easy networking, and generally all helper functions
+you would expect so that you don't have to re-invent the wheel. It glues together major EFL libraries
+so that it gives you a start point for your first applications. It even abstracts some functionality of 
+common UNIX and X capabilities. Not to mention that you can always use Ecore for an application that isn't
+even graphical. Before starting to implement your own data structure/X11 wrapper function/networking code/e.t.c.,
+check the Ecore documentation. Maybe it is already there with a clean, simple EFL API.
+</p></dd><dt>The Eet Storage library</dt><dd><p>
+Most themes delivered via the Internet nowadays are rather simple in their
+structure. Although they appear to be single files, in reality they are a bunch
+of files compressed using the usual compression methods (e.g. zip or .tar.gz).
+The application that uses the themes uncompresses them (usually upon
+installation and not on the fly) and a directory containing all the
+images of the theme is added to the application directory. Eet takes a completely
+different approach. The theme file is a single file which contains compressed
+images and the description of the interface too. This information is read by
+the Edje layout library to create the interface of your application on the fly.
+The theme is never uncompressed unless it is modified by a themer (and then
+compressed again). Moving around themes means moving around
+files. You can also use Eet as a general storage format for images,
+text, or even arbitrary data chunks. Eet is best known for storing themes but
+nothings prevents you from using it for all your storage needs.
+</p></dd><dt>The Embryo Scripting Language</dt><dd><p>
+People always want more power. Look what happened with HTML. Although HTML pages are static, soon enough
+JavaScript appeared along with Flash. Pages became dynamic. Then the Ajax buzzword came along and we have
+to believe that all web pages should look and act like local applications. While all this functionality
+is an overkill for the hypertext-based Internet, having the ability to script your interface is not always a bad
+idea. This is what the Embryo scripting brings to Edje. Edje themes can now contain small Embryo scripts which
+allow for more interesting interfaces. Although Embryo is not C code, some pure themers may think that the layout
+engine is contaminated with programming code, therefore Embryo scripts are optional. If you are a themer,
+you can use Edje as you think it should be used, while if you are more on the programming side you will 
+soon discover the value of Embryo scripts for your interfaces. It's all about choice.
+</p></dd><dt>The Epeg Thumbnailing Library</dt><dd><p>
+Epeg is a small thumbnailing library specially optimized for Jpeg files. It seems that nowadays
+most people keep their huge picture collections in the Jpeg format. The fact that it was embraced
+by camera manufacturers means that more and more Jpeg images will be stored on digital media and hard disks.
+To search all these images, thumbnails are used, so a library exactly for this purpose will serve our needs
+well. Epeg can be used standalone in your programs or again via the EFL infrastructure (Esmart, Ecore, Epsilon)
+</p></dd><dt>The Epsilon Thumbnailing Library</dt><dd><p>
+Epsilon is a more general thumbnailing library. It supports PNG, JPEG, and all
+other formats offered my imlib2 (see below) and Evas. It is closer to EFL than
+Epeg, and it can even take advantage of Epeg for Jpeg images if it is present on
+the system. Epsilon essentially abstracts the thumbnailing process for images,
+while Epeg is clearly targeted to the Jpeg format. Again, this is all about
+choice.
+</p></dd><dt>The Esmart Utility Library</dt><dd><p>
+With all the power that Edje gives to the programmer, one would think that she should be happy.
+Esmart is a helper library that gives some additional capabilities to Edje without blowing it up
+to a full toolkit (yet). Esmart gives the programmer the ability to have containers for the GUI (think
+the vbox and hbox of GTK+). It allows for transparent applications which seem to be cool these days (think Eterm).
+We mean applications which adapt their background to the X root window. Transparency itself is included already
+in Evas for the canvas and its objects. Esmart also wraps around epsilon for thumbnailing support and 
+finally adds some more toolkit facilities (text entries, file dialogs, and draggable objects). Esmart is 
+required for the Entrance application (a replacement of xdm/gdm/kdm based on EFL). You can use
+it for your application easily because all Esmart capabilities (as well as Ecore facilities and Evas engines) exist
+on separate library files.
+</p></dd><dt>The EWL Widget Set</dt><dd><p>
+Finally, if you want to use EFL as a toolkit similar to GTK+ and QT and just want to have a widget
+set available for your applications, you can use EWL. It offers the familiar toolkit facilities
+based on the EFL libraries and ties everything up under widgets which have different purposes.
+If you have programmed on any X11 toolkit, then programming for EWL should be a well-known experience.
+</p></dd><dt>The Imlib2 Image Library</dt><dd><p>
+Imlib2 is not strictly an EFL library but since some of the EFL applications and libraries use it, we include
+it here for reference. Imlib2 is a highly optimized and ultra fast imaging library which predates the EFL. You
+are not expected to use it directly unless you are a hard-core graphics programmer who knows the internals
+of graphics systems and image formats. Imlib2 ties seamlessly to Evas and allows you to really tinker with images
+at a low level. Notice also that Imlib2 is <span class="emphasis"><em>not</em></span> the second version of Imlib,
+but rather a completely different library (Imlib1 is by the way obsolete).
+Several applications outside the EFL/Enlightenment world use Imlib2 (such as the feh image viewer).
+</p></dd></dl></div><p>
+As already mentioned, several other EFL libraries are under development (such as Emotion, a video library
+based on xine), but for the time being we will discuss only the core ones in the next chapters.
+</p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 2. The EFL structure </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 3. Understanding the Evas Canvas</td></tr></table></div></body></html>

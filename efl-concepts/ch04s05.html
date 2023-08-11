@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Edje as a Theming Framework</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="ch04.html" title="Chapter 4. Understanding the Edje Layout Engine" /><link rel="prev" href="ch04s04.html" title="Edje as Logic and Appearance separator" /><link rel="next" href="ch04s06.html" title="Using Edje to preview your GUIs" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Edje as a Theming Framework</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s04.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Understanding the Edje Layout Engine</th><td width="20%" align="right"> <a accesskey="n" href="ch04s06.html">Next</a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2536656"></a>Edje as a Theming Framework</h2></div></div></div><p>
+Several applications nowadays have a fixed user interface. If a user does not
+like the looks of the UI she cannot do anything at all. To accommodate for
+different preferences, applications begun to have a component based UI with
+toolbars, windows, frames and panels which could be resized by the user.  But
+all these applications still retained their boring (grayish) color that is not
+favored by all users. Lately most user applications introduced changes to how
+the application looks as well. Colors, skins, pixmaps became changeable as
+well. The whole idea is called theming. Several often used applications (such
+as media players, web browsers, window managers) are expected
+to support themes natively. The problem is that theming does not always gets
+the attention it deserves. Theming is just a hack for several application.
+Users just overwrite the resource files (images) that are used from the
+application. Other application shamelessly advertise theme support while in
+reality they mean the ability to change the colour/skin in the best case.
+</p><p>
+Edje brings Themes to all applications that use it. Instead of writing custom
+code to your application you can use the Edje framework more easily. All Edje
+based applications are themeable with zero additional effort. If you have ever
+user the Enlightenment Window manager version 16 you have already some idea on
+what is possible. With the EFL you actually get theming on steroids.
+</p><p>
+There are many kinds of people would like to change how the application looks.
+Many will just need simple color changes, others will write complete themes.
+Some others will want to change the position of interface elements as well. You
+cannot predict what people will want to do with your application.  If we leave
+aside programmers who will just download the source code and start sending
+patches for what they don't like, Edje caters for all non-programmers who come
+across your application. Look at the following table:
+</p><div class="table"><a id="id2536704"></a><p class="title"><b>Table 4.3. Edje themes (viewed by users)</b></p><table summary="Edje themes (viewed by users)" border="1"><colgroup><col /><col /><col /><col /></colgroup><thead><tr><th align="left"> </th><th align="left">Casual Users</th><th align="left">Artists</th><th align="left">Expert Users/Themers</th></tr></thead><tbody><tr><td align="left">Time allocated for theming</td><td align="left">Some minutes</td><td align="left">Some hours</td><td align="left">Some days</td></tr><tr><td align="left">Wanted changes</td><td align="left">colours</td><td align="left">colours and images</td><td align="left">the complete UI</td></tr><tr><td align="left">Edje knowledge</td><td align="left">None</td><td align="left">Limited</td><td align="left">Extensive</td></tr><tr><td align="left">Contributions</td><td align="left">New colour combinations</td><td align="left">New textures/pixmaps</td><td align="left">New themes (.edj files)</td></tr></tbody></table></div><p>
+Changing the colours in a theme is trivial. The user finds the appropriate colourclass lines inside the .edc file and after appropriate changes, she recompiles its back to .edj.
+Nothing more to mention here.
+</p><p>
+An artist however would want to change all pixmaps of an application. Now with other theme frameworks the artist would have to either hunt down all images files
+inside the distributed application, or download the source code of the application and get the raw images of the user interface. Neither happens with Edje. The images block
+inside an .edc file does not contain just the pointers to image files which will be used by the application. It defines what images will be bundled <span class="emphasis"><em>inside</em></span>
+the .edj file. Compiling an .edc file with <span class="application">edje_cc</span> creates a binary file with all .edc code that describes the interface <span class="emphasis"><em>and</em></span>
+the image files which are mentioned inside the interface descriptions. This makes the .edj file self-contained. An .edj file is a theme by itself. No more tarballs or zip files
+for themes. An .edj file is actually an EET file (another EFL library) which is a general purpose storage library for storing arbitrary information inside a single file. The .edj
+file is architecture independent and the programmer can choose during creation if the images will be compressed inside it or not and what would be the level of compression
+in the former case.
+</p><p>
+So for an artist things are simplified. She uses the <span class="application">edje_decc</span> decompiler to obtain from the .edj file that comes with the application all
+the original resources along with the .edc file. Without looking at any line of code (Edje or C) she can start replacing the image files (.png, .jpeg e.t.c) with her own graphics.
+When finished, the <span class="application">edje_cc</span> recreates an .edj file with the new images and exact same interface structure as before. Starting the application
+will bring the new interface in effect. The procedure is not getting simpler than this. Only
+if she changes the sizes of image files, she actually needs to edit the .edc file.
+</p><p>
+Of course one can edit the .edc file as well the image files. This gives great power to the themer and most expert users will appreciate this feature. Since an .edc
+file contains the complete description of the interface one can change everything regarding the application. Not only the colours or the images used but the whole
+structure of the UI. Location of elements, size, animations, texts, everything is configurable. One can even remove interface elements (the respective C functions
+in the code will remain unused) or export the same signal with a different method. The original interface for example could export a "maximize" signal when
+a certain button is pushed. The themer changes the .edc file to trigger the same signal during application loading. The result is that that the application
+is maximized as soon as it starts. And this change was inside the theme.
+</p><p>
+We saw in the previous section that all functionality is included in the C code and
+the Edje .edj file contains the interface which handles communication with
+signals. This decoupling of logic and appearance gives great power to the
+themer. The experienced themer can change anything at will to the point that
+the resulting application looks nothing like the original one. Edje does away
+with the concept of skins. Edje technology is a revolution when it comes to
+themes.
+</p><p>
+Unfortunately the EFL killer application which will showcase the full power of Edje themes does not exist yet. The most mature EFL application is the Enlightenment
+window manager itself. A handful of themes are already available. These can give you a glimpse of what Edje is capable of. Animated backgrounds, window borders
+and window buttons are easier then ever. Entrance (a replacement of xdm/kdm/gdm) also has a range of themes full of diversity. Retractable panels, animated buttons
+and draggable subwindows are seen in the Entrance themes.
+</p><p>
+So our only example of Edje power will be in the form of an Enlightenment
+module. You can of course change just the pictures of the Edje file to give a
+new look to a component that functions in the same way as before. See the next figure.
+This shows the battery module for Enlightenment. The .edc file defines
+several images for the different states (percent full) of the battery. By
+changing these images an artist can create its own look for the battery graphic
+which will be displayed on the screen.
+</p><div class="figure"><a id="id2536928"></a><p class="title"><b>Figure 4.9. Changing skin via a theme.</b></p><div><img src="img/battery.png" alt="Changing skin via a theme." /></div></div><p>
+Another included Enlightenment module is the clock. Changing the graphics of
+the clock is a trivial task. The background of the clock stays the same and one
+needs different images for the clock hands. An experienced Edje themer can
+however change things in more depth. Keeping in mind that time handling stays
+in C code and all graphics are in Edje one can create a theme that converts the
+analog clock to digital. See the following figure. Notice that this is a just a new
+theme. There is no special code for analog and digital clocks in Enlightenment.
+There is also some Embryo scripting involved (which we have not discussed), but
+the fact remains that Edje themes give you abilities which were previously
+available only by changing the source code of the application.
+</p><div class="figure"><a id="id2536956"></a><p class="title"><b>Figure 4.10. Changing completely the appearance via a theme.</b></p><div><img src="img/clock.png" alt="Changing completely the appearance via a theme." /></div></div><p>
+In summary theming with Edje works flawlessly. The Edje file (.edj) distributed with an application is the theme itself. Self contained and self describing, the .edj
+file can be changed by anyone. The binary file of the application remains untouched and nobody needs to look at the C code. No recompilation is required. It is possible
+also to be able to change themes on the fly, but this requires effort from the application programmer to include a way to change the .edj file used by the application
+via an on-screen option.
+</p><p>
+We believe that once you start distributing and changing Edje themes, all existing theme frameworks will start to look limited and clumsy compared
+to Edje elegance, speed and flexibility.
+</p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Edje as Logic and Appearance separator </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Using Edje to preview your GUIs</td></tr></table></div></body></html>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Configuration with Ecore</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /><link rel="start" href="index.html" title="Introduction to the Enlightenment foundation libraries." /><link rel="up" href="ch05.html" title="Chapter 5. Understanding the Ecore Infrastructure Library" /><link rel="prev" href="ch05s02.html" title="Programming Facilities" /><link rel="next" href="ch05s04.html" title="The Event Loop" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Configuration with Ecore</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s02.html">Prev</a> </td><th width="60%" align="center">Chapter 5. Understanding the Ecore Infrastructure Library</th><td width="20%" align="right"> <a accesskey="n" href="ch05s04.html">Next</a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2537727"></a>Configuration with Ecore</h2></div></div></div><p>
+The first Ecore feature we will focus on is configuration for an application. Any non-trivial application needs to store somewhere the options selected by the user.
+Once the application is started the second time it should "remember" the user choices. This implies the saving of configuration parameters on disk (filesystem)
+between runs.
+</p><p>
+The traditional way to store configuration in a UNIX system is well known. Each application reads and writes a text file which is human readable. Most times
+this text file contains key-value pairs on each line, but there are applications with more complicated configuration files which actually define their own configuration language
+schematics. Several of the heavyweight UNIX servers (web, mail, FTP) can even have configurations which span multiple files and directories.
+</p><p>
+This approach was chosen for its universality. Changing the configuration of <span class="emphasis"><em>any</em></span> program means using <span class="emphasis"><em>any</em></span> text editor to change
+the text file. Configuration files are usable across any architecture since they are text based. Contrast this to the commercial (closed-source) world where configuration
+is stored into cryptic binary files. These files are contained in a non-documented format known only to the company that produces the respective application. If the company
+dies you are out of luck. You cannot move configuration files around and several times you even need special programs (converters) just to upgrade configuration files
+to newer versions.
+</p><p>
+Of course the UNIX approach has its drawbacks too. First of all casual users do not really like to manually edit text files. While a UNIX administrator is happy that
+with a single SSH shell and his trusty VI editor can completely (and remotely) manage the whole system, a non-expert user prefers GUI dialogs with buttons and entries
+for configuration parameters. Then there is the problem of the actual text format. While the configuration of most programs in a UNIX system are in text, the exact layout
+of the text file differs from application to application. A comment can start with <code class="literal">#</code>,<code class="literal">;</code> or <code class="literal">%</code> for example. 
+Comments may or may not span multiple lines. The order of lines may be important or not. Some lines will be in blocks some other will not. You get the idea. The fact
+that other UNIX programs also use text files for input (Makefiles, Latex, e.t.c) makes things even worse. A non-expert user is afraid that she even may change
+the configuration file to a non valid state which will be not understood by the application.
+</p><p>
+Another problem (from the development view) is the fact that each application must now implement a text parser for its specific file format. While specialized tools
+exist for this purpose (lex/flex, yacc/bison), for small applications this is simply an overkill. Not to mention the fact that text parsing is almost always slower that reading
+binary data. For small configuration files this is not a problem but for huge applications this becomes quickly evident.
+</p><p>
+Finally a big question is what happens when someone changes the configuration file while the UNIX application is actually running. If the application does not support this, one
+must simply restart it so that the new changes take effect. Otherwise the application is informed that its configuration file has changed and it automatically fetches the new values
+from disk. There is even a well-accepted convention just for UNIX servers for this reason. Once an application of this kind receive an NOHUP UNIX signal it is expected to 
+read again from the disk its configuration file and adapt accordingly. So in effect the NOHUP signal is the "restart" signal.
+</p><p>
+When XML appeared on the scene people started using it for many things and one of them was of course configuration files. While XML may be marketed as the universal format
+of the Internet we are not really sure that applications really gain from storing configuration in XML. The fact remains that the application must implement a text parser. And in
+this case the parser must be also an XML validator so the complexity and effort is greater for the programmer. Also, since XML files are either valid or not by definition, it
+is easy for a non-expert user to make an XML file unreadable after manual editing. A single syntax errors means that the application must reject the whole XML file. This does
+not happen with traditional UNIX applications which could dismiss lines they do not understand and load the rest of the values. Today several applications indeed use XML
+for storing configuration but it is not yet clear if this is an improvement or not over the past.
+</p><p>
+Ecore breaks away from the traditional UNIX approach and offers a configuration API which is based on binary format. While this decision may seem controversial at first, it is
+actually well thought of. Ecore provides functions used to store primitives on disk without specifying any additional details of where and how (the location or format
+of the file that is).
+</p><div class="table"><a id="id2537879"></a><p class="title"><b>Table 5.1. Ecore configuration primitives</b></p><table summary="Ecore configuration primitives" border="1"><colgroup><col /><col /></colgroup><thead><tr><th align="left">Primitive</th><th align="left">Description</th></tr></thead><tbody><tr><td align="left">Integer</td><td align="left">A simple number</td></tr><tr><td align="left">Float</td><td align="left">Floating point number</td></tr><tr><td align="left">String</td><td align="left">String-based value</td></tr><tr><td align="left">Colour</td><td align="left">RGB description of a colour</td></tr><tr><td align="left">Theme</td><td align="left">Definition of a theme</td></tr><tr><td align="left">Boolean</td><td align="left">Binary (true/false) value</td></tr></tbody></table></div><p>
+Notice that you do not need to write any code on how to store and load these values. All the low-level code is handled by Ecore. The values are stored
+in the home directory of the user that runs your application in the file <code class="filename">$HOME/.e/apps/YOUR_APP/config.eet</code>. Notice the .eet extension.
+Ecore uses the Eet Storage library for configuration which is the same one used by Edje for themes (and Enlightenment for backgrounds, eapps, themes, splash screens e.t.c).
+The only thing that matters to you as a programmer is the name of the value that you can use to load and store information. Everything else is abstracted away by Ecore.
+</p><p>
+So why this approach is better? First of all binary files are (as expected) faster that text files. Secondly you don't need to deal with any text parsing at all. Your
+application does not contain any low level I/O code at all. It just links to the Ecore_Config library. You need of course to provide some GUI for your users to change
+the values if that is required.
+</p><p>
+The fact that all configuration files are actually Eet files gives applications two advantages. Eet is designed so that its files are architecture independent. Despite being
+binary Eet files can be freely moved around on different systems. Additionally it is trivial to program a command line application which will read/dump the values
+stored on <span class="emphasis"><em>any</em></span> configuration file. Therefore universality is accomplished in a way too. Expert users who want to bypass the GUI and directly edit
+in the command line can do so, since their Eet reading application will be compatible with all configuration files that use Ecore for storage. The Eet library
+is open source so the binary format does not need reverse engineering.
+</p><p>
+Last thing to notice is that Ecore gives you the capability of Configuration Listeners. These Listeners register to configuration parameters and when they are changed
+they trigger the callback function you have specified. This means that you don't need special "restart" code. Your application can be informed during run-time on 
+configuration changes and act accordingly.
+</p><p>
+In summary, Ecore provides a unified way to store configuration values which makes things easier for the programmer. It may feel a bit strange to know that
+your application stores configuration in binary but you should quickly see the advantages.
+</p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch05s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Programming Facilities </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> The Event Loop</td></tr></table></div></body></html>
