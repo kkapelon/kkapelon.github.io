@@ -4,4 +4,4 @@
 
 See it live at  www.codepipes.com
 
-Blog source is at https://github.com/kkapelon/kkapelon.github.io
+Blog source is at https://github.com/kkapelon/codepipes-blog
