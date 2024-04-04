@@ -2,6 +2,6 @@
 
 # Personal website of Kostis Kapelonis
 
-See it live at  www.codepipes.com
+See it live at  http://codepipes.com
 
 Blog source is at https://github.com/kkapelon/codepipes-blog
